@@ -1,0 +1,22 @@
+{
+  "name": "printing-press-cost-estimator",
+  "version": "1.0.0",
+  "description": "Digital Printing Press Cost Estimator for Right Printers",
+  "main": "index.html",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && python3 build.py",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "printing",
+    "estimator",
+    "cost",
+    "calculator"
+  ],
+  "author": "Right Printers",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
+}

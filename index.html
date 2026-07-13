@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Digital Printing Press Cost Estimator - Digital Print Department. Fast paper and sticker cost estimation with visual sheet layout calculator.">
+  <title>Digital Printing Press Cost Estimator</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/index.css">
+</head>
+<body>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-main">
+        <div class="logo-area">
+          <img src="src/assets/logo.png" alt="Logo" class="company-logo" id="companyLogo">
+          <div class="company-titles">
+            <span class="dept-badge">DIGITAL PRINT DEPARTMENT</span>
+          </div>
+        </div>
+        <div class="header-info">
+          <p class="info-item address-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span>Al Baladiya District, Othman Ibn Afwan Street, Hafar Al Batin 39921, Eastern Province, KSA</span>
+          </p>
+          <p class="info-item phone-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <span>+966 53 763 4784 / 055 744 4588</span>
+          </p>
+        </div>
+      </div>
+      <button class="settings-toggle-btn" id="openSettingsBtn" title="Pricing & Discount Settings">
+        <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+        <span>Settings</span>
+      </button>
+    </header>
+
+    <!-- MAIN BODY -->
+    <main class="app-body">
+      
+      <!-- LEFT COLUMN: INPUTS -->
+      <section class="config-pane">
+        
+        <!-- Job Type Tabs -->
+        <div class="job-tabs">
+          <button class="tab-btn active" id="tabPaper" data-type="paper">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            Standard Paper
+          </button>
+          <button class="tab-btn" id="tabSticker" data-type="sticker">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14H7v-2h5v2zm3-4H7v-2h8v2zm0-4H7V7h8v2z"/></svg>
+            Sticker Print
+          </button>
+          <button class="tab-btn" id="tabTshirt" data-type="tshirt">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c1.1 0 2 .9 2 2v1.18c2.07.4 3.81 1.69 4.63 3.49L21.43 14c.32.73.18 1.58-.35 2.16l-1.94 2.12c-.52.57-1.34.78-2.07.51l-2.07-.75V20c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-2.08l-2.07.75c-.73.27-1.55.06-2.07-.51L2.92 16.16c-.53-.58-.67-1.43-.35-2.16l2.8-6.33C6.19 5.87 7.93 4.58 10 4.18V4c0-1.1.9-2 2-2zm0 6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
+            T-Shirt & Cup
+          </button>
+        </div>
+
+        <!-- Section 1: Print Paper Sizes -->
+        <div class="config-card" id="paperSizesCard">
+          <div class="card-header">
+            <h3>1. Print Paper Size / مقاس ورق الطباعة</h3>
+            <div class="orientation-switch-wrapper">
+              <span class="switch-label">Landscape</span>
+              <label class="switch">
+                <input type="checkbox" id="orientationToggle">
+                <span class="slider round"></span>
+              </label>
+              <span class="switch-label">Portrait</span>
+            </div>
+          </div>
+          <div class="size-presets" id="paperSizesList">
+            <!-- Dynamically generated buttons -->
+          </div>
+          <hr class="card-divider" style="border: 0; border-top: 1px solid var(--border-light); margin: 8px 0;">
+          <div class="die-cutting-section">
+            <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--primary-gold-light); margin-bottom: 12px; font-family: 'Tajawal', 'Outfit', sans-serif;">
+              Die Cutting / قص قالب
+            </h4>
+            <div class="die-cutting-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+              
+              <!-- Cylinder Option -->
+              <div class="extra-checkbox-card custom-extra-card" id="dieCylinderCardEl">
+                <label class="extra-checkbox-label" for="extraDieCylinder">
+                  <input type="checkbox" id="extraDieCylinder">
+                  <div class="extra-info">
+                    <span class="extra-title">Cylinder / سلندر</span>
+                    <span class="extra-desc" id="dieCylinderPriceText">0.30 SR / sheet</span>
+                  </div>
+                </label>
+                <div class="extra-rate-input-wrapper">
+                  <input type="number" id="dieCylinderRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.30">
+                  <span class="rate-unit">SR</span>
+                </div>
+              </div>
+              
+              <!-- Manual Option -->
+              <div class="extra-checkbox-card custom-extra-card" id="dieManualCardEl">
+                <label class="extra-checkbox-label" for="extraDieManual">
+                  <input type="checkbox" id="extraDieManual">
+                  <div class="extra-info">
+                    <span class="extra-title">Manual / يدوي</span>
+                    <span class="extra-desc" id="dieManualPriceText">0.15 SR / sheet</span>
+                  </div>
+                </label>
+                <div class="extra-rate-input-wrapper">
+                  <input type="number" id="dieManualRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.15">
+                  <span class="rate-unit">SR</span>
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Paper GSM (Only visible for Standard Paper tab) -->
+        <div class="config-card" id="gsmCard">
+          <h3>2. Paper GSM / جرام الورق</h3>
+          <div class="gsm-presets" id="paperGsmList">
+            <!-- Dynamically generated buttons -->
+          </div>
+        </div>
+
+        <!-- Section 6: Sticker Configs (Only visible for Sticker tab) -->
+        <div class="config-card hidden" id="stickerCard">
+          <h3>Sticker Settings / إعدادات الملصق</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="stickerType">Sticker Material / نوع اللاصق</label>
+              <select id="stickerType" class="form-select">
+                <option value="paper">Paper Sticker / ستيكر ورقي</option>
+                <option value="pvc_white">PVC White / ستيكر بلاستيك أبيض</option>
+                <option value="pvc_transparent" selected>PVC Transparent / ستيكر بلاستيك شفاف</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="stickerColors">Print Colors / ألوان الطباعة</label>
+              <select id="stickerColors" class="form-select">
+                <option value="cymk" selected>4 Color CYMK PRINT / ٤ ألوان</option>
+                <option value="cymk_white">5 Color CYMK + White PRINT / ٥ ألوان مع أبيض</option>
+                <option value="clear_color">Clear Color / لون شفاف</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: T-Shirt & Cup Configuration (Only visible for T-Shirt tab) -->
+        <div class="config-card hidden" id="tshirtCupCard">
+          <h3>T-Shirt & Cup Settings / إعدادات التيشرت والأكواب</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tshirtCupProduct">Product Type / نوع المنتج</label>
+              <select id="tshirtCupProduct" class="form-select">
+                <option value="tshirt" selected>T-Shirt / تيشرت</option>
+                <option value="cup">Cup / كوب</option>
+              </select>
+            </div>
+            <div class="form-group" id="tshirtClothGroup">
+              <label for="tshirtCloth">Cloth Type / نوع القماش</label>
+              <select id="tshirtCloth" class="form-select">
+                <option value="cotton" selected>Cotton / قطن</option>
+                <option value="polyester">Polyester / بوليستر</option>
+                <option value="linen">Linen / كتان</option>
+                <option value="flannel">Flannel / فلانيل</option>
+                <option value="silk">Silk / حرير</option>
+                <option value="blends">Blends (polyester and cotton) / مخلوط</option>
+              </select>
+            </div>
+            <div class="form-group" id="tshirtSizeGroup">
+              <label for="tshirtSize">T-Shirt Size / مقاس التيشرت</label>
+              <select id="tshirtSize" class="form-select">
+                <option value="S">S Size (Small)</option>
+                <option value="M">M Size (Medium)</option>
+                <option value="L" selected>L Size (Large)</option>
+                <option value="XL">XL Size</option>
+                <option value="XXL">XXL LARGE</option>
+                <option value="XXXL">XXXL LARGE</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row" id="tshirtPrintGroup">
+            <div class="form-group">
+              <label for="tshirtLaserPrint">Print Laser / طباعة ليزر</label>
+              <select id="tshirtLaserPrint" class="form-select">
+                <option value="none">None / بدون</option>
+                <option value="A3">A3 Size (50.00 SR)</option>
+                <option value="A4" selected>A4 Size (30.00 SR)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="tshirtTransfer">T-Shirt Transfer Cost / تكلفة النقل</label>
+              <select id="tshirtTransfer" class="form-select">
+                <option value="none">None / بدون</option>
+                <option value="A3">A3 Size (25.00 SR)</option>
+                <option value="A4" selected>A4 Size (20.00 SR)</option>
+                <option value="A5">A5 Size (15.00 SR)</option>
+                <option value="A6">A6 Size (10.00 SR)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row hidden" id="laserDetailsRow">
+            <div class="form-group">
+              <label for="laserWidth">Print Width (W) / عرض الطباعة (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="laserWidth" value="20" min="1" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="laserHeight">Print Height (H) / ارتفاع الطباعة (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="laserHeight" value="15" min="1" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="laserUps">Laser Ups / عدد القطع بالفرخ</label>
+              <div class="input-with-unit">
+                <input type="number" id="laserUps" value="2" min="1" step="1" class="form-input">
+                <span class="unit">pcs</span>
+              </div>
+            </div>
+          </div>
+          <div class="form-row hidden" id="cupGroup">
+            <div class="form-group">
+              <label for="cupTransfer">Cup Transfer / نقل كوب</label>
+              <select id="cupTransfer" class="form-select">
+                <option value="none">None / بدون</option>
+                <option value="FULL_PART" selected>FULL PART (15.00 SR)</option>
+                <option value="SMALL">SMALL CUP (18.00 SR)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="tshirtCupQty">Product Quantity / الكمية المطلوبة</label>
+              <div class="input-with-unit">
+                <input type="number" id="tshirtCupQty" value="10" min="1" step="1" class="form-input">
+                <span class="unit">pcs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Required Size & Quantity -->
+        <div class="config-card" id="cutSizeCard">
+          <h3>3. Required Cut Size & Qty / المقاس المطلوب والكمية</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="itemWidth">Width (L) / العرض (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="itemWidth" value="25" min="1" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="itemHeight">Height (H) / الارتفاع (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="itemHeight" value="15" min="1" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="itemQty">Quantity / الكمية المطلوبة</label>
+              <div class="input-with-unit">
+                <input type="number" id="itemQty" value="100" min="1" step="1" class="form-input">
+                <span class="unit">pcs</span>
+              </div>
+            </div>
+          </div>
+          <div class="quick-size-buttons">
+            <button type="button" class="btn-subtle" onclick="setQuickSize(9, 5.5)">Business Card (9x5.5)</button>
+            <button type="button" class="btn-subtle" onclick="setQuickSize(21, 14.8)">A5 Flyer (21x14.8)</button>
+            <button type="button" class="btn-subtle" onclick="setQuickSize(29.7, 21)">A4 Flyer (29.7x21)</button>
+          </div>
+          <div class="form-row" id="bcModeContainer" style="margin-top: 8px;">
+            <label class="extra-checkbox-card" id="businessCardModeCard" style="width: 100%;">
+              <input type="checkbox" id="businessCardMode">
+              <div class="extra-info">
+                <span class="extra-title">Business Card Print Mode / وضع طباعة الكرت الشخصي</span>
+                <span class="extra-desc">Calculates A3 Sheet Cost and Print Cost (0.048 SR/piece) separately</span>
+              </div>
+            </label>
+          </div>
+          <div class="form-row" id="backSidePrintContainer" style="margin-top: 8px;">
+            <label class="extra-checkbox-card" id="backSidePrintCard" style="width: 100%;">
+              <input type="checkbox" id="backSidePrint">
+              <div class="extra-info">
+                <span class="extra-title">Both Side Print / طباعة وجهين</span>
+                <span class="extra-desc">Adds back-side print cost based on paper GSM</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Section 7, 8, 9: Finishes & Extras -->
+        <div class="config-card" id="finishingCard">
+          <h3>Finishing & Extras / خدمات التشطيب والإضافات</h3>
+          <div class="extras-grid">
+            <label class="extra-checkbox-card" id="laminationCardEl">
+              <input type="checkbox" id="extraLamination">
+              <div class="extra-info">
+                <span class="extra-title">Lamination / سلوفان</span>
+                <span class="extra-desc" id="laminationPriceText">Based on size</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card" id="laminationBothSidesCardEl">
+              <input type="checkbox" id="laminationBothSides">
+              <div class="extra-info">
+                <span class="extra-title">Both Side Lamination / سلوفان وجهين</span>
+                <span class="extra-desc">Double lamination cost</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card" id="plotterCardEl">
+              <input type="checkbox" id="extraPlotter">
+              <div class="extra-info">
+                <span class="extra-title">Plotter Cut / قص ديجيتال</span>
+                <span class="extra-desc" id="plotterPriceText">Based on size</span>
+              </div>
+            </label>
+            <div class="extra-checkbox-card custom-extra-card" id="polarCuttingCardEl">
+              <label class="extra-checkbox-label" for="extraPolarCutting">
+                <input type="checkbox" id="extraPolarCutting">
+                <div class="extra-info">
+                  <span class="extra-title">Polar Cutting / قص بولار</span>
+                  <span class="extra-desc" id="polarCuttingPriceText">0.50 SR / sheet</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="polarCuttingRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.50">
+                <span class="rate-unit">SR</span>
+              </div>
+            </div>
+            <label class="extra-checkbox-card">
+              <input type="checkbox" id="extraFolding">
+              <div class="extra-info">
+                <span class="extra-title">Folding / طوي</span>
+                <span class="extra-desc">0.25 SR / piece</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card">
+              <input type="checkbox" id="extraPasting">
+              <div class="extra-info">
+                <span class="extra-title">Pasting / غراء أو لصق</span>
+                <span class="extra-desc">0.25 SR / piece</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card">
+              <input type="checkbox" id="extraHandleRope">
+              <div class="extra-info">
+                <span class="extra-title">Bag Handle Rope / حبل كيس</span>
+                <span class="extra-desc">0.12 SR / bag</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card">
+              <input type="checkbox" id="extraPacking" checked>
+              <div class="extra-info">
+                <span class="extra-title">Packing / تغليف مغلفات</span>
+                <span class="extra-desc">0.50 SR / 100 pcs pack</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: RESULTS & PREVIEWS -->
+      <section class="results-pane">
+        
+        <!-- Interactive Layout Preview -->
+        <div class="results-card" id="paperLayoutPreviewCard">
+          <div class="card-header">
+            <h3>Visual Sheet Layout / تخطيط توزع القطع على الفرخ</h3>
+            <span class="preview-mode-badge" id="layoutDirectionLabel">Landscape Layout</span>
+          </div>
+          
+          <div class="layout-preview-container">
+            <!-- Interactive Visual SVG -->
+            <div class="svg-container" id="svgContainer">
+              <svg id="layoutSvg" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet">
+                <!-- SVG dynamically drawn via JS -->
+              </svg>
+            </div>
+            
+            <!-- Statistics overlay -->
+            <div class="wastage-stats-grid">
+              <div class="stat-box">
+                <span class="stat-val" id="valUps">-</span>
+                <span class="stat-lbl">Ups per Sheet / قطع بالفرخ</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-val" id="valSheetsNeeded">-</span>
+                <span class="stat-lbl">Sheets Needed / فروع مطلوبة</span>
+              </div>
+              <div class="stat-box highlight-waste">
+                <span class="stat-val" id="valWastagePercent">-%</span>
+                <span class="stat-lbl">Wastage % / نسبة الهدر</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-val" id="valWastageArea">- <small>cm²</small></span>
+                <span class="stat-lbl">Wastage Area / مساحة الهدر</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- T-Shirt & Cup Preview Card -->
+        <div class="results-card hidden" id="tshirtCupPreviewCard">
+          <div class="card-header">
+            <h3>Visual Product Preview / معاينة المنتج</h3>
+            <span class="preview-mode-badge" id="tshirtCupPreviewLabel">T-Shirt Print</span>
+          </div>
+          <div class="layout-preview-container" style="display: flex; justify-content: center; align-items: center; min-height: 250px;">
+            <div class="svg-container" id="productSvgContainer" style="width: 100%; max-width: 400px; padding: 10px;">
+              <!-- Dynamic Product SVG drawn via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Ups Orientation Comparison Table -->
+        <div class="results-card" id="paperComparisonCard">
+          <h3>Orientation Difference Comparison / مقارنة اتجاه توزع القطع</h3>
+          <div class="table-responsive">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Layout Direction / اتجاه التخطيط</th>
+                  <th>Ups / عدد القطع</th>
+                  <th>Wastage % / نسبة الهدر</th>
+                  <th>Status / الحالة</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Dynamically generated rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Estimator Quote Summary & Invoice Output -->
+        <div class="results-card invoice-card" id="invoiceCard">
+          <div class="invoice-actions-print-only">
+            <div class="invoice-print-header">
+              <div class="logo-area">
+                <img src="src/assets/logo_print.png" alt="Logo" class="print-company-logo">
+                <div>
+                  <h3>DIGITAL PRINT DEPARTMENT</h3>
+                </div>
+              </div>
+              <div class="print-contact">
+                <p>Hafar Al Batin, KSA</p>
+                <p>Mobile: +966 53 763 4784 / 055 744 4588</p>
+              </div>
+            </div>
+            <hr>
+          </div>
+
+          <div class="card-header invoice-header-ui">
+            <h3>Cost Estimation Details / تفاصيل احتساب التكلفة</h3>
+            <div class="invoice-badges">
+              <span class="badge" id="jobTypeBadge">Paper Job</span>
+              <span class="badge" id="gsmBadge">350 GSM</span>
+            </div>
+          </div>
+
+          <div class="invoice-table">
+            <div class="invoice-row">
+              <span class="inv-label">Sheet Dimensions / أبعاد الفرخ:</span>
+              <span class="inv-value" id="invSheetSize">-</span>
+            </div>
+            <div class="invoice-row">
+              <span class="inv-label">Required Cut Size / المقاس المطلوب:</span>
+              <span class="inv-value" id="invCutSize">-</span>
+            </div>
+            <div class="invoice-row">
+              <span class="inv-label">Arrangement Setup / طريقة الترتيب:</span>
+              <span class="inv-value" id="invLayoutType">-</span>
+            </div>
+            <div class="invoice-row">
+              <span class="inv-label">Required Qty / الكمية المطلوبة:</span>
+              <span class="inv-value" id="invQty">-</span>
+            </div>
+            <hr class="inv-divider">
+            <div class="invoice-row" id="invRowBaseCost">
+              <span class="inv-label">Base Sheets Print Cost / تكلفة طباعة الفروع:</span>
+              <span class="inv-value" id="invBaseCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowA3Sheet">
+              <span class="inv-label">A3 Sheets Cost / تكلفة فروع A3:</span>
+              <span class="inv-value" id="invA3SheetCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowBcPrint">
+              <span class="inv-label">Business Card Print Cost / تكلفة طباعة كرت شخصي:</span>
+              <span class="inv-value" id="invBcPrintCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowBcCut">
+              <span class="inv-label">Polar Cutting Cost / تكلفة قص بولار:</span>
+              <span class="inv-value" id="invBcCutCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowDieCylinder">
+              <span class="inv-label">Cylinder Die Cutting / قص قالب سلندر:</span>
+              <span class="inv-value" id="invDieCylinderCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowDieManual">
+              <span class="inv-label">Manual Die Cutting / قص قالب يدوي:</span>
+              <span class="inv-value" id="invDieManualCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowBackSide">
+              <span class="inv-label">Both Side Print Cost / تكلفة طباعة الخلفية:</span>
+              <span class="inv-value" id="invBackSideCost">-</span>
+            </div>
+            <!-- Tshirt/Cup Invoice Rows -->
+            <div class="invoice-row hidden" id="invRowTshirtBase">
+              <span class="inv-label">T-Shirt Garment Cost / تكلفة التيشرت:</span>
+              <span class="inv-value" id="invTshirtBaseCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowTshirtLaser">
+              <span class="inv-label">Laser Printing Cost / طباعة ليزر:</span>
+              <span class="inv-value" id="invTshirtLaserCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowTshirtTransfer">
+              <span class="inv-label">T-Shirt Transfer Cost / تكلفة النقل:</span>
+              <span class="inv-value" id="invTshirtTransferCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowCupBase">
+              <span class="inv-label">Cup Base Cost / تكلفة الكوب:</span>
+              <span class="inv-value" id="invCupBaseCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowCupTransfer">
+              <span class="inv-label">Cup Transfer Cost / تكلفة نقل الكوب:</span>
+              <span class="inv-value" id="invCupTransferCost">-</span>
+            </div>
+
+            <div class="invoice-row" id="invRowLamination">
+              <span class="inv-label">Lamination Cost / تكلفة السلوفان:</span>
+              <span class="inv-value" id="invLaminationCost">-</span>
+            </div>
+            <div class="invoice-row" id="invRowPlotter">
+              <span class="inv-label">Plotter Cut Cost / تكلفة قص الديجيتال:</span>
+              <span class="inv-value" id="invPlotterCost">-</span>
+            </div>
+            <div class="invoice-row" id="invRowFolding">
+              <span class="inv-label">Folding Cost / تكلفة الطوي:</span>
+              <span class="inv-value" id="invFoldingCost">-</span>
+            </div>
+            <div class="invoice-row" id="invRowPasting">
+              <span class="inv-label">Pasting Cost / تكلفة اللصق الغراء:</span>
+              <span class="inv-value" id="invPastingCost">-</span>
+            </div>
+            <div class="invoice-row" id="invRowRope">
+              <span class="inv-label">Bag Handle Rope / حبل الكيس:</span>
+              <span class="inv-value" id="invRopeCost">-</span>
+            </div>
+            <div class="invoice-row" id="invRowPacking">
+              <span class="inv-label">Packing Cost / تكلفة التعبئة والتغليف:</span>
+              <span class="inv-value" id="invPackingCost">-</span>
+            </div>
+            <hr class="inv-divider">
+            <div class="invoice-row discount-row" id="invRowDiscount">
+              <span class="inv-label text-discount">Applied Tier Discount / الخصم المطبق (<span id="invDiscountPercent">0%</span>):</span>
+              <span class="inv-value text-discount" id="invDiscountVal">-</span>
+            </div>
+            <div class="invoice-row total-row">
+              <span class="inv-label">Total Cost / السعر الإجمالي:</span>
+              <span class="inv-value" id="invTotalVal">-</span>
+            </div>
+            <div class="invoice-row unit-cost-row">
+              <span class="inv-label">Cost Per Piece / تكلفة القطعة الواحدة:</span>
+              <span class="inv-value" id="invUnitCostVal">-</span>
+            </div>
+          </div>
+
+          <div class="invoice-actions no-print">
+            <button class="btn-primary btn-full" id="printInvoiceBtn">
+              <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+              Print Estimate / حفظ كـ PDF
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- SETTINGS DRAWER OVERLAY -->
+    <div class="settings-drawer" id="settingsDrawer">
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <h2>Pricing Configuration Manager</h2>
+          <button class="close-btn" id="closeSettingsBtn">&times;</button>
+        </div>
+        
+        <div class="drawer-body">
+          <p class="settings-note">Modify the default rates. Changes persist in local browser storage and take effect instantly.</p>
+          
+          <div class="settings-tabs">
+            <button class="setting-tab-btn active" data-target="setTabPaper">Paper Rates</button>
+            <button class="setting-tab-btn" data-target="setTabSticker">Sticker Rates</button>
+            <button class="setting-tab-btn" data-target="setTabDiscounts">Discounts</button>
+            <button class="setting-tab-btn" data-target="setTabFinishing">Finishing & Extras</button>
+            <button class="setting-tab-btn" data-target="setTabTshirt">T-Shirt & Cup Rates</button>
+            <button class="setting-tab-btn" data-target="setTabSecurity">Security Settings</button>
+          </div>
+
+          <!-- Settings Tab: Paper GSM Rates -->
+          <div class="setting-section" id="setTabPaper">
+            <h3>Standard Paper Print Cost per Sheet (SR)</h3>
+            <div class="table-responsive">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>GSM</th>
+                    <th>70x33 cm</th>
+                    <th>50x33 cm</th>
+                    <th>A3</th>
+                    <th>A4</th>
+                    <th>Back Side</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsPaperBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Settings Tab: Sticker Rates -->
+          <div class="setting-section hidden" id="setTabSticker">
+            <h3>Sticker Print Cost per Sheet (SR)</h3>
+            <p class="sub-label">Sheet rates for each sticker type, print process (4 Color, 5 Color CMYK+W, Clear Color) and size.</p>
+            <div class="table-responsive">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>Sticker Material</th>
+                    <th>Print Type</th>
+                    <th>70x33 cm (SR)</th>
+                    <th>50x33 cm (SR)</th>
+                    <th>A3 Sheet (SR)</th>
+                    <th>A4 Sheet (SR)</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsStickerBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Settings Tab: Discounts -->
+          <div class="setting-section hidden" id="setTabDiscounts">
+            <h3>Sheet-Based Discount Tiers</h3>
+            <p class="sub-label">Define the discount percentage given based on total printed sheets. Set discount to 0% to disable for a tier.</p>
+            <div class="table-responsive">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>Min Sheets</th>
+                    <th>Max Sheets</th>
+                    <th>Discount %</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsDiscountBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Settings Tab: Finishing Costs -->
+          <div class="setting-section hidden" id="setTabFinishing">
+            <h3>Lamination, Plotter, & Finish Service Rates</h3>
+            
+            <h4 class="finish-group-title">Lamination Rates (per Sheet Size)</h4>
+            <div class="form-row flex-wrap" id="settingsLaminationContainer">
+              <!-- Dynamically populated inputs -->
+            </div>
+
+            <h4 class="finish-group-title">Plotter Cut Rates (per Sheet Size)</h4>
+            <div class="form-row flex-wrap" id="settingsPlotterContainer">
+              <!-- Dynamically populated inputs -->
+            </div>
+
+            <h4 class="finish-group-title">Other Fixed Service Rates (SR)</h4>
+            <div class="form-row flex-wrap">
+              <div class="form-group min-w-150">
+                <label for="rateFolding">Folding (per item)</label>
+                <input type="number" id="rateFolding" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="ratePasting">Pasting (per item)</label>
+                <input type="number" id="ratePasting" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateRope">Bag Handle Rope (per item)</label>
+                <input type="number" id="rateRope" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="ratePacking">Packing (per 100 pcs pack)</label>
+                <input type="number" id="ratePacking" step="0.1" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBcPrint">Business Card Print (per card)</label>
+                <input type="number" id="rateBcPrint" step="0.001" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBcA3Sheet">BC A3 Sheet Price (300 GSM)</label>
+                <input type="number" id="rateBcA3Sheet" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBcPolarCut">BC Polar Cut (per sheet)</label>
+                <input type="number" id="rateBcPolarCut" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateDieCylinder">Cylinder Die Cut (per sheet)</label>
+                <input type="number" id="rateDieCylinder" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateDieManual">Manual Die Cut (per sheet)</label>
+                <input type="number" id="rateDieManual" step="0.01" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Tab: T-Shirt & Cup Rates -->
+          <div class="setting-section hidden" id="setTabTshirt">
+            <h3>T-Shirt & Cup Pricing Rates / أسعار التيشرت والأكواب</h3>
+            
+            <h4 class="finish-group-title">1st Section: Print Laser Cost (per Sheet)</h4>
+            <div class="form-row flex-wrap">
+              <div class="form-group min-w-150">
+                <label for="rateTshirtLaserA3">A3 Size (SR)</label>
+                <input type="number" id="rateTshirtLaserA3" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateTshirtLaserA4">A4 Size (SR)</label>
+                <input type="number" id="rateTshirtLaserA4" step="0.5" class="form-input">
+              </div>
+            </div>
+
+            <h4 class="finish-group-title">2nd Section: T-Shirt Garment Cost by Cloth Type & Size</h4>
+            <div class="table-responsive">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>Cloth Type / نوع القماش</th>
+                    <th>S (SR)</th>
+                    <th>M (SR)</th>
+                    <th>L (SR)</th>
+                    <th>XL (SR)</th>
+                    <th>XXL (SR)</th>
+                    <th>XXXL (SR)</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsTshirtClothBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+
+            <h4 class="finish-group-title">3rd Section: T-Shirt Transfer Cost</h4>
+            <div class="form-row flex-wrap">
+              <div class="form-group min-w-100">
+                <label for="rateTshirtTransferA3">A3 Size (SR)</label>
+                <input type="number" id="rateTshirtTransferA3" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-100">
+                <label for="rateTshirtTransferA4">A4 Size (SR)</label>
+                <input type="number" id="rateTshirtTransferA4" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-100">
+                <label for="rateTshirtTransferA5">A5 Size (SR)</label>
+                <input type="number" id="rateTshirtTransferA5" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-100">
+                <label for="rateTshirtTransferA6">A6 Size (SR)</label>
+                <input type="number" id="rateTshirtTransferA6" step="0.5" class="form-input">
+              </div>
+            </div>
+
+            <h4 class="finish-group-title">Cup Section Rates</h4>
+            <div class="form-row flex-wrap">
+              <div class="form-group min-w-150">
+                <label for="rateCupBase">CUP COST (SR)</label>
+                <input type="number" id="rateCupBase" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateCupTransferFull">FULL PART Transfer (SR)</label>
+                <input type="number" id="rateCupTransferFull" step="0.5" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateCupTransferSmall">SMALL CUP Transfer (SR)</label>
+                <input type="number" id="rateCupTransferSmall" step="0.5" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Tab: Security Settings -->
+          <div class="setting-section hidden" id="setTabSecurity">
+            <h3>Security Credentials Manager / مدير بيانات الأمان</h3>
+            <p class="sub-label">Change the password for the Sales account. The Administration password is separate and fixed to 1969.</p>
+            <div class="form-row flex-wrap">
+              <div class="form-group min-w-150">
+                <label for="adminSalesPassword">Sales Account Password / كلمة مرور المبيعات</label>
+                <input type="password" id="adminSalesPassword" class="form-input" placeholder="••••">
+              </div>
+            </div>
+            
+            <h4 class="finish-group-title" style="margin-top: 24px;">SMS OTP Authentication / رمز التحقق الثنائي عبر الجوال</h4>
+            <div class="form-row" style="margin-top: 8px;">
+              <label class="extra-checkbox-card" style="width: 100%;">
+                <input type="checkbox" id="smsOtpEnabled" checked>
+                <div class="extra-info">
+                  <span class="extra-title">Enable SMS OTP / تفعيل رمز التحقق الثنائي</span>
+                  <span class="extra-desc">Requires a 4-digit code sent to +966539044608 to complete login.</span>
+                </div>
+              </label>
+            </div>
+            
+            <div class="form-group" style="margin-top: 12px;">
+              <label for="smsOtpProvider">SMS Gateway Provider / مزود بوابة رسائل SMS</label>
+              <select id="smsOtpProvider" class="form-select">
+                <option value="simulation" selected>Simulated / محاكاة (Show code in notification and console)</option>
+                <option value="twilio">Twilio API (International)</option>
+                <option value="unifonic">Unifonic API (Middle East / KSA)</option>
+                <option value="custom">Custom HTTP GET/POST API</option>
+              </select>
+            </div>
+
+            <div id="smsConfigFields" class="hidden" style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-light);">
+              <!-- Twilio Fields -->
+              <div id="smsFieldsTwilio" class="hidden sms-fields-group">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="twilioSid">Twilio Account SID</label>
+                  <input type="text" id="twilioSid" class="form-input" placeholder="ACxxxxxxxxxxxxxxxxxxxxxxxx">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="twilioAuthToken">Twilio Auth Token</label>
+                  <input type="password" id="twilioAuthToken" class="form-input" placeholder="Token">
+                </div>
+                <div class="form-group">
+                  <label for="twilioFrom">Twilio Phone Number (From)</label>
+                  <input type="text" id="twilioFrom" class="form-input" placeholder="+1xxxxxxxxxx">
+                </div>
+              </div>
+              
+              <!-- Unifonic Fields -->
+              <div id="smsFieldsUnifonic" class="hidden sms-fields-group">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="unifonicAppSid">Unifonic App SID</label>
+                  <input type="text" id="unifonicAppSid" class="form-input" placeholder="App SID">
+                </div>
+                <div class="form-group">
+                  <label for="unifonicSender">Sender Name (e.g. RightPrinters)</label>
+                  <input type="text" id="unifonicSender" class="form-input" placeholder="Sender ID">
+                </div>
+              </div>
+
+              <!-- Custom Fields -->
+              <div id="smsFieldsCustom" class="hidden sms-fields-group">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="customSmsUrl">API Endpoint URL</label>
+                  <input type="url" id="customSmsUrl" class="form-input" placeholder="https://api.example.com/send">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="customSmsMethod">HTTP Method</label>
+                  <select id="customSmsMethod" class="form-select">
+                    <option value="GET">GET</option>
+                    <option value="POST">POST JSON</option>
+                  </select>
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="customSmsHeaders">Custom Headers (JSON format)</label>
+                  <textarea id="customSmsHeaders" class="form-input" style="height: 60px; font-family: monospace; font-size: 0.8rem;" placeholder='{"Authorization": "Bearer key"}'></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="customSmsPayload">Payload / Query Parameters (Use {phone} and {message})</label>
+                  <textarea id="customSmsPayload" class="form-input" style="height: 80px; font-family: monospace; font-size: 0.8rem;" placeholder='{"to": "{phone}", "text": "{message}"}'></textarea>
+                </div>
+              </div>
+            </div>
+
+            <h4 class="finish-group-title" style="margin-top: 24px;">Email OTP Authentication / رمز التحقق عبر البريد الإلكتروني</h4>
+            <div class="form-row" style="margin-top: 8px;">
+              <label class="extra-checkbox-card" style="width: 100%;">
+                <input type="checkbox" id="emailOtpEnabled" checked>
+                <div class="extra-info">
+                  <span class="extra-title">Enable Email OTP / تفعيل رمز التحقق عبر البريد</span>
+                  <span class="extra-desc">Sends the verification code to the configured email.</span>
+                </div>
+              </label>
+            </div>
+            
+            <div class="form-group" style="margin-top: 12px;">
+              <label for="emailOtpRecipient">Receiver Email / البريد الإلكتروني للمستلم</label>
+              <input type="email" id="emailOtpRecipient" class="form-input" placeholder="sypsalim@gmail.com" value="sypsalim@gmail.com">
+            </div>
+
+            <div class="form-group" style="margin-top: 12px;">
+              <label for="emailOtpProvider">Email Gateway Provider / مزود بوابة البريد</label>
+              <select id="emailOtpProvider" class="form-select">
+                <option value="simulation" selected>Simulated / محاكاة (Show code in notification and console)</option>
+                <option value="web3forms">Web3Forms API (Free, simple setup)</option>
+                <option value="emailjs">EmailJS Service</option>
+                <option value="custom">Custom HTTP POST Email API</option>
+              </select>
+            </div>
+
+            <div id="emailConfigFields" class="hidden" style="margin-top: 12px; display: flex; flex-direction: column; gap: 12px; background: rgba(0, 0, 0, 0.2); padding: 16px; border-radius: var(--border-radius-sm); border: 1px solid var(--border-light);">
+              <!-- Web3Forms Fields -->
+              <div id="emailFieldsWeb3forms" class="hidden email-fields-group">
+                <div class="form-group">
+                  <label for="web3formsAccessKey">Web3Forms Access Key</label>
+                  <input type="text" id="web3formsAccessKey" class="form-input" placeholder="Get a free key from web3forms.com">
+                </div>
+              </div>
+              
+              <!-- EmailJS Fields -->
+              <div id="emailFieldsEmailjs" class="hidden email-fields-group">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="emailjsServiceId">EmailJS Service ID</label>
+                  <input type="text" id="emailjsServiceId" class="form-input" placeholder="service_xxxxx">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="emailjsTemplateId">EmailJS Template ID</label>
+                  <input type="text" id="emailjsTemplateId" class="form-input" placeholder="template_xxxxx">
+                </div>
+                <div class="form-group">
+                  <label for="emailjsPublicKey">EmailJS Public Key</label>
+                  <input type="text" id="emailjsPublicKey" class="form-input" placeholder="user_xxxxxxxxxxxx">
+                </div>
+              </div>
+
+              <!-- Custom Email Fields -->
+              <div id="emailFieldsCustom" class="hidden email-fields-group">
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="customEmailUrl">Email API Endpoint URL</label>
+                  <input type="url" id="customEmailUrl" class="form-input" placeholder="https://api.example.com/send-email">
+                </div>
+                <div class="form-group" style="margin-bottom: 12px;">
+                  <label for="customEmailHeaders">Custom Headers (JSON format)</label>
+                  <textarea id="customEmailHeaders" class="form-input" style="height: 60px; font-family: monospace; font-size: 0.8rem;" placeholder='{"Authorization": "Bearer key"}'></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="customEmailPayload">Payload (JSON format - Use {email} and {message})</label>
+                  <textarea id="customEmailPayload" class="form-input" style="height: 80px; font-family: monospace; font-size: 0.8rem;" placeholder='{"to": "{email}", "subject": "OTP Code", "text": "{message}"}'></textarea>
+                </div>
+              </div>
+            </div>
+
+            <div id="securityMsg" class="security-feedback-msg"></div>
+          </div>
+
+        </div>
+
+        <div class="drawer-footer">
+          <button class="btn-subtle btn-logout" id="logoutSettingsBtn" style="margin-right: auto; border-color: var(--accent-rose); color: var(--accent-rose);">Logout / خروج</button>
+          <button class="btn-subtle" id="resetSettingsBtn">Reset Default Rates</button>
+          <button class="btn-primary" id="saveSettingsBtn">Apply & Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL VIEWPORT APP LOCK SCREEN -->
+    <div class="lock-screen-overlay" id="appLockScreen">
+      <div class="lock-card">
+        <div class="lock-card-header">
+          <img src="src/assets/logo.png" alt="Logo" class="company-logo" style="height: 70px; margin-bottom: 12px;">
+          <h2>DIGITAL PRINT DEPARTMENT</h2>
+          <h3 id="lockCardTitle">Estimator Lock Screen / شاشة قفل الحاسبة</h3>
+          <p id="lockCardSubtitle">Please enter credentials to unlock the Cost Estimator.</p>
+        </div>
+        <form id="lockScreenForm" class="login-form">
+          <div class="form-group">
+            <label for="lockUsername">Username / اسم المستخدم</label>
+            <input type="text" id="lockUsername" class="form-input" placeholder="sales or admin" required autocomplete="username">
+          </div>
+          <div class="form-group">
+            <label for="lockPassword">Password / كلمة المرور</label>
+            <input type="password" id="lockPassword" class="form-input" placeholder="••••" required autocomplete="current-password">
+          </div>
+          <div class="login-error-msg" id="lockErrorMsg"></div>
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-weight: 600;">Unlock Calculator / دخول</button>
+        </form>
+
+        <!-- Step 2: OTP Verification Form -->
+        <form id="lockOtpForm" class="login-form hidden">
+          <div class="form-group">
+            <label style="text-align: center; display: block; font-weight: 600; font-size: 0.85rem;">Enter the 4-digit code sent to +966539044608 / أدخل الرمز المكون من ٤ أرقام المرسل إلى +966539044608</label>
+            <div class="otp-inputs-container">
+              <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+              <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required disabled>
+              <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required disabled>
+              <input type="text" class="otp-digit" maxlength="1" pattern="[0-9]" inputmode="numeric" required disabled>
+            </div>
+            <input type="hidden" id="lockOtpCombined">
+          </div>
+          <div class="login-error-msg" id="otpErrorMsg"></div>
+          <button type="submit" class="btn-primary" style="width: 100%; padding: 12px; font-weight: 600;">Verify & Login / تحقق ودخول</button>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; margin-top: 8px;">
+            <a href="#" id="backToCredentials" style="color: var(--text-muted); text-decoration: none; transition: var(--transition-smooth);">&larr; Go Back / رجوع</a>
+            <span id="otpCountdown" style="color: var(--text-muted);">Resend in <span id="countdownSeconds">60</span>s</span>
+            <a href="#" id="resendOtpBtn" class="hidden" style="color: var(--primary-gold-light); font-weight: 600; text-decoration: none; transition: var(--transition-smooth);">Resend Code / إعادة إرسال</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ADMIN ELEVATION MODAL -->
+    <div class="login-modal-overlay" id="adminElevationModal">
+      <div class="login-modal-content">
+        <div class="login-modal-header">
+          <h2>Admin Authorization Required / مطلوب صلاحية المشرف</h2>
+          <p>Please enter the Administrator Password to open pricing settings.</p>
+        </div>
+        <form id="elevationForm" class="login-form">
+          <div class="form-group">
+            <label for="elevationPassword">Admin Password / كلمة مرور المشرف</label>
+            <input type="password" id="elevationPassword" class="form-input" placeholder="••••" required autocomplete="current-password">
+          </div>
+          <div class="login-error-msg" id="elevationErrorMsg"></div>
+          <div class="login-actions-row">
+            <button type="button" class="btn-subtle" id="closeElevationBtn">Cancel / إلغاء</button>
+            <button type="submit" class="btn-primary">Verify / تحقق</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Dev Mode SMS Notification Toast -->
+    <div id="smsNotificationToast" class="sms-toast hidden">
+      <div class="sms-toast-icon">💬</div>
+      <div class="sms-toast-content">
+        <h4 class="sms-toast-title">SMS Simulator (Developer Mode)</h4>
+        <p class="sms-toast-body">Message to <strong>+966539044608</strong>: Verification code is <span class="sms-toast-code" id="smsToastCode">1234</span></p>
+      </div>
+      <button class="sms-toast-close" onclick="document.getElementById('smsNotificationToast').classList.add('hidden')">&times;</button>
+    </div>
+
+  </div>
+
+  <script src="src/js/app.js"></script>
+</body>
+</html>
