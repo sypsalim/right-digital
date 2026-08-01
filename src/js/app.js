@@ -939,8 +939,10 @@ function initUI() {
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
+    'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
+
   inputIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -2187,8 +2189,68 @@ function calculateAndUpdate() {
     dieManualPriceText.innerText = `${dieManualRate.toFixed(2)} SR / sheet`;
   }
 
+  // Plastic Window option
+  const optPlastic = document.getElementById('extraPlastic') && document.getElementById('extraPlastic').checked;
+  const plasticDetailsRow = document.getElementById('plasticDetailsRow');
+  if (plasticDetailsRow) {
+    if (optPlastic) {
+      plasticDetailsRow.classList.remove('hidden');
+    } else {
+      plasticDetailsRow.classList.add('hidden');
+    }
+  }
+
+  let plasticMatCost = 0;
+  let plasticDiecutCost = 0;
+  let plasticTotalCost = 0;
+  let plasticUps = 0;
+  let plasticSheets = 0;
+  let micronRate = 1.38;
+
+  if (optPlastic) {
+    const p_l = parseFloat(document.getElementById('plasticLength').value) || 1;
+    const p_w = parseFloat(document.getElementById('plasticWidth').value) || 1;
+    
+    const micronSelect = document.getElementById('plasticMicron');
+    if (micronSelect && micronSelect.selectedOptions && micronSelect.selectedOptions[0]) {
+      micronRate = parseFloat(micronSelect.selectedOptions[0].getAttribute('data-rate')) || 1.38;
+    }
+
+    const diecutRatePerThousand = parseFloat(document.getElementById('plasticDiecutRate').value) || 450.00;
+
+    // Calculate Plastic UPS on 100x70 cm Sheet (testing horizontal vs vertical rotation)
+    const cols_A = Math.floor(100 / p_l);
+    const rows_A = Math.floor(70 / p_w);
+    const ups_A = cols_A * rows_A;
+
+    const cols_B = Math.floor(100 / p_w);
+    const rows_B = Math.floor(70 / p_l);
+    const ups_B = cols_B * rows_B;
+
+    plasticUps = Math.max(ups_A, ups_B, 1);
+    const plasticBestDir = ups_A >= ups_B ? 'Horizontal (100x70)' : 'Vertical Rotated (100x70)';
+
+    plasticSheets = Math.ceil(qty / plasticUps);
+    plasticMatCost = plasticSheets * micronRate;
+    plasticDiecutCost = (qty / 1000) * diecutRatePerThousand;
+    plasticTotalCost = plasticMatCost + plasticDiecutCost;
+
+    const calcNotice = document.getElementById('plasticCalcNotice');
+    if (calcNotice) {
+      calcNotice.innerHTML = `
+        <strong>Plastic Sheet Yield (100x70 cm):</strong> <span style="color: var(--accent-green); font-weight: 700;">${plasticUps} UPS</span> (${plasticBestDir})<br>
+        <strong>Sheets Needed:</strong> ${plasticSheets} sheets | <strong>Material (${micronRate.toFixed(2)} SR):</strong> ${plasticMatCost.toFixed(2)} SR | <strong>Diecut (${diecutRatePerThousand.toFixed(2)} SR/1000):</strong> ${plasticDiecutCost.toFixed(2)} SR
+      `;
+    }
+
+    const plasticSummaryText = document.getElementById('plasticSummaryText');
+    if (plasticSummaryText) {
+      plasticSummaryText.innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR)`;
+    }
+  }
+
   // Total invoice cost
-  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost;
+  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
   const unitCost = qty > 0 ? totalCost / qty : 0;
 
   // 9. Update UI Invoice card
@@ -2196,9 +2258,14 @@ function calculateAndUpdate() {
   document.getElementById('gsmBadge').innerText = specName;
 
   document.getElementById('invSheetSize').innerText = `${S_W} x ${S_H} cm (${isPortraitOrientation ? 'Portrait' : 'Landscape'})`;
-  document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm`;
+  if (sideFold > 0) {
+    document.getElementById('invCutSize').innerText = `${effective_w.toFixed(2)} x ${effective_h.toFixed(2)} cm (Box Base: ${i_w} x ${i_h} cm)`;
+  } else {
+    document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm`;
+  }
   document.getElementById('invLayoutType').innerText = activeDirection === 'horizontal' ? 'Standard Layout (Horizontal)' : 'Rotated Layout (Vertical)';
   document.getElementById('invQty').innerText = `${qty} pcs`;
+
 
   if (isBcMode) {
     document.getElementById('invRowBaseCost').classList.add('hidden');
@@ -2246,6 +2313,13 @@ function calculateAndUpdate() {
   toggleInvoiceRow('invRowPasting', optPasting, 'invPastingCost', pastingCost);
   toggleInvoiceRow('invRowRope', optHandleRope, 'invRopeCost', ropeCost);
   toggleInvoiceRow('invRowPacking', optPacking, 'invPackingCost', packingCost);
+
+  // Plastic Window Invoice Row
+  toggleInvoiceRow('invRowPlastic', optPlastic, 'invPlasticCost', plasticTotalCost);
+  if (optPlastic) {
+    document.getElementById('invPlasticCost').innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR [${plasticUps} UPS])`;
+  }
+
 
   // Back Side Print Row
   toggleInvoiceRow('invRowBackSide', optBackSide, 'invBackSideCost', backSideCost);
