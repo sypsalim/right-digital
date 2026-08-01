@@ -2640,3 +2640,32 @@ function calculateTshirtCupAndUpdate() {
   document.getElementById('invTotalVal').innerText = `${finalTotal.toFixed(2)} SR`;
   document.getElementById('invUnitCostVal').innerText = `${unitCost.toFixed(3)} SR`;
 }
+
+// --- Low Quantity Tiered Surcharge & Digital Bag Pricing Logic ---
+function getQuantityPriceMultiplier(qty) {
+  if (qty >= 1 && qty <= 10) {
+    return 2.0; // 1 to 10 Pcs: +100% extra cost (2.0x multiplier)
+  } else if (qty >= 11 && qty <= 25) {
+    return 1.8; // 11 to 25 Pcs: +80% extra cost (1.8x multiplier)
+  } else if (qty >= 26 && qty <= 50) {
+    return 1.5; // 26 to 50 Pcs: +50% extra cost (1.5x multiplier)
+  } else if (qty >= 51 && qty <= 75) {
+    return 1.3; // 51 to 75 Pcs: +30% extra cost (1.3x multiplier)
+  } else if (qty >= 76 && qty <= 99) {
+    return 1.1; // 76 to 99 Pcs: +10% extra cost (1.1x multiplier)
+  } else {
+    return 1.0; // 100+ Pcs: Standard Base Cost (1.0x multiplier)
+  }
+}
+
+function calculateDigitalBagPrice(qty, basePrice = 5.20) {
+  const multiplier = getQuantityPriceMultiplier(qty);
+  const pricePerPiece = basePrice * multiplier;
+
+  return {
+    multiplier: multiplier,
+    unitPrice: pricePerPiece.toFixed(2),
+    totalCost: (qty * pricePerPiece).toFixed(2)
+  };
+}
+
