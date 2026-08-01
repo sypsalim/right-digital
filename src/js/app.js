@@ -927,7 +927,7 @@ function initUI() {
 
   // 5. Inputs Auto-change
   const inputIds = [
-    'itemWidth', 'itemHeight', 'itemQty', 'stickerType', 'stickerColors',
+    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'stickerType', 'stickerColors',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
@@ -939,8 +939,14 @@ function initUI() {
       el.addEventListener(el.type === 'checkbox' ? 'change' : 'input', () => {
         calculateAndUpdate();
       });
+      if (el.type !== 'checkbox') {
+        el.addEventListener('change', () => {
+          calculateAndUpdate();
+        });
+      }
     }
   });
+
 
   // Dedicated Print Laser auto-ups listeners
   const laserWidthEl = document.getElementById('laserWidth');
@@ -2977,6 +2983,7 @@ function initDigital3DListeners() {
     const T = parseFloat(inputT ? inputT.value : 0) || 0;
 
     drawDigital3DBox(L, W, H, T);
+    calculateAndUpdate();
   };
 
   [inputL, inputW, inputH, inputT].forEach(inp => {
@@ -2988,6 +2995,7 @@ function initDigital3DListeners() {
 
   updateBox();
 }
+
 
 document.addEventListener("DOMContentLoaded", initDigital3DListeners);
 setTimeout(initDigital3DListeners, 300);
