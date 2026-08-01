@@ -1976,7 +1976,24 @@ input:checked + .slider:before {
               </div>
             </div>
           </div>
+          <div class="form-row" style="margin-top: 8px;">
+            <div class="form-group">
+              <label for="boxDepthH">Box Depth (H) / العمق (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="boxDepthH" value="4" min="0" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="wallThickness">Wall Thickness (T) / سماكة الجدار (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="wallThickness" value="0.5" min="0" step="0.1" class="form-input">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+          </div>
           <div class="quick-size-buttons">
+
             <button type="button" class="btn-subtle" onclick="setQuickSize(9, 5.5)">Business Card (9x5.5)</button>
             <button type="button" class="btn-subtle" onclick="setQuickSize(21, 14.8)">A5 Flyer (21x14.8)</button>
             <button type="button" class="btn-subtle" onclick="setQuickSize(29.7, 21)">A4 Flyer (29.7x21)</button>
@@ -2121,6 +2138,19 @@ input:checked + .slider:before {
           <div class="layout-preview-container" style="display: flex; justify-content: center; align-items: center; min-height: 250px;">
             <div class="svg-container" id="productSvgContainer" style="width: 100%; max-width: 400px; padding: 10px;">
               <!-- Dynamic Product SVG drawn via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Box Structure Preview Card -->
+        <div class="results-card" id="digitalBox3dCard">
+          <div class="card-header">
+            <h3>3D Box Structure Preview / معاينة هيكل العلبة 3D</h3>
+            <span class="preview-mode-badge" id="box3dBadge">3D Wireframe</span>
+          </div>
+          <div class="layout-preview-container" style="display: flex; justify-content: center; align-items: center; min-height: 250px;">
+            <div class="svg-container" id="digitalBox3dContainer" style="width: 100%; max-width: 400px; padding: 10px;">
+              <!-- Dynamic 3D Box Wireframe SVG drawn via JS -->
             </div>
           </div>
         </div>
@@ -5521,6 +5551,186 @@ function calculateDigitalBagPrice(qty, basePrice = 5.20) {
     totalCost: (qty * pricePerPiece).toFixed(2)
   };
 }
+
+// --- 3D Box Rendering Function with Wall Thickness Support ---
+function drawDigital3DBox(L, W, H, T) {
+  const container = document.getElementById("digitalBox3dContainer");
+  if (!container) return;
+
+  L = parseFloat(L) || 0;
+  W = parseFloat(W) || 0;
+  H = parseFloat(H) || 0;
+  T = parseFloat(T) || 0;
+
+  if (L <= 0 || W <= 0) {
+    container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 20px;">Please enter valid box dimensions</div>';
+    return;
+  }
+
+  const displayH = H > 0 ? H : 4;
+  const svgWidth = 380;
+  const svgHeight = 250;
+  
+  const cos30 = 0.866;
+  const sin30 = 0.5;
+
+  // 3D Vertices for Outer Box
+  const p3d = [
+    [0, 0, 0], [L, 0, 0], [L, W, 0], [0, W, 0],
+    [0, 0, displayH], [L, 0, displayH], [L, W, displayH], [0, W, displayH]
+  ];
+
+  const p2d = p3d.map(([x, y, z]) => ({
+    x: (x - y) * cos30,
+    y: (x + y) * sin30 - z
+  }));
+
+  // Inner Box Vertices offset by Wall Thickness (T) if T > 0
+  let p2dInner = null;
+  if (T > 0 && T < Math.min(L, W) / 2) {
+    const inL = L - 2 * T;
+    const inW = W - 2 * T;
+    const in3d = [
+      [T, T, 0], [T + inL, T, 0], [T + inL, T + inW, 0], [T, T + inW, 0],
+      [T, T, displayH], [T + inL, T, displayH], [T + inL, T + inW, displayH], [T, T + inW, displayH]
+    ];
+    p2dInner = in3d.map(([x, y, z]) => ({
+      x: (x - y) * cos30,
+      y: (x + y) * sin30 - z
+    }));
+  }
+
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  p2d.forEach(p => {
+    if (p.x < minX) minX = p.x;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.y > maxY) maxY = p.y;
+  });
+
+  const boxW = maxX - minX || 1;
+  const boxH = maxY - minY || 1;
+
+  const scale = Math.min((svgWidth - 80) / boxW, (svgHeight - 80) / boxH);
+  const cx = svgWidth / 2 - ((minX + maxX) / 2) * scale;
+  const cy = svgHeight / 2 - ((minY + maxY) / 2) * scale;
+
+  const pts = p2d.map(p => ({
+    x: (p.x * scale + cx).toFixed(1),
+    y: (p.y * scale + cy).toFixed(1)
+  }));
+
+  let inPts = null;
+  if (p2dInner) {
+    inPts = p2dInner.map(p => ({
+      x: (p.x * scale + cx).toFixed(1),
+      y: (p.y * scale + cy).toFixed(1)
+    }));
+  }
+
+  let innerSvgLines = '';
+  if (inPts) {
+    innerSvgLines = `
+      <!-- Inner Wall Offset (Wall Thickness T) -->
+      <polygon points="${inPts[4].x},${inPts[4].y} ${inPts[5].x},${inPts[5].y} ${inPts[6].x},${inPts[6].y} ${inPts[7].x},${inPts[7].y}" fill="rgba(244, 63, 94, 0.1)" stroke="#f43f5e" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="${pts[4].x}" y1="${pts[4].y}" x2="${inPts[4].x}" y2="${inPts[4].y}" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2 2" />
+      <line x1="${pts[5].x}" y1="${pts[5].y}" x2="${inPts[5].x}" y2="${inPts[5].y}" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2 2" />
+      <line x1="${pts[6].x}" y1="${pts[6].y}" x2="${inPts[6].x}" y2="${inPts[6].y}" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2 2" />
+      <line x1="${pts[7].x}" y1="${pts[7].y}" x2="${inPts[7].x}" y2="${inPts[7].y}" stroke="#f43f5e" stroke-width="1" stroke-dasharray="2 2" />
+    `;
+  }
+
+  const svgHTML = `
+    <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="boxGradFront" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#b89324" stop-opacity="0.1"/>
+        </linearGradient>
+        <linearGradient id="boxGradTop" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#f3e5ab" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#d4af37" stop-opacity="0.15"/>
+        </linearGradient>
+        <linearGradient id="boxGradSide" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#10b981" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#065f46" stop-opacity="0.05"/>
+        </linearGradient>
+      </defs>
+      
+      <!-- Back wireframe lines -->
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[1].x}" y2="${pts[1].y}" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4 3" />
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[3].x}" y2="${pts[3].y}" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4 3" />
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[4].x}" y2="${pts[4].y}" stroke="#4b5563" stroke-width="1.5" stroke-dasharray="4 3" />
+      
+      <!-- Bottom Face -->
+      <polygon points="${pts[0].x},${pts[0].y} ${pts[1].x},${pts[1].y} ${pts[2].x},${pts[2].y} ${pts[3].x},${pts[3].y}" fill="none" stroke="#374151" stroke-width="1"/>
+
+      <!-- Right/Side Face -->
+      <polygon points="${pts[1].x},${pts[1].y} ${pts[2].x},${pts[2].y} ${pts[6].x},${pts[6].y} ${pts[5].x},${pts[5].y}" fill="url(#boxGradSide)" stroke="#10b981" stroke-width="1.5"/>
+
+      <!-- Front Face -->
+      <polygon points="${pts[3].x},${pts[3].y} ${pts[2].x},${pts[2].y} ${pts[6].x},${pts[6].y} ${pts[7].x},${pts[7].y}" fill="url(#boxGradFront)" stroke="#d4af37" stroke-width="1.5"/>
+
+      <!-- Top Face -->
+      <polygon points="${pts[4].x},${pts[4].y} ${pts[5].x},${pts[5].y} ${pts[6].x},${pts[6].y} ${pts[7].x},${pts[7].y}" fill="url(#boxGradTop)" stroke="#f3e5ab" stroke-width="2"/>
+
+      ${innerSvgLines}
+
+      <!-- Key Outer Highlight Edges -->
+      <line x1="${pts[4].x}" y1="${pts[4].y}" x2="${pts[5].x}" y2="${pts[5].y}" stroke="#f3e5ab" stroke-width="2" />
+      <line x1="${pts[5].x}" y1="${pts[5].y}" x2="${pts[6].x}" y2="${pts[6].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[6].x}" y1="${pts[6].y}" x2="${pts[7].x}" y2="${pts[7].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[7].x}" y1="${pts[7].y}" x2="${pts[4].x}" y2="${pts[4].y}" stroke="#f3e5ab" stroke-width="2" />
+      <line x1="${pts[1].x}" y1="${pts[1].y}" x2="${pts[5].x}" y2="${pts[5].y}" stroke="#10b981" stroke-width="1.5" />
+      <line x1="${pts[2].x}" y1="${pts[2].y}" x2="${pts[6].x}" y2="${pts[6].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[3].x}" y1="${pts[3].y}" x2="${pts[7].x}" y2="${pts[7].y}" stroke="#d4af37" stroke-width="1.5" />
+
+      <!-- Vertex Dots -->
+      <circle cx="${pts[4].x}" cy="${pts[4].y}" r="3" fill="#f3e5ab" />
+      <circle cx="${pts[5].x}" cy="${pts[5].y}" r="3" fill="#d4af37" />
+      <circle cx="${pts[6].x}" cy="${pts[6].y}" r="3.5" fill="#d4af37" />
+      <circle cx="${pts[7].x}" cy="${pts[7].y}" r="3" fill="#d4af37" />
+      <circle cx="${pts[2].x}" cy="${pts[2].y}" r="3" fill="#10b981" />
+
+      <!-- Dimension Labels -->
+      <text x="${((parseFloat(pts[3].x) + parseFloat(pts[2].x)) / 2).toFixed(1)}" y="${((parseFloat(pts[3].y) + parseFloat(pts[2].y)) / 2 + 16).toFixed(1)}" fill="#d4af37" font-size="11" font-weight="600" text-anchor="middle" font-family="sans-serif">L: ${L} cm</text>
+      <text x="${((parseFloat(pts[2].x) + parseFloat(pts[6].x)) / 2 + 25).toFixed(1)}" y="${((parseFloat(pts[2].y) + parseFloat(pts[6].y)) / 2).toFixed(1)}" fill="#10b981" font-size="11" font-weight="600" text-anchor="middle" font-family="sans-serif">W: ${W} cm</text>
+      <text x="${((parseFloat(pts[5].x) + parseFloat(pts[6].x)) / 2).toFixed(1)}" y="${((parseFloat(pts[5].y) + parseFloat(pts[6].y)) / 2 - 10).toFixed(1)}" fill="#f3e5ab" font-size="10" font-weight="500" text-anchor="middle" font-family="sans-serif">H: ${H} cm ${T > 0 ? `| Wall: ${T}cm` : ''}</text>
+    </svg>
+  `;
+
+  container.innerHTML = svgHTML;
+}
+
+// --- 3D Box Auto Update Listeners ---
+function initDigital3DListeners() {
+  const inputL = document.getElementById("itemWidth");
+  const inputW = document.getElementById("itemHeight");
+  const inputH = document.getElementById("boxDepthH");
+  const inputT = document.getElementById("wallThickness");
+
+  const updateBox = () => {
+    const L = parseFloat(inputL ? inputL.value : 0) || 0;
+    const W = parseFloat(inputW ? inputW.value : 0) || 0;
+    const H = parseFloat(inputH ? inputH.value : 0) || 0;
+    const T = parseFloat(inputT ? inputT.value : 0) || 0;
+
+    drawDigital3DBox(L, W, H, T);
+  };
+
+  [inputL, inputW, inputH, inputT].forEach(inp => {
+    if (inp) {
+      inp.addEventListener("input", updateBox);
+      inp.addEventListener("change", updateBox);
+    }
+  });
+
+  updateBox();
+}
+
+document.addEventListener("DOMContentLoaded", initDigital3DListeners);
+setTimeout(initDigital3DListeners, 300);
+
 
 
 
