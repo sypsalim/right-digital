@@ -914,10 +914,43 @@ function savePricingToStorage() {
 
 // --- UI SETUP & EVENT LISTENERS ---
 function initUI() {
+  // Theme Toggle Functionality
+  const themeToggleBtn = document.getElementById('themeToggleBtn');
+  const themeToggleText = document.getElementById('themeToggleText');
+  const sunIcon = document.querySelector('.sun-icon');
+  const moonIcon = document.querySelector('.moon-icon');
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      document.body.setAttribute('data-theme', 'light');
+      if (themeToggleText) themeToggleText.innerText = 'Dark Theme';
+      if (sunIcon) sunIcon.classList.add('hidden');
+      if (moonIcon) moonIcon.classList.remove('hidden');
+    } else {
+      document.body.removeAttribute('data-theme');
+      if (themeToggleText) themeToggleText.innerText = 'Light Theme';
+      if (sunIcon) sunIcon.classList.remove('hidden');
+      if (moonIcon) moonIcon.classList.add('hidden');
+    }
+  }
+
+  const savedTheme = localStorage.getItem('appTheme') || 'dark';
+  applyTheme(savedTheme);
+
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      localStorage.setItem('appTheme', newTheme);
+      applyTheme(newTheme);
+    });
+  }
+
   // 1. Setup Job Type Tabs
   const tabPaper = document.getElementById('tabPaper');
   const tabSticker = document.getElementById('tabSticker');
   const tabTshirt = document.getElementById('tabTshirt');
+
 
   tabPaper.addEventListener('click', () => {
     currentJobType = 'paper';

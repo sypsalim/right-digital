@@ -1693,6 +1693,273 @@ input:checked + .slider:before {
   gap: 12px;
 }
 
+/* ==========================================================================
+   LIGHT THEME DESIGN SYSTEM (#F5F2D5 Canvas & #122560 Deep Royal Blue Cards)
+   ========================================================================== */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+  box-shadow: var(--shadow-sm);
+}
+
+.theme-toggle-btn:hover {
+  background: #27A9F5;
+  color: #ffffff;
+  border-color: #27A9F5;
+}
+
+[data-theme="light"] {
+  /* Core Colors */
+  --bg-app: #F5F2D5;                      /* HTML Background: #F5F2D5 */
+  --bg-card: #122560;                     /* Main Frames: Deep Royal Blue #122560 */
+  --bg-card-hover: #162b6e;
+  --border-light: rgba(188, 226, 247, 0.25); /* Third: #BCE2F7 */
+  --border-active: #27A9F5;               /* Second: #27A9F5 */
+
+  --primary-gold: #27A9F5;                /* Second: #27A9F5 */
+  --primary-gold-dark: #122560;           /* Main Frames: #122560 */
+  --primary-gold-light: #BCE2F7;          /* Third: #BCE2F7 */
+  --accent-emerald: #BDB45B;              /* Fourth: #BDB45B */
+  --accent-emerald-dark: #122560;
+  --accent-rose: #f43f5e;
+  --accent-rose-dark: #9f1239;
+
+  --text-main: #ffffff;                   /* Dark Background Strip -> White Text */
+  --text-muted: #BCE2F7;                  /* Third: #BCE2F7 */
+  --text-dark: #111827;                   /* Light Background Strip -> Black Text */
+  --text-gold: #27A9F5;
+
+  --shadow-sm: 0 2px 4px rgba(18, 37, 96, 0.1);
+  --shadow-md: 0 6px 16px rgba(18, 37, 96, 0.15);
+  --shadow-lg: 0 12px 28px rgba(18, 37, 96, 0.2);
+  --shadow-glow: 0 0 15px rgba(39, 169, 245, 0.35);
+}
+
+/* Light Theme Layout & Text Rules */
+[data-theme="light"] body {
+  background-color: #F5F2D5;
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(39, 169, 245, 0.08) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(73, 147, 166, 0.08) 0px, transparent 50%);
+  color: #111827;
+}
+
+[data-theme="light"] .app-header {
+  background: #122560;
+  border-color: #4993A6;
+  box-shadow: 0 10px 25px rgba(18, 37, 96, 0.25);
+}
+
+[data-theme="light"] .company-name-en {
+  background: linear-gradient(135deg, #ffffff 0%, #BCE2F7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+[data-theme="light"] .company-name-ar {
+  color: #27A9F5;
+}
+
+[data-theme="light"] .info-item {
+  color: #BCE2F7;
+}
+
+[data-theme="light"] .dept-badge {
+  background: #4993A6;
+  color: #ffffff;
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: #27A9F5;
+  color: #ffffff;
+  border-color: #27A9F5;
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: #122560;
+  color: #ffffff;
+  border-color: #ffffff;
+}
+
+/* Main Frames (Cards) inside Light Mode */
+[data-theme="light"] .config-card,
+[data-theme="light"] .results-card,
+[data-theme="light"] .modal-content,
+[data-theme="light"] .drawer-content {
+  background: #122560 !important;
+  color: #ffffff !important;
+  border-color: rgba(188, 226, 247, 0.25) !important;
+}
+
+[data-theme="light"] .config-card h3,
+[data-theme="light"] .results-card h3 {
+  color: #BCE2F7 !important;
+  border-left-color: #27A9F5 !important;
+}
+
+/* Job Tabs in Light Theme */
+[data-theme="light"] .job-tabs {
+  background: rgba(13, 26, 69, 0.8);
+  border-color: rgba(188, 226, 247, 0.2);
+}
+
+[data-theme="light"] .tab-btn {
+  color: #BCE2F7;
+}
+
+[data-theme="light"] .tab-btn.active {
+  background: #27A9F5;
+  color: #ffffff;
+}
+
+/* Light Background Strip -> Black Color Text (#111827) */
+[data-theme="light"] .form-input,
+[data-theme="light"] .form-select,
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="text"] {
+  background-color: #F5F2D5 !important;
+  color: #111827 !important; /* Black Text on Light Background Strip */
+  border-color: #4993A6 !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .form-input:focus,
+[data-theme="light"] .form-select:focus {
+  background-color: #ffffff !important;
+  color: #111827 !important;
+  border-color: #27A9F5 !important;
+  box-shadow: 0 0 0 3px rgba(39, 169, 245, 0.3) !important;
+}
+
+[data-theme="light"] .input-with-unit .unit,
+[data-theme="light"] .rate-unit {
+  color: #111827 !important; /* Black Text on Light Background Strip */
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .extra-rate-input-wrapper .form-input {
+  background-color: #F5F2D5 !important;
+  color: #111827 !important;
+}
+
+/* Light Notice & Alert Strips: Light Background -> Black Text */
+[data-theme="light"] #boxFoldInfoNotice,
+[data-theme="light"] #plasticCalcNotice,
+[data-theme="light"] #colorChargeNotice,
+[data-theme="light"] .quick-size-buttons .btn-subtle {
+  background: #F5F2D5 !important;
+  color: #111827 !important;
+  border-color: #4993A6 !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] #boxFoldInfoNotice *,
+[data-theme="light"] #plasticCalcNotice *,
+[data-theme="light"] #colorChargeNotice * {
+  color: #111827 !important;
+}
+
+/* Buttons and Presets in Light Mode */
+[data-theme="light"] .size-btn,
+[data-theme="light"] .gsm-btn,
+[data-theme="light"] .extra-checkbox-card {
+  background: rgba(188, 226, 247, 0.08);
+  border-color: rgba(188, 226, 247, 0.25);
+  color: #ffffff;
+}
+
+[data-theme="light"] .size-btn:hover,
+[data-theme="light"] .gsm-btn:hover,
+[data-theme="light"] .extra-checkbox-card:hover {
+  background: rgba(39, 169, 245, 0.2);
+  border-color: #27A9F5;
+}
+
+[data-theme="light"] .size-btn.active,
+[data-theme="light"] .gsm-btn.active,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) {
+  background: rgba(39, 169, 245, 0.3);
+  border-color: #27A9F5;
+}
+
+[data-theme="light"] .size-btn.active .size-dims,
+[data-theme="light"] .gsm-price {
+  color: #BCE2F7;
+}
+
+[data-theme="light"] .preview-mode-badge {
+  background: #27A9F5;
+  color: #ffffff;
+}
+
+/* Layout SVG & Statistics Grid */
+[data-theme="light"] .layout-preview-container,
+[data-theme="light"] .svg-container {
+  background: #0b183f;
+  border-color: #4993A6;
+}
+
+[data-theme="light"] .svg-sheet {
+  fill: #122560;
+  stroke: #27A9F5;
+}
+
+[data-theme="light"] .stat-box {
+  background: rgba(188, 226, 247, 0.08);
+  border-color: rgba(188, 226, 247, 0.2);
+}
+
+[data-theme="light"] .stat-val {
+  color: #ffffff;
+}
+
+[data-theme="light"] .stat-lbl {
+  color: #BCE2F7;
+}
+
+/* Comparison Table in Light Mode */
+[data-theme="light"] .comparison-table th {
+  color: #BCE2F7;
+  border-bottom-color: rgba(188, 226, 247, 0.2);
+}
+
+[data-theme="light"] .comparison-table td {
+  color: #ffffff;
+  border-bottom-color: rgba(188, 226, 247, 0.1);
+}
+
+[data-theme="light"] .comparison-table tbody tr.better-option {
+  background: rgba(39, 169, 245, 0.15);
+}
+
+[data-theme="light"] .comparison-table tbody tr.better-option td {
+  color: #BCE2F7;
+}
+
+[data-theme="light"] .comparison-status-badge.best {
+  background: #27A9F5;
+  color: #ffffff;
+}
+
+
 
 
 
