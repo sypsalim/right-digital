@@ -2353,6 +2353,9 @@ input:checked + .slider:before {
                 <thead>
                   <tr>
                     <th>GSM</th>
+                    <th>100x70 cm</th>
+                    <th>90x64 cm</th>
+                    <th>50x70 cm</th>
                     <th>70x33 cm</th>
                     <th>50x33 cm</th>
                     <th>A3</th>
@@ -2377,6 +2380,9 @@ input:checked + .slider:before {
                   <tr>
                     <th>Sticker Material</th>
                     <th>Print Type</th>
+                    <th>100x70 cm (SR)</th>
+                    <th>90x64 cm (SR)</th>
+                    <th>50x70 cm (SR)</th>
                     <th>70x33 cm (SR)</th>
                     <th>50x33 cm (SR)</th>
                     <th>A3 Sheet (SR)</th>
@@ -2389,6 +2395,7 @@ input:checked + .slider:before {
               </table>
             </div>
           </div>
+
 
           <!-- Settings Tab: Discounts & Quantity Tiers -->
           <div class="setting-section hidden" id="setTabDiscounts">
@@ -2808,12 +2815,13 @@ input:checked + .slider:before {
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 12.00, '90x64': 10.00, '50x70': 8.00, '70x33': 6.00, '50x33': 5.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
-    '300': { '100x70': 11.00, '90x64': 9.00, '50x70': 7.50, '70x33': 5.50, '50x33': 4.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 10.00, '90x64': 8.00, '50x70': 7.00, '70x33': 5.00, '50x33': 4.50, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
-    '150': { '100x70': 8.00, '90x64': 7.00, '50x70': 6.00, '70x33': 4.00, '50x33': 3.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
-    '100': { '100x70': 6.00, '90x64': 5.00, '50x70': 4.50, '70x33': 3.00, '50x33': 2.50, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
+    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 6.00, '50x33': 5.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 5.50, '50x33': 4.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
+    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 5.00, '50x33': 4.50, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 4.00, '50x33': 3.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
+    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 3.00, '50x33': 2.50, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
+
 
   // Section 6: Sticker rates per sheet size in SR
   // Paper Sticker, PVC White, PVC Transparent. Colors: CMYK vs CMYK+White (5 Color) vs Clear Color
@@ -3604,11 +3612,18 @@ function loadPricingFromStorage() {
 
       if (currentPricing.paperGsmRates) {
         Object.keys(DEFAULT_PRICING.paperGsmRates).forEach(gsm => {
-          if (currentPricing.paperGsmRates[gsm] && currentPricing.paperGsmRates[gsm].backSide === undefined) {
-            currentPricing.paperGsmRates[gsm].backSide = DEFAULT_PRICING.paperGsmRates[gsm].backSide;
+          if (!currentPricing.paperGsmRates[gsm]) {
+            currentPricing.paperGsmRates[gsm] = JSON.parse(JSON.stringify(DEFAULT_PRICING.paperGsmRates[gsm]));
+          } else {
+            Object.keys(DEFAULT_PRICING.paperGsmRates[gsm]).forEach(sz => {
+              if (currentPricing.paperGsmRates[gsm][sz] === undefined || currentPricing.paperGsmRates[gsm][sz] >= 6.00) {
+                currentPricing.paperGsmRates[gsm][sz] = DEFAULT_PRICING.paperGsmRates[gsm][sz];
+              }
+            });
           }
         });
       }
+
       if (currentPricing.stickerRates) {
         Object.keys(DEFAULT_PRICING.stickerRates).forEach(mat => {
           if (!currentPricing.stickerRates[mat]) {
@@ -4261,13 +4276,15 @@ function populateSettingsDrawer() {
   const paperBody = document.getElementById('settingsPaperBody');
   paperBody.innerHTML = '';
   const gsms = ['350', '300', '250', '150', '100'];
-  const sizes = ['70x33', '50x33', 'A3', 'A4', 'backSide'];
+  const sizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4', 'backSide'];
   
   gsms.forEach(gsm => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td><strong>${gsm} GSM</strong></td>`;
     sizes.forEach(sz => {
-      const val = currentPricing.paperGsmRates[gsm][sz] || 0;
+      const val = (currentPricing.paperGsmRates[gsm] && currentPricing.paperGsmRates[gsm][sz] !== undefined)
+        ? currentPricing.paperGsmRates[gsm][sz]
+        : (DEFAULT_PRICING.paperGsmRates[gsm][sz] || 0);
       tr.innerHTML += `
         <td>
           <input type="number" step="0.05" class="table-input paper-gsm-input" 
@@ -4290,37 +4307,29 @@ function populateSettingsDrawer() {
     { id: 'cymk_white', label: '5 Color CYMK+W' },
     { id: 'clear_color', label: 'Clear Color' }
   ];
+  const stickerSizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4'];
 
   mats.forEach(mat => {
     colors.forEach(col => {
-      const rate70_33 = currentPricing.stickerRates[mat.id][col.id]['70x33'] || 0;
-      const rate50_33 = currentPricing.stickerRates[mat.id][col.id]['50x33'] || 0;
-      const rateA3 = currentPricing.stickerRates[mat.id][col.id]['A3'] || 0;
-      const rateA4 = currentPricing.stickerRates[mat.id][col.id]['A4'] || 0;
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td><strong>${mat.label}</strong></td>
         <td>${col.label}</td>
-        <td>
-          <input type="number" step="0.1" class="table-input sticker-input" 
-                 data-mat="${mat.id}" data-col="${col.id}" data-size="70x33" value="${rate70_33.toFixed(2)}">
-        </td>
-        <td>
-          <input type="number" step="0.1" class="table-input sticker-input" 
-                 data-mat="${mat.id}" data-col="${col.id}" data-size="50x33" value="${rate50_33.toFixed(2)}">
-        </td>
-        <td>
-          <input type="number" step="0.1" class="table-input sticker-input" 
-                 data-mat="${mat.id}" data-col="${col.id}" data-size="A3" value="${rateA3.toFixed(2)}">
-        </td>
-        <td>
-          <input type="number" step="0.1" class="table-input sticker-input" 
-                 data-mat="${mat.id}" data-col="${col.id}" data-size="A4" value="${rateA4.toFixed(2)}">
-        </td>
       `;
+      stickerSizes.forEach(sz => {
+        const val = (currentPricing.stickerRates[mat.id] && currentPricing.stickerRates[mat.id][col.id] && currentPricing.stickerRates[mat.id][col.id][sz] !== undefined)
+          ? currentPricing.stickerRates[mat.id][col.id][sz]
+          : (DEFAULT_PRICING.stickerRates[mat.id][col.id][sz] || 0);
+        tr.innerHTML += `
+          <td>
+            <input type="number" step="0.1" class="table-input sticker-input" 
+                   data-mat="${mat.id}" data-col="${col.id}" data-size="${sz}" value="${val.toFixed(2)}">
+          </td>`;
+      });
       stickerBody.appendChild(tr);
     });
   });
+
 
   // 3. Quantity Multipliers & Discount Tiers
   const qtyTierBody = document.getElementById('settingsQtyTierBody');
