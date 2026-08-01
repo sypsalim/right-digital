@@ -46,13 +46,14 @@ const DEFAULT_PRICING = {
   // Section 8: Plotter Cut cost per sheet size in SR
   plotterRates: {
     '100x70': 3.00,
-    '90x64': 3.00,
+    '90x64': 2.50,
     '50x70': 2.50,
     '70x33': 2.00,
     '50x33': 1.50,
     'A3': 1.00,
     'A4': 0.50
   },
+
 
 
 
@@ -956,12 +957,14 @@ function initUI() {
   // 5. Inputs Auto-change
   const inputIds = [
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'boxFoldType', 'stickerType', 'stickerColors',
+    'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
+
 
 
   inputIds.forEach(id => {
@@ -2307,9 +2310,41 @@ function calculateAndUpdate() {
     }
   }
 
+  // Pre-Press Setup: Design Charge & Color Charge
+  const optDesign = document.getElementById('extraDesignCharge') && document.getElementById('extraDesignCharge').checked;
+  const designCost = optDesign ? (parseFloat(document.getElementById('designChargeInput').value) || 0) : 0;
+  const designSummaryText = document.getElementById('designChargeSummaryText');
+  if (designSummaryText) {
+    designSummaryText.innerText = optDesign ? `${designCost.toFixed(2)} SR` : 'Manual input';
+  }
+
+  const optColor = document.getElementById('extraColorCharge') && document.getElementById('extraColorCharge').checked;
+  const colorDetailsRow = document.getElementById('colorChargeDetailsRow');
+  if (colorDetailsRow) {
+    if (optColor) {
+      colorDetailsRow.classList.remove('hidden');
+    } else {
+      colorDetailsRow.classList.add('hidden');
+    }
+  }
+
+  const colorCount = optColor ? (parseInt(document.getElementById('colorCountInput').value) || 1) : 0;
+  const colorRate = optColor ? (parseFloat(document.getElementById('colorRateInput').value) || 0) : 0;
+  const colorCost = optColor ? (colorCount * colorRate) : 0;
+
+  const colorNotice = document.getElementById('colorChargeNotice');
+  if (colorNotice && optColor) {
+    colorNotice.innerHTML = `<strong>Total Print Colors Charge:</strong> ${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR/color)`;
+  }
+  const colorSummaryText = document.getElementById('colorChargeSummaryText');
+  if (colorSummaryText) {
+    colorSummaryText.innerText = optColor ? `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)` : 'Specify color count & price per color';
+  }
+
   // Total invoice cost
-  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
+  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
   const unitCost = qty > 0 ? totalCost / qty : 0;
+
 
   // 9. Update UI Invoice card
   document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? (isBcMode ? 'Business Card Job' : 'Paper Job') : 'Sticker Job';
@@ -2359,6 +2394,18 @@ function calculateAndUpdate() {
   if (optDieManual) {
     document.getElementById('invDieManualCost').innerText = `${dieManualCost.toFixed(2)} SR (${sheetsNeeded} sheets @ ${dieManualRate.toFixed(2)} SR)`;
   }
+
+  // Pre-Press Setup Invoice Rows
+  toggleInvoiceRow('invRowDesign', optDesign && designCost > 0, 'invDesignCost', designCost);
+  if (optDesign && designCost > 0) {
+    document.getElementById('invDesignCost').innerText = `${designCost.toFixed(2)} SR`;
+  }
+
+  toggleInvoiceRow('invRowColor', optColor && colorCost > 0, 'invColorCost', colorCost);
+  if (optColor && colorCost > 0) {
+    document.getElementById('invColorCost').innerText = `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)`;
+  }
+
   
   // Show / Hide rows depending on whether they have costs or are selected
   toggleInvoiceRow('invRowLamination', optLamination && lamRate > 0, 'invLaminationCost', lamCost);

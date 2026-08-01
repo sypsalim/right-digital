@@ -2031,8 +2031,63 @@ input:checked + .slider:before {
           </div>
         </div>
 
+        <!-- Section 4: Pre-Press Setup -->
+        <div class="config-card" id="prePressCard">
+          <h3>04. Pre-Press Setup / التجهيز قبل الطباعة</h3>
+          <div class="extras-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            
+            <!-- 1. Design Charge -->
+            <div class="extra-checkbox-card custom-extra-card" id="designChargeCardEl">
+              <label class="extra-checkbox-label" for="extraDesignCharge">
+                <input type="checkbox" id="extraDesignCharge">
+                <div class="extra-info">
+                  <span class="extra-title">Design Charge / رسوم التصميم</span>
+                  <span class="extra-desc" id="designChargeSummaryText">Manual input</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="designChargeInput" min="0" step="5" class="form-input rate-adj-input" placeholder="0.00" value="0">
+                <span class="rate-unit">SR</span>
+              </div>
+            </div>
+
+            <!-- 2. Color Charge & Count -->
+            <div class="extra-checkbox-card custom-extra-card" id="colorChargeCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <label class="extra-checkbox-label" for="extraColorCharge" style="flex: 1; cursor: pointer;">
+                  <input type="checkbox" id="extraColorCharge">
+                  <div class="extra-info">
+                    <span class="extra-title">Print Colors Charge / تكلفة ألوان الطباعة</span>
+                    <span class="extra-desc" id="colorChargeSummaryText">Specify color count & price per color</span>
+                  </div>
+                </label>
+              </div>
+              <div id="colorChargeDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                <div class="form-row" style="gap: 12px;">
+                  <div class="form-group min-w-150">
+                    <label for="colorCountInput">How Many Colors / عدد الألوان</label>
+                    <input type="number" id="colorCountInput" value="1" min="1" step="1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-150">
+                    <label for="colorRateInput">Price Per Color / سعر اللون الواحد</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="colorRateInput" value="50.00" min="0" step="5" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                </div>
+                <div id="colorChargeNotice" style="margin-top: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
+                  <!-- Dynamic total color cost notice -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Section 7, 8, 9: Finishes & Extras -->
         <div class="config-card" id="finishingCard">
+
           <h3>Finishing & Extras / خدمات التشطيب والإضافات</h3>
           <div class="extras-grid">
             <label class="extra-checkbox-card" id="laminationCardEl">
@@ -2326,6 +2381,17 @@ input:checked + .slider:before {
               <span class="inv-label">Cup Transfer Cost / تكلفة نقل الكوب:</span>
               <span class="inv-value" id="invCupTransferCost">-</span>
             </div>
+
+            <!-- Pre-Press Rows -->
+            <div class="invoice-row hidden" id="invRowDesign">
+              <span class="inv-label">Design Charge / رسوم التصميم:</span>
+              <span class="inv-value" id="invDesignCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowColor">
+              <span class="inv-label">Print Colors Charge / تكلفة ألوان الطباعة:</span>
+              <span class="inv-value" id="invColorCost">-</span>
+            </div>
+
 
             <div class="invoice-row" id="invRowLamination">
               <span class="inv-label">Lamination Cost / تكلفة السلوفان:</span>
@@ -2915,13 +2981,14 @@ const DEFAULT_PRICING = {
   // Section 8: Plotter Cut cost per sheet size in SR
   plotterRates: {
     '100x70': 3.00,
-    '90x64': 3.00,
+    '90x64': 2.50,
     '50x70': 2.50,
     '70x33': 2.00,
     '50x33': 1.50,
     'A3': 1.00,
     'A4': 0.50
   },
+
 
 
 
@@ -3825,12 +3892,14 @@ function initUI() {
   // 5. Inputs Auto-change
   const inputIds = [
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'boxFoldType', 'stickerType', 'stickerColors',
+    'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
+
 
 
   inputIds.forEach(id => {
@@ -5176,9 +5245,41 @@ function calculateAndUpdate() {
     }
   }
 
+  // Pre-Press Setup: Design Charge & Color Charge
+  const optDesign = document.getElementById('extraDesignCharge') && document.getElementById('extraDesignCharge').checked;
+  const designCost = optDesign ? (parseFloat(document.getElementById('designChargeInput').value) || 0) : 0;
+  const designSummaryText = document.getElementById('designChargeSummaryText');
+  if (designSummaryText) {
+    designSummaryText.innerText = optDesign ? `${designCost.toFixed(2)} SR` : 'Manual input';
+  }
+
+  const optColor = document.getElementById('extraColorCharge') && document.getElementById('extraColorCharge').checked;
+  const colorDetailsRow = document.getElementById('colorChargeDetailsRow');
+  if (colorDetailsRow) {
+    if (optColor) {
+      colorDetailsRow.classList.remove('hidden');
+    } else {
+      colorDetailsRow.classList.add('hidden');
+    }
+  }
+
+  const colorCount = optColor ? (parseInt(document.getElementById('colorCountInput').value) || 1) : 0;
+  const colorRate = optColor ? (parseFloat(document.getElementById('colorRateInput').value) || 0) : 0;
+  const colorCost = optColor ? (colorCount * colorRate) : 0;
+
+  const colorNotice = document.getElementById('colorChargeNotice');
+  if (colorNotice && optColor) {
+    colorNotice.innerHTML = `<strong>Total Print Colors Charge:</strong> ${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR/color)`;
+  }
+  const colorSummaryText = document.getElementById('colorChargeSummaryText');
+  if (colorSummaryText) {
+    colorSummaryText.innerText = optColor ? `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)` : 'Specify color count & price per color';
+  }
+
   // Total invoice cost
-  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
+  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
   const unitCost = qty > 0 ? totalCost / qty : 0;
+
 
   // 9. Update UI Invoice card
   document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? (isBcMode ? 'Business Card Job' : 'Paper Job') : 'Sticker Job';
@@ -5228,6 +5329,18 @@ function calculateAndUpdate() {
   if (optDieManual) {
     document.getElementById('invDieManualCost').innerText = `${dieManualCost.toFixed(2)} SR (${sheetsNeeded} sheets @ ${dieManualRate.toFixed(2)} SR)`;
   }
+
+  // Pre-Press Setup Invoice Rows
+  toggleInvoiceRow('invRowDesign', optDesign && designCost > 0, 'invDesignCost', designCost);
+  if (optDesign && designCost > 0) {
+    document.getElementById('invDesignCost').innerText = `${designCost.toFixed(2)} SR`;
+  }
+
+  toggleInvoiceRow('invRowColor', optColor && colorCost > 0, 'invColorCost', colorCost);
+  if (optColor && colorCost > 0) {
+    document.getElementById('invColorCost').innerText = `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)`;
+  }
+
   
   // Show / Hide rows depending on whether they have costs or are selected
   toggleInvoiceRow('invRowLamination', optLamination && lamRate > 0, 'invLaminationCost', lamCost);

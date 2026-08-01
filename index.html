@@ -331,8 +331,63 @@
           </div>
         </div>
 
+        <!-- Section 4: Pre-Press Setup -->
+        <div class="config-card" id="prePressCard">
+          <h3>04. Pre-Press Setup / التجهيز قبل الطباعة</h3>
+          <div class="extras-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            
+            <!-- 1. Design Charge -->
+            <div class="extra-checkbox-card custom-extra-card" id="designChargeCardEl">
+              <label class="extra-checkbox-label" for="extraDesignCharge">
+                <input type="checkbox" id="extraDesignCharge">
+                <div class="extra-info">
+                  <span class="extra-title">Design Charge / رسوم التصميم</span>
+                  <span class="extra-desc" id="designChargeSummaryText">Manual input</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="designChargeInput" min="0" step="5" class="form-input rate-adj-input" placeholder="0.00" value="0">
+                <span class="rate-unit">SR</span>
+              </div>
+            </div>
+
+            <!-- 2. Color Charge & Count -->
+            <div class="extra-checkbox-card custom-extra-card" id="colorChargeCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <label class="extra-checkbox-label" for="extraColorCharge" style="flex: 1; cursor: pointer;">
+                  <input type="checkbox" id="extraColorCharge">
+                  <div class="extra-info">
+                    <span class="extra-title">Print Colors Charge / تكلفة ألوان الطباعة</span>
+                    <span class="extra-desc" id="colorChargeSummaryText">Specify color count & price per color</span>
+                  </div>
+                </label>
+              </div>
+              <div id="colorChargeDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                <div class="form-row" style="gap: 12px;">
+                  <div class="form-group min-w-150">
+                    <label for="colorCountInput">How Many Colors / عدد الألوان</label>
+                    <input type="number" id="colorCountInput" value="1" min="1" step="1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-150">
+                    <label for="colorRateInput">Price Per Color / سعر اللون الواحد</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="colorRateInput" value="50.00" min="0" step="5" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                </div>
+                <div id="colorChargeNotice" style="margin-top: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
+                  <!-- Dynamic total color cost notice -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
         <!-- Section 7, 8, 9: Finishes & Extras -->
         <div class="config-card" id="finishingCard">
+
           <h3>Finishing & Extras / خدمات التشطيب والإضافات</h3>
           <div class="extras-grid">
             <label class="extra-checkbox-card" id="laminationCardEl">
@@ -626,6 +681,17 @@
               <span class="inv-label">Cup Transfer Cost / تكلفة نقل الكوب:</span>
               <span class="inv-value" id="invCupTransferCost">-</span>
             </div>
+
+            <!-- Pre-Press Rows -->
+            <div class="invoice-row hidden" id="invRowDesign">
+              <span class="inv-label">Design Charge / رسوم التصميم:</span>
+              <span class="inv-value" id="invDesignCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowColor">
+              <span class="inv-label">Print Colors Charge / تكلفة ألوان الطباعة:</span>
+              <span class="inv-value" id="invColorCost">-</span>
+            </div>
+
 
             <div class="invoice-row" id="invRowLamination">
               <span class="inv-label">Lamination Cost / تكلفة السلوفان:</span>
