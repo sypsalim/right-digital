@@ -1973,8 +1973,41 @@ function calculateAndUpdate() {
   const i_h = parseFloat(document.getElementById('itemHeight').value) || 1;
   const qty = parseInt(document.getElementById('itemQty').value) || 1;
 
-  // 1. Calculate Layout Options
-  const layout = calculateLayoutOptions(S_W, S_H, i_w, i_h);
+  // 4-Side Wall-Fold Box Calculation:
+  // Each fold side = Height (H) + Wall Thickness (T) + Height (H) + 1.9 cm (Inside Lock Flap)
+  const boxHInput = document.getElementById('boxDepthH');
+  const boxTInput = document.getElementById('wallThickness');
+  const boxH = boxHInput ? (parseFloat(boxHInput.value) || 0) : 0;
+  const boxT = boxTInput ? (parseFloat(boxTInput.value) || 0) : 0;
+
+  let sideFold = 0;
+  if (boxH > 0) {
+    sideFold = (2 * boxH) + boxT + 1.9;
+  }
+
+  const effective_w = i_w + (2 * sideFold);
+  const effective_h = i_h + (2 * sideFold);
+
+  // Show/Hide Unfolded Box Notice in Section 3
+  const boxFoldNotice = document.getElementById('boxFoldInfoNotice');
+  if (boxFoldNotice) {
+    if (boxH > 0) {
+      boxFoldNotice.classList.remove('hidden');
+      boxFoldNotice.innerHTML = `
+        <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
+          📐 4-Side Wall-Fold Box Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
+        </div>
+        <div style="font-size: 0.82rem; opacity: 0.9;">
+          Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> (Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock Flap 1.9cm)
+        </div>
+      `;
+    } else {
+      boxFoldNotice.classList.add('hidden');
+    }
+  }
+
+  // 1. Calculate Layout Options based on the true unfolded flat box dimensions
+  const layout = calculateLayoutOptions(S_W, S_H, effective_w, effective_h);
   
   // Decide which is the best layout (the one with max ups, or lowest wastage)
   let bestDirection = 'horizontal';
@@ -1997,7 +2030,7 @@ function calculateAndUpdate() {
   const wastePercent = activeLayout.wastagePercent;
 
   // 3. Render SVG Layout
-  renderLayoutSvg(S_W, S_H, activeLayout, activeDirection);
+  renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, i_w, i_h, sideFold);
 
   // 4. Render Stats
   document.getElementById('valUps').innerText = ups;
@@ -2008,6 +2041,7 @@ function calculateAndUpdate() {
     activeDirection === 'horizontal' ? 'Horizontal Setup (Original)' : 'Vertical Setup (Rotated)';
 
   // 5. Render Comparison Table
+
   renderComparisonTable(layout, bestDirection, activeDirection);
 
   // 6. Base cost calculation
@@ -2288,7 +2322,7 @@ function renderComparisonTable(layout, bestDirection, activeDirection) {
 }
 
 // --- RENDER VISUAL SVG PREVIEW ---
-function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection) {
+function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, origH = 0, sideFold = 0) {
   const svg = document.getElementById('layoutSvg');
   svg.innerHTML = '';
 
@@ -2369,11 +2403,27 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection) {
       rect.setAttribute("class", "svg-up-box");
       group.appendChild(rect);
 
+      // If box wall fold applies, draw dashed inner box base outline
+      if (sideFold > 0) {
+        const foldOffset = sideFold * scale;
+        const innerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        innerRect.setAttribute("x", upX + foldOffset);
+        innerRect.setAttribute("y", upY + foldOffset);
+        innerRect.setAttribute("width", Math.max(0, drawItemW - (2 * foldOffset)));
+        innerRect.setAttribute("height", Math.max(0, drawItemH - (2 * foldOffset)));
+        innerRect.setAttribute("fill", "rgba(212, 175, 55, 0.15)");
+        innerRect.setAttribute("stroke", "#d4af37");
+        innerRect.setAttribute("stroke-width", "1.5");
+        innerRect.setAttribute("stroke-dasharray", "3 3");
+        group.appendChild(innerRect);
+      }
+
       // Add label inside each piece
       const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
       text.setAttribute("x", upX + (drawItemW / 2));
       text.setAttribute("y", upY + (drawItemH / 2));
       text.setAttribute("class", "svg-up-label");
+
       text.textContent = upCounter;
       group.appendChild(text);
 
