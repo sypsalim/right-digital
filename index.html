@@ -655,9 +655,26 @@
             </div>
           </div>
 
-          <!-- Settings Tab: Discounts -->
+          <!-- Settings Tab: Discounts & Quantity Tiers -->
           <div class="setting-section hidden" id="setTabDiscounts">
-            <h3>Sheet-Based Discount Tiers</h3>
+            <h3>Quantity-Based Price Multipliers & Volume Discounts / مضاعفات وخصومات الكميات</h3>
+            <p class="sub-label">Configure cost multipliers for low quantities (markup) and volume discounts for high quantities relative to 100 Pcs base rate.</p>
+            <div class="table-responsive" style="margin-bottom: 24px;">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>Min Qty</th>
+                    <th>Max Qty</th>
+                    <th>Price Multiplier (1.0 = Base Rate)</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsQtyTierBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+
+            <h3 style="margin-top: 16px;">Sheet-Based Discount Tiers / خصومات الفروع</h3>
             <p class="sub-label">Define the discount percentage given based on total printed sheets. Set discount to 0% to disable for a tier.</p>
             <div class="table-responsive">
               <table class="settings-edit-table">
@@ -674,6 +691,7 @@
               </table>
             </div>
           </div>
+
 
           <!-- Settings Tab: Finishing Costs -->
           <div class="setting-section hidden" id="setTabFinishing">

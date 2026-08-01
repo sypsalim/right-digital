@@ -98,8 +98,24 @@ const DEFAULT_PRICING = {
   discountTiers: [
     { min: 0, max: 100, discount: 0 },
     { min: 101, max: Infinity, discount: 5 }
+  ],
+
+  // Quantity Multipliers & Volume Discount Tiers (based on 100 Pcs base rate)
+  quantityTiers: [
+    { min: 1, max: 3, multiplier: 2.5 },
+    { min: 4, max: 10, multiplier: 2.0 },
+    { min: 11, max: 25, multiplier: 1.8 },
+    { min: 26, max: 50, multiplier: 1.5 },
+    { min: 51, max: 75, multiplier: 1.3 },
+    { min: 76, max: 99, multiplier: 1.1 },
+    { min: 100, max: 249, multiplier: 1.0 },
+    { min: 250, max: 500, multiplier: 0.95 },
+    { min: 501, max: 1000, multiplier: 0.90 },
+    { min: 1001, max: 5000, multiplier: 0.85 },
+    { min: 5001, max: Infinity, multiplier: 0.80 }
   ]
 };
+
 
 // Available sizes definitions (with default landscape values)
 const DEFAULT_PAPER_SIZES = [
@@ -768,6 +784,10 @@ function loadPricingFromStorage() {
       if (!currentPricing.discountTiers) {
         currentPricing.discountTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.discountTiers));
       }
+      if (!currentPricing.quantityTiers) {
+        currentPricing.quantityTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.quantityTiers));
+      }
+
       if (currentPricing.paperGsmRates) {
         Object.keys(DEFAULT_PRICING.paperGsmRates).forEach(gsm => {
           if (currentPricing.paperGsmRates[gsm] && currentPricing.paperGsmRates[gsm].backSide === undefined) {
@@ -1482,7 +1502,29 @@ function populateSettingsDrawer() {
     });
   });
 
-  // 3. Discount Tiers
+  // 3. Quantity Multipliers & Discount Tiers
+  const qtyTierBody = document.getElementById('settingsQtyTierBody');
+  if (qtyTierBody) {
+    qtyTierBody.innerHTML = '';
+    const qtyTiers = currentPricing.quantityTiers || DEFAULT_PRICING.quantityTiers;
+    qtyTiers.forEach((tier, index) => {
+      const tr = document.createElement('tr');
+      const maxVal = (tier.max === Infinity || tier.max === null || tier.max === undefined) ? '' : tier.max;
+      tr.innerHTML = `
+        <td>
+          <input type="number" class="table-input qty-tier-min" data-index="${index}" value="${tier.min}">
+        </td>
+        <td>
+          <input type="number" class="table-input qty-tier-max" data-index="${index}" placeholder="Infinity" value="${maxVal}">
+        </td>
+        <td>
+          <input type="number" step="0.05" class="table-input qty-tier-mult" data-index="${index}" value="${tier.multiplier}">
+        </td>
+      `;
+      qtyTierBody.appendChild(tr);
+    });
+  }
+
   const discountBody = document.getElementById('settingsDiscountBody');
   discountBody.innerHTML = '';
   currentPricing.discountTiers.forEach((tier, index) => {
@@ -1500,6 +1542,7 @@ function populateSettingsDrawer() {
       </td>
     `;
     discountBody.appendChild(tr);
+
   });
 
   // 4. Lamination Rates
@@ -1649,7 +1692,23 @@ function saveSettingsFromDrawer() {
     currentPricing.stickerRates[mat][col][sz] = parseFloat(input.value) || 0;
   });
 
-  // 3. Discount tiers
+  // 3. Quantity Multipliers & Discount tiers
+  const qtyMinInputs = document.querySelectorAll('.qty-tier-min');
+  const qtyMaxInputs = document.querySelectorAll('.qty-tier-max');
+  const qtyMultInputs = document.querySelectorAll('.qty-tier-mult');
+  if (qtyMinInputs.length > 0) {
+    const newQtyTiers = [];
+    qtyMinInputs.forEach((input, index) => {
+      const minVal = parseInt(input.value) || 0;
+      const maxText = qtyMaxInputs[index].value.trim();
+      const maxVal = maxText === '' ? Infinity : parseInt(maxText);
+      const multVal = parseFloat(qtyMultInputs[index].value) || 1.0;
+      newQtyTiers.push({ min: minVal, max: maxVal, multiplier: multVal });
+    });
+    newQtyTiers.sort((a, b) => a.min - b.min);
+    currentPricing.quantityTiers = newQtyTiers;
+  }
+
   const minInputs = document.querySelectorAll('.disc-min');
   const maxInputs = document.querySelectorAll('.disc-max');
   const valInputs = document.querySelectorAll('.disc-val');
@@ -1665,6 +1724,7 @@ function saveSettingsFromDrawer() {
   // Sort tiers by min quantity
   newTiers.sort((a, b) => a.min - b.min);
   currentPricing.discountTiers = newTiers;
+
 
   // 4. Lamination Rates
   const lamInputs = document.querySelectorAll('.lamination-rate-input');
@@ -2643,6 +2703,16 @@ function calculateTshirtCupAndUpdate() {
 
 // --- Quantity Tiered Surcharge & Volume Discount Pricing Logic ---
 function getQuantityPriceMultiplier(qty) {
+  if (typeof currentPricing !== 'undefined' && currentPricing.quantityTiers && currentPricing.quantityTiers.length > 0) {
+    for (let i = 0; i < currentPricing.quantityTiers.length; i++) {
+      const tier = currentPricing.quantityTiers[i];
+      const maxVal = (tier.max === Infinity || tier.max === null || tier.max === undefined || tier.max === '') ? Infinity : tier.max;
+      if (qty >= tier.min && qty <= maxVal) {
+        return tier.multiplier;
+      }
+    }
+  }
+
   if (qty >= 1 && qty <= 3) {
     return 2.5; // 1 to 3 Pcs: 2.5x multiplier (+150% markup based on 100 Pcs unit cost)
   } else if (qty >= 4 && qty <= 10) {
@@ -2669,6 +2739,7 @@ function getQuantityPriceMultiplier(qty) {
     return 1.0;
   }
 }
+
 
 
 function calculateDigitalBagPrice(qty, basePrice = 5.20) {
