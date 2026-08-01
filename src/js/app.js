@@ -45,14 +45,15 @@ const DEFAULT_PRICING = {
 
   // Section 8: Plotter Cut cost per sheet size in SR
   plotterRates: {
-    '100x70': 9.00,
-    '90x64': 7.50,
-    '50x70': 6.00,
-    '70x33': 3.50,
-    '50x33': 3.00,
-    'A3': 2.50,
-    'A4': 2.00
+    '100x70': 3.00,
+    '90x64': 3.00,
+    '50x70': 2.50,
+    '70x33': 2.00,
+    '50x33': 1.50,
+    'A3': 1.00,
+    'A4': 0.50
   },
+
 
 
   // Section 8 & 9: Fixed services cost in SR
@@ -854,6 +855,25 @@ function loadPricingFromStorage() {
           currentPricing.fixedRates.dieManual = 0.15;
         }
       }
+      if (!currentPricing.plotterRates) {
+        currentPricing.plotterRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterRates));
+      } else {
+        Object.keys(DEFAULT_PRICING.plotterRates).forEach(sz => {
+          if (currentPricing.plotterRates[sz] === undefined || currentPricing.plotterRates[sz] >= 3.50) {
+            currentPricing.plotterRates[sz] = DEFAULT_PRICING.plotterRates[sz];
+          }
+        });
+      }
+      if (!currentPricing.laminationRates) {
+        currentPricing.laminationRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.laminationRates));
+      } else {
+        Object.keys(DEFAULT_PRICING.laminationRates).forEach(sz => {
+          if (currentPricing.laminationRates[sz] === undefined) {
+            currentPricing.laminationRates[sz] = DEFAULT_PRICING.laminationRates[sz];
+          }
+        });
+      }
+
       if (!currentPricing.tshirtLaserRates) {
         currentPricing.tshirtLaserRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.tshirtLaserRates));
       }
@@ -1568,29 +1588,40 @@ function populateSettingsDrawer() {
 
   // 4. Lamination Rates
   const lamContainer = document.getElementById('settingsLaminationContainer');
-  lamContainer.innerHTML = '';
-  Object.keys(currentPricing.laminationRates).forEach(sz => {
-    const val = currentPricing.laminationRates[sz];
-    lamContainer.innerHTML += `
-      <div class="form-group min-w-150">
-        <label>${sz} Lamination (SR)</label>
-        <input type="number" step="0.05" class="form-input lamination-rate-input" data-size="${sz}" value="${val.toFixed(2)}">
-      </div>
-    `;
-  });
+  if (lamContainer) {
+    lamContainer.innerHTML = '';
+    const allSizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4'];
+    allSizes.forEach(sz => {
+      const val = (currentPricing.laminationRates && currentPricing.laminationRates[sz] !== undefined)
+        ? currentPricing.laminationRates[sz]
+        : (DEFAULT_PRICING.laminationRates[sz] || 0);
+      lamContainer.innerHTML += `
+        <div class="form-group min-w-150">
+          <label>${sz} Lamination (SR)</label>
+          <input type="number" step="0.05" class="form-input lamination-rate-input" data-size="${sz}" value="${val.toFixed(2)}">
+        </div>
+      `;
+    });
+  }
 
   // 5. Plotter Rates
   const plotterContainer = document.getElementById('settingsPlotterContainer');
-  plotterContainer.innerHTML = '';
-  Object.keys(currentPricing.plotterRates).forEach(sz => {
-    const val = currentPricing.plotterRates[sz];
-    plotterContainer.innerHTML += `
-      <div class="form-group min-w-150">
-        <label>${sz} Plotter Cut (SR)</label>
-        <input type="number" step="0.05" class="form-input plotter-rate-input" data-size="${sz}" value="${val.toFixed(2)}">
-      </div>
-    `;
-  });
+  if (plotterContainer) {
+    plotterContainer.innerHTML = '';
+    const allSizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4'];
+    allSizes.forEach(sz => {
+      const val = (currentPricing.plotterRates && currentPricing.plotterRates[sz] !== undefined)
+        ? currentPricing.plotterRates[sz]
+        : (DEFAULT_PRICING.plotterRates[sz] || 0);
+      plotterContainer.innerHTML += `
+        <div class="form-group min-w-150">
+          <label>${sz} Plotter Cut (SR)</label>
+          <input type="number" step="0.05" class="form-input plotter-rate-input" data-size="${sz}" value="${val.toFixed(2)}">
+        </div>
+      `;
+    });
+  }
+
 
   // 6. Fixed Services rates
   document.getElementById('rateFolding').value = currentPricing.fixedRates.folding.toFixed(2);
