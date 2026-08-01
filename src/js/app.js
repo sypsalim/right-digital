@@ -935,13 +935,14 @@ function initUI() {
 
   // 5. Inputs Auto-change
   const inputIds = [
-    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'stickerType', 'stickerColors',
+    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'boxFoldType', 'stickerType', 'stickerColors',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
+
 
   inputIds.forEach(id => {
     const el = document.getElementById(id);
@@ -1983,16 +1984,23 @@ function calculateAndUpdate() {
   const i_h = parseFloat(document.getElementById('itemHeight').value) || 1;
   const qty = parseInt(document.getElementById('itemQty').value) || 1;
 
-  // 4-Side Wall-Fold Box Calculation:
-  // Each fold side = Height (H) + Wall Thickness (T) + Height (H) + 1.9 cm (Inside Lock Flap)
+  // Box Wall-Fold Calculation:
+  // Double-Wall: Each fold side = Height (H) + Wall Thickness (T) + Height (H) + 1.9 cm (Inside Lock Flap)
+  // Single-Wall: Each fold side = Height (H) + Wall Thickness (T) + 1.9 cm (Inside Lock Flap)
   const boxHInput = document.getElementById('boxDepthH');
   const boxTInput = document.getElementById('wallThickness');
+  const boxFoldTypeEl = document.getElementById('boxFoldType');
   const boxH = boxHInput ? (parseFloat(boxHInput.value) || 0) : 0;
   const boxT = boxTInput ? (parseFloat(boxTInput.value) || 0) : 0;
+  const boxFoldType = boxFoldTypeEl ? boxFoldTypeEl.value : 'double';
 
   let sideFold = 0;
   if (boxH > 0) {
-    sideFold = (2 * boxH) + boxT + 1.9;
+    if (boxFoldType === 'single') {
+      sideFold = boxH + boxT + 1.9;
+    } else {
+      sideFold = (2 * boxH) + boxT + 1.9;
+    }
   }
 
   const effective_w = i_w + (2 * sideFold);
@@ -2003,18 +2011,37 @@ function calculateAndUpdate() {
   if (boxFoldNotice) {
     if (boxH > 0) {
       boxFoldNotice.classList.remove('hidden');
-      boxFoldNotice.innerHTML = `
-        <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
-          📐 4-Side Wall-Fold Box Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
-        </div>
-        <div style="font-size: 0.82rem; opacity: 0.9;">
-          Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> (Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock Flap 1.9cm)
-        </div>
-      `;
+      const isExceeding = (effective_w > S_W || effective_h > S_H) && (effective_w > S_H || effective_h > S_W);
+      const foldTypeName = boxFoldType === 'single' ? 'Single-Wall Fold' : 'Double-Wall Fold';
+      const foldFormulaDesc = boxFoldType === 'single'
+        ? `(Height ${boxH}cm + Wall ${boxT}cm + Lock Flap 1.9cm)`
+        : `(Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock Flap 1.9cm)`;
+
+      if (isExceeding) {
+        boxFoldNotice.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
+            ⚠️ Notice: Unfolded Box Flat Size (${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
+          </div>
+          <div style="font-size: 0.82rem; opacity: 0.9;">
+            Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> ${foldFormulaDesc}<br>
+            <em>Tip: Try switching <strong>Box Wall Type</strong> to <strong>Single-Wall Fold</strong> or selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
+          </div>
+        `;
+      } else {
+        boxFoldNotice.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
+            📐 ${foldTypeName} Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
+          </div>
+          <div style="font-size: 0.82rem; opacity: 0.9;">
+            Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> ${foldFormulaDesc}
+          </div>
+        `;
+      }
     } else {
       boxFoldNotice.classList.add('hidden');
     }
   }
+
 
   // 1. Calculate Layout Options based on the true unfolded flat box dimensions
   const layout = calculateLayoutOptions(S_W, S_H, effective_w, effective_h);
