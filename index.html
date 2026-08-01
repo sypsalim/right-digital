@@ -351,14 +351,14 @@
               </div>
             </div>
 
-            <!-- 2. Color Charge & Count -->
+            <!-- 2. Plate Charge & Color Count -->
             <div class="extra-checkbox-card custom-extra-card" id="colorChargeCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
               <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                 <label class="extra-checkbox-label" for="extraColorCharge" style="flex: 1; cursor: pointer;">
                   <input type="checkbox" id="extraColorCharge">
                   <div class="extra-info">
-                    <span class="extra-title">Print Colors Charge / تكلفة ألوان الطباعة</span>
-                    <span class="extra-desc" id="colorChargeSummaryText">Specify color count & price per color</span>
+                    <span class="extra-title">Plate Charge / تكلفة البليتات</span>
+                    <span class="extra-desc" id="colorChargeSummaryText">Specify color count & plate price per color</span>
                   </div>
                 </label>
               </div>
@@ -369,18 +369,19 @@
                     <input type="number" id="colorCountInput" value="1" min="1" step="1" class="form-input">
                   </div>
                   <div class="form-group min-w-150">
-                    <label for="colorRateInput">Price Per Color / سعر اللون الواحد</label>
+                    <label for="colorRateInput">Plate Price Per Color / سعر البليت للون</label>
                     <div class="input-with-unit">
-                      <input type="number" id="colorRateInput" value="50.00" min="0" step="5" class="form-input">
+                      <input type="number" id="colorRateInput" value="25.00" min="0" step="5" class="form-input">
                       <span class="unit">SR</span>
                     </div>
                   </div>
                 </div>
                 <div id="colorChargeNotice" style="margin-top: 8px; background: rgba(59, 130, 246, 0.1); border: 1px solid #3b82f6; padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
-                  <!-- Dynamic total color cost notice -->
+                  <!-- Dynamic total plate cost notice -->
                 </div>
               </div>
             </div>
+
 
           </div>
         </div>
@@ -688,9 +689,10 @@
               <span class="inv-value" id="invDesignCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowColor">
-              <span class="inv-label">Print Colors Charge / تكلفة ألوان الطباعة:</span>
+              <span class="inv-label">Plate Charge / تكلفة البليتات:</span>
               <span class="inv-value" id="invColorCost">-</span>
             </div>
+
 
 
             <div class="invoice-row" id="invRowLamination">

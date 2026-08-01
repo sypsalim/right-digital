@@ -2334,12 +2334,13 @@ function calculateAndUpdate() {
 
   const colorNotice = document.getElementById('colorChargeNotice');
   if (colorNotice && optColor) {
-    colorNotice.innerHTML = `<strong>Total Print Colors Charge:</strong> ${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR/color)`;
+    colorNotice.innerHTML = `<strong>Total Plate Charge:</strong> ${colorCost.toFixed(2)} SR (${colorCount} plates/colors @ ${colorRate.toFixed(2)} SR/plate)`;
   }
   const colorSummaryText = document.getElementById('colorChargeSummaryText');
   if (colorSummaryText) {
-    colorSummaryText.innerText = optColor ? `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)` : 'Specify color count & price per color';
+    colorSummaryText.innerText = optColor ? `${colorCost.toFixed(2)} SR (${colorCount} colors @ ${colorRate.toFixed(2)} SR)` : 'Specify color count & plate price per color';
   }
+
 
   // Total invoice cost
   const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
