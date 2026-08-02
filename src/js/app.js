@@ -43,15 +43,11 @@ const DEFAULT_PRICING = {
     'A4': 0.25
   },
 
-  // Section 8: Plotter Cut cost per sheet size in SR
-  plotterRates: {
-    '100x70': 3.00,
-    '90x64': 2.50,
-    '50x70': 2.50,
-    '70x33': 2.00,
-    '50x33': 1.50,
-    'A3': 1.00,
-    'A4': 0.50
+  // Section 8: Plotter Cut cost per sheet based on ordered quantity tier in SR
+  plotterTierRates: {
+    tier1: 3.00, // Qty 1 to 24 pcs: 3.00 SR / sheet
+    tier2: 2.50, // Qty 25 to 99 pcs: 2.50 SR / sheet
+    tier3: 2.00  // Qty 100+ pcs: 2.00 SR / sheet
   },
 
 
@@ -857,14 +853,8 @@ function loadPricingFromStorage() {
           currentPricing.fixedRates.dieManual = 0.15;
         }
       }
-      if (!currentPricing.plotterRates) {
-        currentPricing.plotterRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterRates));
-      } else {
-        Object.keys(DEFAULT_PRICING.plotterRates).forEach(sz => {
-          if (currentPricing.plotterRates[sz] === undefined || currentPricing.plotterRates[sz] >= 3.50) {
-            currentPricing.plotterRates[sz] = DEFAULT_PRICING.plotterRates[sz];
-          }
-        });
+      if (!currentPricing.plotterTierRates) {
+        currentPricing.plotterTierRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterTierRates));
       }
       if (!currentPricing.laminationRates) {
         currentPricing.laminationRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.laminationRates));
@@ -1689,19 +1679,21 @@ function populateSettingsDrawer() {
     });
   }
 
-  // 5. Plotter Rates
+  // 5. Plotter Tier Rates
   const plotterContainer = document.getElementById('settingsPlotterContainer');
   if (plotterContainer) {
     plotterContainer.innerHTML = '';
-    const allSizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4'];
-    allSizes.forEach(sz => {
-      const val = (currentPricing.plotterRates && currentPricing.plotterRates[sz] !== undefined)
-        ? currentPricing.plotterRates[sz]
-        : (DEFAULT_PRICING.plotterRates[sz] || 0);
+    const pTierRates = currentPricing.plotterTierRates || DEFAULT_PRICING.plotterTierRates;
+    const tiers = [
+      { key: 'tier1', label: 'Qty 1 to 24 pcs (3.00 SR / sheet)', val: pTierRates.tier1 },
+      { key: 'tier2', label: 'Qty 25 to 99 pcs (2.50 SR / sheet)', val: pTierRates.tier2 },
+      { key: 'tier3', label: 'Qty 100+ pcs (2.00 SR / sheet)', val: pTierRates.tier3 }
+    ];
+    tiers.forEach(t => {
       plotterContainer.innerHTML += `
-        <div class="form-group min-w-150">
-          <label>${sz} Plotter Cut (SR)</label>
-          <input type="number" step="0.05" class="form-input plotter-rate-input" data-size="${sz}" value="${val.toFixed(2)}">
+        <div class="form-group min-w-150" style="flex: 1;">
+          <label>${t.label}</label>
+          <input type="number" step="0.10" class="form-input plotter-tier-input" data-tier="${t.key}" value="${t.val.toFixed(2)}">
         </div>
       `;
     });
@@ -1870,12 +1862,15 @@ function saveSettingsFromDrawer() {
     currentPricing.laminationRates[sz] = parseFloat(input.value) || 0;
   });
 
-  // 5. Plotter Rates
-  const plotterInputs = document.querySelectorAll('.plotter-rate-input');
-  plotterInputs.forEach(input => {
-    const sz = input.getAttribute('data-size');
-    currentPricing.plotterRates[sz] = parseFloat(input.value) || 0;
-  });
+  // 5. Plotter Tier Rates
+  const plotterTierInputs = document.querySelectorAll('.plotter-tier-input');
+  if (plotterTierInputs.length > 0) {
+    if (!currentPricing.plotterTierRates) currentPricing.plotterTierRates = {};
+    plotterTierInputs.forEach(input => {
+      const tierKey = input.getAttribute('data-tier');
+      currentPricing.plotterTierRates[tierKey] = parseFloat(input.value) || 0;
+    });
+  }
 
   // 6. Fixed Services rates
   currentPricing.fixedRates.folding = parseFloat(document.getElementById('rateFolding').value) || 0;
@@ -2241,15 +2236,28 @@ function calculateAndUpdate() {
   const optPacking = document.getElementById('extraPacking').checked;
 
   // Check size-specific availability for extras
-  // Lamination: Size only 70x33, 50x33, A3
   const lamRate = currentPricing.laminationRates[sizeLabel] || 0;
-  const plotterRate = currentPricing.plotterRates[sizeLabel] || 0;
+
+  // Plotter Cut rate based on ordered quantity tier
+  function getPlotterRate(quantity) {
+    const pTier = (currentPricing && currentPricing.plotterTierRates) ? currentPricing.plotterTierRates : DEFAULT_PRICING.plotterTierRates;
+    if (quantity >= 100) {
+      return pTier.tier3 !== undefined ? pTier.tier3 : 2.00;
+    } else if (quantity >= 25) {
+      return pTier.tier2 !== undefined ? pTier.tier2 : 2.50;
+    } else {
+      return pTier.tier1 !== undefined ? pTier.tier1 : 3.00;
+    }
+  }
+
+  const plotterRate = getPlotterRate(qty);
+  const plotterTierName = qty >= 100 ? 'Qty 100+' : (qty >= 25 ? 'Qty 25-99' : 'Qty 1-24');
 
   // Update label text dynamically
   document.getElementById('laminationPriceText').innerText = 
     lamRate > 0 ? `${lamRate.toFixed(2)} SR / sheet` : 'Not available';
   document.getElementById('plotterPriceText').innerText = 
-    plotterRate > 0 ? `${plotterRate.toFixed(2)} SR / sheet` : 'Not available';
+    `${plotterRate.toFixed(2)} SR / sheet (${plotterTierName})`;
 
   // Lamination & Plotter apply per sheet
   const optLaminationBothSides = document.getElementById('laminationBothSides') && document.getElementById('laminationBothSides').checked;
