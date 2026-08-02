@@ -52,12 +52,12 @@ const DEFAULT_PRICING = {
 
   // Quantity-Based Profit Margin Tiers (Percentage Added to Final Total)
   profitTiers: {
-    tier1: 45,    // Qty 1 to 24 pcs: +45%
-    tier25: 40,   // Qty 25 to 199 pcs: +40%
-    tier200: 36,  // Qty 200 to 499 pcs: +36%
-    tier500: 34,  // Qty 500 to 1499 pcs: +34%
-    tier1500: 30, // Qty 1500 to 3499 pcs: +30%
-    tier3500: 28  // Qty 3500+ pcs: +28%
+    tier1: 40,    // Qty 1 to 99 pcs: +40%
+    tier100: 38,  // Qty 100 to 324 pcs: +38%
+    tier325: 36,  // Qty 325 to 449 pcs: +36%
+    tier450: 34,  // Qty 450 to 1249 pcs: +34%
+    tier1250: 32, // Qty 1250 to 3499 pcs: +32%
+    tier3500: 26  // Qty 3500+ pcs: +26%
   },
 
 
@@ -866,9 +866,7 @@ function loadPricingFromStorage() {
       if (!currentPricing.plotterTierRates) {
         currentPricing.plotterTierRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterTierRates));
       }
-      if (!currentPricing.profitTiers) {
-        currentPricing.profitTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.profitTiers));
-      }
+      currentPricing.profitTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.profitTiers));
       if (!currentPricing.laminationRates) {
         currentPricing.laminationRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.laminationRates));
       } else {
@@ -1679,12 +1677,12 @@ function populateSettingsDrawer() {
     profitBody.innerHTML = '';
     const pTiers = currentPricing.profitTiers || DEFAULT_PRICING.profitTiers;
     const list = [
-      { key: 'tier1', label: '1 to 24 Qty / من ١ إلى ٢٤ قطعة', val: pTiers.tier1 },
-      { key: 'tier25', label: '25 to 199 Qty / من ٢٥ إلى ١٩٩ قطعة', val: pTiers.tier25 },
-      { key: 'tier200', label: '200 to 499 Qty / من ٢٠٠ إلى ٤٩٩ قطعة', val: pTiers.tier200 },
-      { key: 'tier500', label: '500 to 1499 Qty / من ٥٠٠ إلى ١٤٩٩ قطعة', val: pTiers.tier500 },
-      { key: 'tier1500', label: '1500 to 3499 Qty / من ١٥٠٠ إلى ٣٤٩٩ قطعة', val: pTiers.tier1500 },
-      { key: 'tier3500', label: '3500+ Qty / ٣٥٠٠ قطعة فأكثر', val: pTiers.tier3500 }
+      { key: 'tier1', label: '1 to 25 Qty / من ١ إلى ٢٥ قطعة', val: pTiers.tier1 },
+      { key: 'tier100', label: '100 to 300 Qty / من ١٠٠ إلى ٣٠٠ قطعة', val: pTiers.tier100 },
+      { key: 'tier325', label: '325 to 400 Qty / من ٣٢٥ إلى ٤٠٠ قطعة', val: pTiers.tier325 },
+      { key: 'tier450', label: '450 to 1000 Qty / من ٤٥٠ إلى ١٠٠٠ قطعة', val: pTiers.tier450 },
+      { key: 'tier1250', label: '1250 to 3000 Qty / من ١٢٥٠ إلى ٣٠٠٠ قطعة', val: pTiers.tier1250 },
+      { key: 'tier3500', label: '3500 to 5000+ Qty / ٣٥٠٠ قطعة فأكثر', val: pTiers.tier3500 }
     ];
     list.forEach(item => {
       const tr = document.createElement('tr');
@@ -2512,17 +2510,17 @@ function calculateAndUpdate() {
   function getProfitPercent(quantity) {
     const pTiers = (currentPricing && currentPricing.profitTiers) ? currentPricing.profitTiers : DEFAULT_PRICING.profitTiers;
     if (quantity >= 3500) {
-      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 28;
-    } else if (quantity >= 1500) {
-      return pTiers.tier1500 !== undefined ? pTiers.tier1500 : 30;
-    } else if (quantity >= 500) {
-      return pTiers.tier500 !== undefined ? pTiers.tier500 : 34;
-    } else if (quantity >= 200) {
-      return pTiers.tier200 !== undefined ? pTiers.tier200 : 36;
-    } else if (quantity >= 25) {
-      return pTiers.tier25 !== undefined ? pTiers.tier25 : 40;
+      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 26;
+    } else if (quantity >= 1250) {
+      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 32;
+    } else if (quantity >= 450) {
+      return pTiers.tier450 !== undefined ? pTiers.tier450 : 34;
+    } else if (quantity >= 325) {
+      return pTiers.tier325 !== undefined ? pTiers.tier325 : 36;
+    } else if (quantity >= 100) {
+      return pTiers.tier100 !== undefined ? pTiers.tier100 : 38;
     } else {
-      return pTiers.tier1 !== undefined ? pTiers.tier1 : 45;
+      return pTiers.tier1 !== undefined ? pTiers.tier1 : 40;
     }
   }
 
@@ -3242,17 +3240,17 @@ function calculateTshirtCupAndUpdate() {
   function getProfitPercent(quantity) {
     const pTiers = (currentPricing && currentPricing.profitTiers) ? currentPricing.profitTiers : DEFAULT_PRICING.profitTiers;
     if (quantity >= 3500) {
-      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 28;
-    } else if (quantity >= 1500) {
-      return pTiers.tier1500 !== undefined ? pTiers.tier1500 : 30;
-    } else if (quantity >= 500) {
-      return pTiers.tier500 !== undefined ? pTiers.tier500 : 34;
-    } else if (quantity >= 200) {
-      return pTiers.tier200 !== undefined ? pTiers.tier200 : 36;
-    } else if (quantity >= 25) {
-      return pTiers.tier25 !== undefined ? pTiers.tier25 : 40;
+      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 26;
+    } else if (quantity >= 1250) {
+      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 32;
+    } else if (quantity >= 450) {
+      return pTiers.tier450 !== undefined ? pTiers.tier450 : 34;
+    } else if (quantity >= 325) {
+      return pTiers.tier325 !== undefined ? pTiers.tier325 : 36;
+    } else if (quantity >= 100) {
+      return pTiers.tier100 !== undefined ? pTiers.tier100 : 38;
     } else {
-      return pTiers.tier1 !== undefined ? pTiers.tier1 : 45;
+      return pTiers.tier1 !== undefined ? pTiers.tier1 : 40;
     }
   }
 
