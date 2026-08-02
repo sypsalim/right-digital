@@ -920,6 +920,10 @@ function initUI() {
   const themeToggleText = document.getElementById('themeToggleText');
   const sunIcon = document.querySelector('.sun-icon');
   const moonIcon = document.querySelector('.moon-icon');
+  const themeOptDark = document.getElementById('themeOptDark');
+  const themeOptLight = document.getElementById('themeOptLight');
+  const badgeDark = document.getElementById('badgeDark');
+  const badgeLight = document.getElementById('badgeLight');
 
   function applyTheme(theme) {
     if (theme === 'light') {
@@ -927,11 +931,29 @@ function initUI() {
       if (themeToggleText) themeToggleText.innerText = 'Dark Theme';
       if (sunIcon) sunIcon.classList.add('hidden');
       if (moonIcon) moonIcon.classList.remove('hidden');
+
+      if (badgeDark) badgeDark.classList.add('hidden');
+      if (badgeLight) badgeLight.classList.remove('hidden');
+      if (themeOptDark) {
+        themeOptDark.style.borderColor = 'var(--border-light)';
+      }
+      if (themeOptLight) {
+        themeOptLight.style.borderColor = '#0c153b';
+      }
     } else {
       document.body.removeAttribute('data-theme');
       if (themeToggleText) themeToggleText.innerText = 'Light Theme';
       if (sunIcon) sunIcon.classList.remove('hidden');
       if (moonIcon) moonIcon.classList.add('hidden');
+
+      if (badgeDark) badgeDark.classList.remove('hidden');
+      if (badgeLight) badgeLight.classList.add('hidden');
+      if (themeOptDark) {
+        themeOptDark.style.borderColor = 'var(--primary-gold)';
+      }
+      if (themeOptLight) {
+        themeOptLight.style.borderColor = 'var(--border-light)';
+      }
     }
   }
 
@@ -944,6 +966,20 @@ function initUI() {
       const newTheme = currentTheme === 'light' ? 'dark' : 'light';
       localStorage.setItem('appTheme', newTheme);
       applyTheme(newTheme);
+    });
+  }
+
+  if (themeOptDark) {
+    themeOptDark.addEventListener('click', () => {
+      localStorage.setItem('appTheme', 'dark');
+      applyTheme('dark');
+    });
+  }
+
+  if (themeOptLight) {
+    themeOptLight.addEventListener('click', () => {
+      localStorage.setItem('appTheme', 'light');
+      applyTheme('light');
     });
   }
 

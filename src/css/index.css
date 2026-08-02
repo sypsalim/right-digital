@@ -2005,6 +2005,23 @@ input:checked + .slider:before {
   color: #ffffff;
 }
 
+[data-theme="light"] .theme-card-option#themeOptDark {
+  background: #0c153b !important;
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight {
+  background: #ffffff !important;
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight h4 {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight p {
+  color: #334155 !important;
+}
+
+
 
 
 

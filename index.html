@@ -813,6 +813,7 @@
             <button class="setting-tab-btn" data-target="setTabDiscounts">Discounts</button>
             <button class="setting-tab-btn" data-target="setTabFinishing">Finishing & Extras</button>
             <button class="setting-tab-btn" data-target="setTabTshirt">T-Shirt & Cup Rates</button>
+            <button class="setting-tab-btn" data-target="setTabTheme">Theme & Appearance</button>
             <button class="setting-tab-btn" data-target="setTabSecurity">Security Settings</button>
           </div>
 
@@ -1030,6 +1031,31 @@
               <div class="form-group min-w-150">
                 <label for="rateCupTransferSmall">SMALL CUP Transfer (SR)</label>
                 <input type="number" id="rateCupTransferSmall" step="0.5" class="form-input">
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings Tab: Theme & Appearance -->
+          <div class="setting-section hidden" id="setTabTheme">
+            <h3>Theme & Appearance Settings / إعدادات المظهر والسمة</h3>
+            <p class="sub-label">Select your visual theme preference. Switches dynamically across all panels.</p>
+            <div class="form-row flex-wrap" style="gap: 16px; margin-top: 12px;">
+              <div class="theme-card-option" id="themeOptDark" style="flex: 1; min-width: 180px; padding: 20px; border: 2px solid var(--primary-gold); border-radius: var(--border-radius-md); cursor: pointer; text-align: center; background: rgba(15, 23, 42, 0.7); transition: var(--transition-smooth);">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">🌙</div>
+                <h4 style="margin: 0; font-size: 1rem; color: #ffffff;">Dark Theme (Default)</h4>
+                <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 6px;">Sleek Dark Mode with Gold Accent</p>
+                <div style="margin-top: 12px;">
+                  <span class="theme-badge" id="badgeDark" style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.78rem; font-weight: 700; background: var(--primary-gold); color: #000;">Active</span>
+                </div>
+              </div>
+
+              <div class="theme-card-option" id="themeOptLight" style="flex: 1; min-width: 180px; padding: 20px; border: 2px solid var(--border-light); border-radius: var(--border-radius-md); cursor: pointer; text-align: center; background: rgba(245, 242, 213, 0.3); transition: var(--transition-smooth);">
+                <div style="font-size: 2.2rem; margin-bottom: 8px;">☀️</div>
+                <h4 style="margin: 0; font-size: 1rem; color: #ffffff;">Light Theme</h4>
+                <p style="font-size: 0.8rem; color: #cbd5e1; margin-top: 6px;">Royal Blue & Canvas Palette</p>
+                <div style="margin-top: 12px;">
+                  <span class="theme-badge hidden" id="badgeLight" style="display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 0.78rem; font-weight: 700; background: #0c153b; color: #fff;">Active</span>
+                </div>
               </div>
             </div>
           </div>
