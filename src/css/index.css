@@ -930,24 +930,28 @@ input:checked + .slider:before {
 }
 
 .settings-toggle-btn {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid var(--border-light);
-  color: var(--text-main);
+  background: #87855f !important;
+  background-color: #87855f !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
   padding: 10px 16px;
   border-radius: var(--border-radius-sm);
   cursor: pointer;
   font-family: var(--font-family);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85rem;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .settings-toggle-btn:hover {
-  background: rgba(212, 175, 55, 0.1);
-  border-color: var(--primary-gold);
+  background: #737150 !important;
+  background-color: #737150 !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
 }
 
 /* SETTINGS DRAWER OVERLAY */
@@ -1801,26 +1805,28 @@ input:checked + .slider:before {
 }
 
 .theme-toggle-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--border-light);
-  color: var(--text-main);
+  background: #87855f !important;
+  background-color: #87855f !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
   padding: 8px 16px;
   border-radius: var(--border-radius-sm);
   font-family: var(--font-family);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   transition: var(--transition-smooth);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .theme-toggle-btn:hover {
-  background: #27A9F5;
-  color: #ffffff;
-  border-color: #27A9F5;
+  background: #737150 !important;
+  background-color: #737150 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
 [data-theme="light"] {
@@ -1887,15 +1893,17 @@ input:checked + .slider:before {
 }
 
 [data-theme="light"] .theme-toggle-btn {
-  background: #0c153b;
-  color: #ffffff;
-  border-color: #0c153b;
+  background: #87855f !important;
+  background-color: #87855f !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 [data-theme="light"] .theme-toggle-btn:hover {
-  background: #0f172a;
-  color: #ffffff;
-  border-color: #ffffff;
+  background: #737150 !important;
+  background-color: #737150 !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
 }
 
 /* Main Frames (Cards) inside Light Mode */
