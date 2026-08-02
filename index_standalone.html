@@ -881,12 +881,22 @@ input:checked + .slider:before {
 }
 
 .unit-cost-row {
-  font-size: 0.95rem;
-  color: var(--text-muted);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-top: 6px;
+  padding-top: 6px;
+}
+
+.unit-cost-row .inv-label {
+  color: #dc2626;
+  font-weight: 700;
 }
 
 .unit-cost-row .inv-value {
-  color: var(--accent-emerald);
+  color: #dc2626;
+  font-size: 1.45rem;
+  font-weight: 800;
 }
 
 /* Buttons */
@@ -1338,15 +1348,28 @@ input:checked + .slider:before {
 
   .unit-cost-row,
   [data-theme="light"] .unit-cost-row {
-    font-size: 11pt !important;
+    font-size: 13pt !important;
+    font-weight: 800 !important;
+    color: #dc2626 !important;
     border-bottom: none !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
+    padding-top: 6px !important;
+    margin-top: 6px !important;
+  }
+
+  .unit-cost-row .inv-label,
+  [data-theme="light"] .unit-cost-row .inv-label {
+    color: #dc2626 !important;
+    font-weight: 700 !important;
+    font-size: 12pt !important;
   }
 
   .unit-cost-row .inv-value,
   [data-theme="light"] .unit-cost-row .inv-value {
-    color: #000000 !important;
+    color: #dc2626 !important;
+    font-weight: 800 !important;
+    font-size: 16pt !important;
   }
 
   .discount-row,
