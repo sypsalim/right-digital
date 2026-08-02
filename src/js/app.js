@@ -35,12 +35,12 @@ const DEFAULT_PRICING = {
   // Section 7: Lamination cost per sheet size in SR
   laminationRates: {
     '100x70': 0.65,
-    '90x64': 0.55,
-    '50x70': 0.45,
-    '70x33': 0.40,
-    '50x33': 0.25,
-    'A3': 0.20,
-    'A4': 0.15
+    '90x64': 0.65,
+    '50x70': 0.65,
+    '70x33': 0.65,
+    '50x33': 0.45,
+    'A3': 0.35,
+    'A4': 0.25
   },
 
   // Section 8: Plotter Cut cost per sheet size in SR
@@ -871,6 +871,15 @@ function loadPricingFromStorage() {
       } else {
         if (currentPricing.laminationRates['100x70'] === undefined || currentPricing.laminationRates['100x70'] === 1.20) {
           currentPricing.laminationRates['100x70'] = 0.65;
+        }
+        if (currentPricing.laminationRates['70x33'] === undefined || currentPricing.laminationRates['70x33'] === 0.40) {
+          currentPricing.laminationRates['70x33'] = 0.65;
+        }
+        if (currentPricing.laminationRates['50x70'] === undefined || currentPricing.laminationRates['50x70'] === 0.45 || currentPricing.laminationRates['50x70'] === 0.80) {
+          currentPricing.laminationRates['50x70'] = 0.65;
+        }
+        if (currentPricing.laminationRates['90x64'] === undefined || currentPricing.laminationRates['90x64'] === 0.55 || currentPricing.laminationRates['90x64'] === 1.00) {
+          currentPricing.laminationRates['90x64'] = 0.65;
         }
         Object.keys(DEFAULT_PRICING.laminationRates).forEach(sz => {
           if (currentPricing.laminationRates[sz] === undefined) {
