@@ -774,6 +774,10 @@
               <span class="inv-label text-discount">Applied Tier Discount / الخصم المطبق (<span id="invDiscountPercent">0%</span>):</span>
               <span class="inv-value text-discount" id="invDiscountVal">-</span>
             </div>
+            <div class="invoice-row" id="invRowProfit" style="color: var(--accent-emerald);">
+              <span class="inv-label" style="color: var(--accent-emerald); font-weight: 600;">Added Profit Margin / هامش الربح المضاف (<span id="invProfitPercent">0%</span>):</span>
+              <span class="inv-value" id="invProfitVal" style="color: var(--accent-emerald); font-weight: 700;">+0.00 SR</span>
+            </div>
             <div class="invoice-row total-row">
               <span class="inv-label">Total Cost / السعر الإجمالي:</span>
               <span class="inv-value" id="invTotalVal">-</span>
@@ -890,7 +894,7 @@
 
             <h3 style="margin-top: 16px;">Sheet-Based Discount Tiers / خصومات الفروع</h3>
             <p class="sub-label">Define the discount percentage given based on total printed sheets. Set discount to 0% to disable for a tier.</p>
-            <div class="table-responsive">
+            <div class="table-responsive" style="margin-bottom: 24px;">
               <table class="settings-edit-table">
                 <thead>
                   <tr>
@@ -900,6 +904,22 @@
                   </tr>
                 </thead>
                 <tbody id="settingsDiscountBody">
+                  <!-- Dynamically populated edit fields -->
+                </tbody>
+              </table>
+            </div>
+
+            <h3 style="margin-top: 16px;">Quantity-Based Profit Margin Tiers / نسب هامش الربح حسب الكمية</h3>
+            <p class="sub-label">Configure the profit markup percentage added to final cost based on ordered quantity range.</p>
+            <div class="table-responsive">
+              <table class="settings-edit-table">
+                <thead>
+                  <tr>
+                    <th>Quantity Range / نطاق الكمية</th>
+                    <th>Profit Margin % / نسبة الربح %</th>
+                  </tr>
+                </thead>
+                <tbody id="settingsProfitTierBody">
                   <!-- Dynamically populated edit fields -->
                 </tbody>
               </table>
