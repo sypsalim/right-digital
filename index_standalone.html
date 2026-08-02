@@ -3461,9 +3461,9 @@ const DEFAULT_PRICING = {
 
   // Section 7: Lamination cost per sheet size in SR
   laminationRates: {
-    '100x70': 1.20,
-    '90x64': 1.00,
-    '50x70': 0.80,
+    '100x70': 0.65,
+    '90x64': 0.55,
+    '50x70': 0.45,
     '70x33': 0.40,
     '50x33': 0.25,
     'A3': 0.20,
@@ -4296,6 +4296,9 @@ function loadPricingFromStorage() {
       if (!currentPricing.laminationRates) {
         currentPricing.laminationRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.laminationRates));
       } else {
+        if (currentPricing.laminationRates['100x70'] === undefined || currentPricing.laminationRates['100x70'] === 1.20) {
+          currentPricing.laminationRates['100x70'] = 0.65;
+        }
         Object.keys(DEFAULT_PRICING.laminationRates).forEach(sz => {
           if (currentPricing.laminationRates[sz] === undefined) {
             currentPricing.laminationRates[sz] = DEFAULT_PRICING.laminationRates[sz];
