@@ -1521,6 +1521,24 @@ input:checked + .slider:before {
   dominant-baseline: middle;
 }
 
+/* Die Cutting Options Grid - Full 2-Column alignment without free empty space */
+.die-cutting-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.die-cutting-options #dieBoardCardEl {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 580px) {
+  .die-cutting-options {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Polar Cutting Custom Card styling */
 .custom-extra-card {
   display: flex;

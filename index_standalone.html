@@ -1533,6 +1533,24 @@ input:checked + .slider:before {
   dominant-baseline: middle;
 }
 
+/* Die Cutting Options Grid - Full 2-Column alignment without free empty space */
+.die-cutting-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.die-cutting-options #dieBoardCardEl {
+  grid-column: 1 / -1;
+}
+
+@media (max-width: 580px) {
+  .die-cutting-options {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Polar Cutting Custom Card styling */
 .custom-extra-card {
   display: flex;
@@ -2123,7 +2141,7 @@ input:checked + .slider:before {
             <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--primary-gold-light); margin-bottom: 12px; font-family: 'Tajawal', 'Outfit', sans-serif;">
               Die Cutting / قص قالب
             </h4>
-            <div class="die-cutting-options" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px;">
+            <div class="die-cutting-options">
               
               <!-- Cylinder Option -->
               <div class="extra-checkbox-card custom-extra-card" id="dieCylinderCardEl">
@@ -2405,10 +2423,10 @@ input:checked + .slider:before {
         <!-- Section 4: Pre-Press Setup -->
         <div class="config-card" id="prePressCard">
           <h3>04. Pre-Press Setup / التجهيز قبل الطباعة</h3>
-          <div class="extras-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+          <div class="extras-grid" style="display: flex; flex-direction: column; gap: 12px;">
             
             <!-- 1. Design Charge -->
-            <div class="extra-checkbox-card custom-extra-card" id="designChargeCardEl">
+            <div class="extra-checkbox-card custom-extra-card" id="designChargeCardEl" style="width: 100%;">
               <label class="extra-checkbox-label" for="extraDesignCharge">
                 <input type="checkbox" id="extraDesignCharge">
                 <div class="extra-info">
