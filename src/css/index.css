@@ -1146,8 +1146,21 @@ input:checked + .slider:before {
 
 /* PRINT MEDIA DESIGN styles */
 @media print {
-  body {
+  html, body, .app-container, .app-body, .results-pane, .invoice-card, .invoice-card *,
+  [data-theme="light"], [data-theme="light"] body, [data-theme="light"] .app-container,
+  [data-theme="light"] .app-body, [data-theme="light"] .results-pane, [data-theme="light"] .invoice-card,
+  [data-theme="light"] .invoice-card * {
     background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body,
+  [data-theme="light"] body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
     color: #000000 !important;
     font-size: 11pt !important;
     padding: 0 !important;
@@ -1156,10 +1169,13 @@ input:checked + .slider:before {
     print-color-adjust: exact;
   }
 
-  .app-container {
+  .app-container,
+  [data-theme="light"] .app-container {
     padding: 0 !important;
     max-width: 100% !important;
     gap: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   /* Hide navigation, settings, configs, layouts */
@@ -1167,24 +1183,34 @@ input:checked + .slider:before {
   .config-pane,
   .results-card:not(.invoice-card),
   .settings-drawer,
-  .no-print {
+  .no-print,
+  .lock-screen-overlay,
+  .login-modal-overlay {
     display: none !important;
   }
 
   /* Expand Invoice Card to Full Width */
-  .app-body {
+  .app-body,
+  [data-theme="light"] .app-body {
     grid-template-columns: 1fr !important;
     margin: 0 !important;
     padding: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
-  .results-pane {
+  .results-pane,
+  [data-theme="light"] .results-pane {
     width: 100% !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
-  .invoice-card {
+  .invoice-card,
+  [data-theme="light"] .invoice-card {
     border: none !important;
     background: #ffffff !important;
+    background-color: #ffffff !important;
     box-shadow: none !important;
     padding: 0 !important;
     margin: 0 !important;
@@ -1201,6 +1227,8 @@ input:checked + .slider:before {
 
   .invoice-actions-print-only {
     display: block !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   .invoice-print-header {
@@ -1209,6 +1237,8 @@ input:checked + .slider:before {
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 10px;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
   .print-company-logo {
@@ -1240,29 +1270,38 @@ input:checked + .slider:before {
   .print-contact {
     text-align: right;
     font-size: 9pt;
-    color: #374151;
+    color: #374151 !important;
   }
 
   .print-contact p {
     margin: 2px 0;
-  }
-
-  .invoice-table {
-    gap: 8px !important;
-  }
-
-  .invoice-row {
-    font-size: 10pt !important;
-    color: #000000 !important;
-    border-bottom: 1px solid #e5e7eb !important;
-    padding: 4px 0 !important;
-  }
-
-  .inv-label {
     color: #374151 !important;
   }
 
-  .inv-value {
+  .invoice-table,
+  [data-theme="light"] .invoice-table {
+    gap: 8px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .invoice-row,
+  [data-theme="light"] .invoice-row {
+    font-size: 10pt !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 6px 0 !important;
+  }
+
+  .inv-label,
+  [data-theme="light"] .inv-label {
+    color: #374151 !important;
+  }
+
+  .inv-value,
+  [data-theme="light"] .inv-value {
     color: #000000 !important;
   }
 
@@ -1270,32 +1309,41 @@ input:checked + .slider:before {
     border-top: 1px solid #9ca3af !important;
   }
 
-  .total-row {
+  .total-row,
+  [data-theme="light"] .total-row {
     font-size: 14pt !important;
     margin-top: 8px !important;
     border-top: 2px solid #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
-  .total-row .inv-value {
+  .total-row .inv-value,
+  [data-theme="light"] .total-row .inv-value {
     color: #000000 !important;
     text-shadow: none !important;
   }
 
-  .unit-cost-row {
+  .unit-cost-row,
+  [data-theme="light"] .unit-cost-row {
     font-size: 11pt !important;
     border-bottom: none !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 
-  .unit-cost-row .inv-value {
+  .unit-cost-row .inv-value,
+  [data-theme="light"] .unit-cost-row .inv-value {
     color: #000000 !important;
   }
 
-  .discount-row {
+  .discount-row,
+  .text-discount,
+  [data-theme="light"] .discount-row,
+  [data-theme="light"] .text-discount {
     color: #000000 !important;
-  }
-  
-  .text-discount {
-    color: #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
   }
 }
 
