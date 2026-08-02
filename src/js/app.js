@@ -62,12 +62,13 @@ const DEFAULT_PRICING = {
     folding: 0.25,   // per piece
     pasting: 0.25,   // per piece
     rope: 0.12,      // per piece
-    packing: 0.50,   // per 100 pieces packet
+    packing: 5.00,   // per 100 pieces packet
     businessCardPrint: 0.012, // per piece
     businessCardA3SheetPrice: 0.75, // A3 sheet price specifically for business card jobs
-    businessCardPolarCutPrice: 0.50, // Polar Cutting cost per sheet for business cards
+    businessCardPolarCutPrice: 8.50, // Polar Cutting cost per 100 pcs pack
     dieCylinder: 0.30, // Cylinder Die Cutting cost per sheet
-    dieManual: 0.15    // Manual Die Cutting cost per sheet
+    dieManual: 0.35,   // Manual Die Cutting cost per sheet
+    dieBoard: 150.00   // Die Board cost per part
   },
 
   // T-Shirt & Cup rates in SR
@@ -989,11 +990,12 @@ function initUI() {
 
   // 5. Inputs Auto-change
   const inputIds = [
-    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'boxFoldType', 'stickerType', 'stickerColors',
+    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'designSpace', 'stickerType', 'stickerColors',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
-    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'businessCardMode', 'backSidePrint',
+    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
+    'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
@@ -1371,7 +1373,11 @@ function initUI() {
   }
   const dieManualRateInput = document.getElementById('dieManualRateInput');
   if (dieManualRateInput) {
-    dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.15).toFixed(2);
+    dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.35).toFixed(2);
+  }
+  const dieBoardRateInput = document.getElementById('dieBoardRateInput');
+  if (dieBoardRateInput) {
+    dieBoardRateInput.value = (currentPricing.fixedRates.dieBoard !== undefined ? currentPricing.fixedRates.dieBoard : 150.00).toFixed(2);
   }
 
   // Mutually exclusive toggle for Die Cutting
@@ -1495,17 +1501,12 @@ function updateExtrasAvailabilities() {
   const plotterCardEl = document.getElementById('plotterCardEl');
   const isSticker = currentJobType === 'sticker';
   
-  const bcModeContainer = document.getElementById('bcModeContainer');
   const backSidePrintContainer = document.getElementById('backSidePrintContainer');
   if (isSticker) {
-    if (bcModeContainer) bcModeContainer.classList.add('hidden');
     if (backSidePrintContainer) backSidePrintContainer.classList.add('hidden');
-    const bcCheckbox = document.getElementById('businessCardMode');
-    if (bcCheckbox) bcCheckbox.checked = false;
     const bsCheckbox = document.getElementById('backSidePrint');
     if (bsCheckbox) bsCheckbox.checked = false;
   } else {
-    if (bcModeContainer) bcModeContainer.classList.remove('hidden');
     if (backSidePrintContainer) backSidePrintContainer.classList.remove('hidden');
   }
   
@@ -2021,24 +2022,10 @@ function calculateAndUpdate() {
     return;
   }
   const plotterCardEl = document.getElementById('plotterCardEl');
-  const isBcMode = document.getElementById('businessCardMode') && document.getElementById('businessCardMode').checked && currentJobType === 'paper';
-  if (isBcMode) {
-    selectedPaperSizeId = 'size_a3';
-    if (!window.bcModeWasActive) {
-      selectedGsm = '300';
-      window.bcModeWasActive = true;
-      const extraPolar = document.getElementById('extraPolarCutting');
-      if (extraPolar) extraPolar.checked = true;
-    }
-    if (plotterCardEl) {
-      plotterCardEl.classList.add('disabled');
-      document.getElementById('extraPlotter').checked = false;
-    }
-  } else {
-    window.bcModeWasActive = false;
-    if (plotterCardEl) {
-      plotterCardEl.classList.remove('disabled');
-    }
+  const isBcMode = false;
+  window.bcModeWasActive = false;
+  if (plotterCardEl) {
+    plotterCardEl.classList.remove('disabled');
   }
 
   // Render buttons b/c they change sizes or prices
@@ -2051,56 +2038,52 @@ function calculateAndUpdate() {
   const i_h = parseFloat(document.getElementById('itemHeight').value) || 1;
   const qty = parseInt(document.getElementById('itemQty').value) || 1;
 
-  // Box Wall-Fold Calculation:
-  // Double-Wall: Each fold side = Height (H) + Wall Thickness (T) + Height (H) + 1.9 cm (Inside Lock Flap)
-  // Single-Wall: Each fold side = Height (H) + Wall Thickness (T) + 1.9 cm (Inside Lock Flap)
+  // Box Wall-Fold & Design Space Calculation:
   const boxHInput = document.getElementById('boxDepthH');
   const boxTInput = document.getElementById('wallThickness');
-  const boxFoldTypeEl = document.getElementById('boxFoldType');
+  const insideFoldLockInput = document.getElementById('insideFoldLock');
+  const designSpaceInput = document.getElementById('designSpace');
+
   const boxH = boxHInput ? (parseFloat(boxHInput.value) || 0) : 0;
   const boxT = boxTInput ? (parseFloat(boxTInput.value) || 0) : 0;
-  const boxFoldType = boxFoldTypeEl ? boxFoldTypeEl.value : 'double';
+  const insideFoldLock = insideFoldLockInput ? (parseFloat(insideFoldLockInput.value) || 1.0) : 1.0;
+  const designSpace = designSpaceInput ? (parseFloat(designSpaceInput.value) || 0) : 0;
 
   let sideFold = 0;
   if (boxH > 0) {
-    if (boxFoldType === 'single') {
-      sideFold = boxH + boxT + 1.9;
-    } else {
-      sideFold = (2 * boxH) + boxT + 1.9;
-    }
+    sideFold = (2 * boxH) + boxT + insideFoldLock;
   }
 
-  const effective_w = i_w + (2 * sideFold);
-  const effective_h = i_h + (2 * sideFold);
+  const effective_w = i_w + (2 * sideFold) + (2 * designSpace);
+  const effective_h = i_h + (2 * sideFold) + (2 * designSpace);
 
-  // Show/Hide Unfolded Box Notice in Section 3
+  // Show/Hide Unfolded Box / Cut Size Notice in Section 3
   const boxFoldNotice = document.getElementById('boxFoldInfoNotice');
   if (boxFoldNotice) {
-    if (boxH > 0) {
+    if (boxH > 0 || designSpace > 0) {
       boxFoldNotice.classList.remove('hidden');
       const isExceeding = (effective_w > S_W || effective_h > S_H) && (effective_w > S_H || effective_h > S_W);
-      const foldTypeName = boxFoldType === 'single' ? 'Single-Wall Fold' : 'Double-Wall Fold';
-      const foldFormulaDesc = boxFoldType === 'single'
-        ? `(Height ${boxH}cm + Wall ${boxT}cm + Lock Flap 1.9cm)`
-        : `(Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock Flap 1.9cm)`;
+      const foldDesc = boxH > 0 ? `Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> (Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock ${insideFoldLock.toFixed(1)}cm)` : '';
+      const dsDesc = designSpace > 0 ? `Design Space per Side: <strong>${designSpace.toFixed(2)} cm</strong>` : '';
+      const notesArray = [foldDesc, dsDesc].filter(Boolean).join(' | ');
 
       if (isExceeding) {
         boxFoldNotice.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
-            ⚠️ Notice: Unfolded Box Flat Size (${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
+            ⚠️ Notice: Required Unfolded Size (${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
-            Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> ${foldFormulaDesc}<br>
-            <em>Tip: Try switching <strong>Box Wall Type</strong> to <strong>Single-Wall Fold</strong> or selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
+            ${notesArray}<br>
+            <em>Tip: Try selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
           </div>
         `;
       } else {
         boxFoldNotice.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
-            📐 ${foldTypeName} Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
+            📐 Required Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
-            Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> ${foldFormulaDesc}
+            ${notesArray}
           </div>
         `;
       }
@@ -2233,9 +2216,10 @@ function calculateAndUpdate() {
   // Handle Rope applies per piece (bag)
   const ropeCost = optHandleRope ? qty * currentPricing.fixedRates.rope : 0;
 
-  // Packing cost: 5 SR per 100 pieces (or packet)
+  // Packing cost: 5.00 SR per 100 pieces (or packet)
   const packets = Math.ceil(qty / 100);
-  const packingCost = optPacking ? packets * currentPricing.fixedRates.packing : 0;
+  const packingRate = currentPricing.fixedRates.packing !== undefined ? currentPricing.fixedRates.packing : 5.00;
+  const packingCost = optPacking ? packets * packingRate : 0;
 
   // 8. Discount Tier Matching (based on sheetsNeeded instead of pieces qty, or qty > 1700 for business cards)
   let discountPercent = 0;
@@ -2253,20 +2237,35 @@ function calculateAndUpdate() {
   const discountVal = ((baseCostTotal + backSideCost) * discountPercent) / 100;
   const discountedBaseCost = (baseCostTotal + backSideCost) - discountVal;
 
-  // Polar Cutting option
+  // Polar Cutting option: per 100 Pcs packet tiering
+  // Less than 300 Qty -> 8.50 SR / packet
+  // 300 - 500 Qty -> 6.50 SR / packet
+  // More than 500 Qty -> 4.50 SR / packet
   const optPolarCutting = document.getElementById('extraPolarCutting') && document.getElementById('extraPolarCutting').checked;
-  const polarCuttingRate = parseFloat(document.getElementById('polarCuttingRateInput').value) || 0;
-  const polarCuttingCost = optPolarCutting ? sheetsNeeded * polarCuttingRate : 0;
+  const polarPackets = Math.ceil(qty / 100);
+  
+  let polarTierRate = 8.50;
+  if (qty > 500) {
+    polarTierRate = 4.50;
+  } else if (qty >= 300) {
+    polarTierRate = 6.50;
+  } else {
+    polarTierRate = 8.50;
+  }
+
+  const polarRateInput = document.getElementById('polarCuttingRateInput');
+  const polarCuttingRate = polarRateInput && parseFloat(polarRateInput.value) > 0 ? parseFloat(polarRateInput.value) : polarTierRate;
+  const polarCuttingCost = optPolarCutting ? polarPackets * polarCuttingRate : 0;
 
   // Update Polar Cutting dynamic text in UI
   const polarCuttingPriceText = document.getElementById('polarCuttingPriceText');
   if (polarCuttingPriceText) {
-    polarCuttingPriceText.innerText = `${polarCuttingRate.toFixed(2)} SR / sheet`;
+    polarCuttingPriceText.innerText = `${polarCuttingRate.toFixed(2)} SR / 100 pcs pack`;
   }
 
   // Die Cutting options
   const optDieCylinder = document.getElementById('extraDieCylinder') && document.getElementById('extraDieCylinder').checked;
-  const dieCylinderRate = parseFloat(document.getElementById('dieCylinderRateInput').value) || 0;
+  const dieCylinderRate = parseFloat(document.getElementById('dieCylinderRateInput')?.value) || 0.30;
   const dieCylinderCost = optDieCylinder ? sheetsNeeded * dieCylinderRate : 0;
 
   const dieCylinderPriceText = document.getElementById('dieCylinderPriceText');
@@ -2275,12 +2274,37 @@ function calculateAndUpdate() {
   }
 
   const optDieManual = document.getElementById('extraDieManual') && document.getElementById('extraDieManual').checked;
-  const dieManualRate = parseFloat(document.getElementById('dieManualRateInput').value) || 0;
+  const dieManualRate = parseFloat(document.getElementById('dieManualRateInput')?.value) || 0.35;
   const dieManualCost = optDieManual ? sheetsNeeded * dieManualRate : 0;
 
   const dieManualPriceText = document.getElementById('dieManualPriceText');
   if (dieManualPriceText) {
     dieManualPriceText.innerText = `${dieManualRate.toFixed(2)} SR / sheet`;
+  }
+
+  // Die Board option
+  const optDieBoard = document.getElementById('extraDieBoard') && document.getElementById('extraDieBoard').checked;
+  const dieBoardDetailsRow = document.getElementById('dieBoardDetailsRow');
+  if (dieBoardDetailsRow) {
+    if (optDieBoard) {
+      dieBoardDetailsRow.classList.remove('hidden');
+    } else {
+      dieBoardDetailsRow.classList.add('hidden');
+    }
+  }
+
+  const dieBoardParts = optDieBoard ? (parseInt(document.getElementById('dieBoardPartsInput').value) || 1) : 0;
+  const dieBoardRate = optDieBoard ? (parseFloat(document.getElementById('dieBoardRateInput').value) || 150.00) : 150.00;
+  const dieBoardCost = optDieBoard ? (dieBoardParts * dieBoardRate) : 0;
+
+  const dieBoardNotice = document.getElementById('dieBoardNotice');
+  if (dieBoardNotice && optDieBoard) {
+    dieBoardNotice.innerHTML = `<strong>Total Die Board Cost:</strong> ${dieBoardCost.toFixed(2)} SR (${dieBoardParts} part${dieBoardParts > 1 ? 's' : ''} @ ${dieBoardRate.toFixed(2)} SR/part)`;
+  }
+
+  const dieBoardPriceText = document.getElementById('dieBoardPriceText');
+  if (dieBoardPriceText) {
+    dieBoardPriceText.innerText = optDieBoard ? `${dieBoardCost.toFixed(2)} SR (${dieBoardParts} part${dieBoardParts > 1 ? 's' : ''} @ ${dieBoardRate.toFixed(2)} SR)` : `Full size die board: ${dieBoardRate.toFixed(2)} SR per part`;
   }
 
   // Plastic Window option
@@ -2376,7 +2400,7 @@ function calculateAndUpdate() {
 
 
   // Total invoice cost
-  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
+  const totalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
   const unitCost = qty > 0 ? totalCost / qty : 0;
 
 
@@ -2415,7 +2439,7 @@ function calculateAndUpdate() {
   // Polar Cutting Invoice Row
   toggleInvoiceRow('invRowBcCut', optPolarCutting, 'invBcCutCost', polarCuttingCost);
   if (optPolarCutting) {
-    document.getElementById('invBcCutCost').innerText = `${polarCuttingCost.toFixed(2)} SR (${sheetsNeeded} sheets @ ${polarCuttingRate.toFixed(2)} SR)`;
+    document.getElementById('invBcCutCost').innerText = `${polarCuttingCost.toFixed(2)} SR (${polarPackets} pack${polarPackets > 1 ? 's' : ''} @ ${polarCuttingRate.toFixed(2)} SR)`;
   }
 
   // Die Cutting Invoice Rows
@@ -2427,6 +2451,11 @@ function calculateAndUpdate() {
   toggleInvoiceRow('invRowDieManual', optDieManual, 'invDieManualCost', dieManualCost);
   if (optDieManual) {
     document.getElementById('invDieManualCost').innerText = `${dieManualCost.toFixed(2)} SR (${sheetsNeeded} sheets @ ${dieManualRate.toFixed(2)} SR)`;
+  }
+
+  toggleInvoiceRow('invRowDieBoard', optDieBoard && dieBoardCost > 0, 'invDieBoardCost', dieBoardCost);
+  if (optDieBoard && dieBoardCost > 0) {
+    document.getElementById('invDieBoardCost').innerText = `${dieBoardCost.toFixed(2)} SR (${dieBoardParts} part${dieBoardParts > 1 ? 's' : ''} @ ${dieBoardRate.toFixed(2)} SR)`;
   }
 
   // Pre-Press Setup Invoice Rows
@@ -2545,6 +2574,7 @@ function renderComparisonTable(layout, bestDirection, activeDirection) {
 // --- RENDER VISUAL SVG PREVIEW ---
 function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, origH = 0, sideFold = 0) {
   const svg = document.getElementById('layoutSvg');
+  if (!svg) return;
   svg.innerHTML = '';
 
   // Setup SVG dimensions and margins
@@ -2607,46 +2637,158 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
   const drawItemW = itemW * scale;
   const drawItemH = itemH * scale;
 
+  // Fetch current box depth, wall thickness, and inside fold lock for detailed die-cut net rendering
+  const boxHVal = parseFloat(document.getElementById('boxDepthH')?.value || 0);
+  const boxTVal = parseFloat(document.getElementById('wallThickness')?.value || 0);
+  const insideFoldLockVal = parseFloat(document.getElementById('insideFoldLock')?.value || 1.0);
+  const boxFoldTypeVal = document.getElementById('boxFoldType')?.value || 'double';
+
   let upCounter = 1;
+  // Die cutting gripper margin: Position layout on the right side, keeping 1 cm from the right paper edge
+  const rightGripperMarginCm = 1.0;
+  let startXCm = 0;
+  if (S_W >= (cols * itemW + rightGripperMarginCm)) {
+    startXCm = S_W - (cols * itemW) - rightGripperMarginCm;
+  } else if (S_W >= cols * itemW) {
+    startXCm = S_W - (cols * itemW);
+  } else {
+    startXCm = 0;
+  }
+  const startXPx = startXCm * scale;
+
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const upX = offsetX + (c * drawItemW);
+      const upX = offsetX + startXPx + (c * drawItemW);
       const upY = offsetY + (r * drawItemH);
 
       // Create grouping for hover effects and clean structures
       const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-      rect.setAttribute("x", upX);
-      rect.setAttribute("y", upY);
-      rect.setAttribute("width", drawItemW);
-      rect.setAttribute("height", drawItemH);
-      rect.setAttribute("class", "svg-up-box");
-      group.appendChild(rect);
-
-      // If box wall fold applies, draw dashed inner box base outline
-      if (sideFold > 0) {
+      if (sideFold > 0 && boxHVal > 0) {
+        // --- DIE-CUT BOX NET VISUAL RENDERING ---
         const foldOffset = sideFold * scale;
+        const x0 = upX;
+        const x1 = upX + foldOffset;
+        const x2 = upX + drawItemW - foldOffset;
+        const x3 = upX + drawItemW;
+
+        const y0 = upY;
+        const y1 = upY + foldOffset;
+        const y2 = upY + drawItemH - foldOffset;
+        const y3 = upY + drawItemH;
+
+        // Outer Bounding Box (semi-transparent helper)
+        const outerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        outerRect.setAttribute("x", upX);
+        outerRect.setAttribute("y", upY);
+        outerRect.setAttribute("width", drawItemW);
+        outerRect.setAttribute("height", drawItemH);
+        outerRect.setAttribute("fill", "rgba(15, 23, 42, 0.05)");
+        outerRect.setAttribute("stroke", "rgba(156, 163, 175, 0.2)");
+        outerRect.setAttribute("stroke-width", "0.5");
+        outerRect.setAttribute("stroke-dasharray", "2 2");
+        group.appendChild(outerRect);
+
+        // Solid Red Die-Cut Perimeter Path (12-point cross shape)
+        const dieCutPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const pathD = `M ${x1},${y0} L ${x2},${y0} L ${x2},${y1} L ${x3},${y1} L ${x3},${y2} L ${x2},${y2} L ${x2},${y3} L ${x1},${y3} L ${x1},${y2} L ${x0},${y2} L ${x0},${y1} L ${x1},${y1} Z`;
+        dieCutPath.setAttribute("d", pathD);
+        dieCutPath.setAttribute("fill", "rgba(244, 63, 94, 0.06)");
+        dieCutPath.setAttribute("stroke", "#ef4444");
+        dieCutPath.setAttribute("stroke-width", "1.5");
+        group.appendChild(dieCutPath);
+
+        // Center Box Base (Bottom Rect)
         const innerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        innerRect.setAttribute("x", upX + foldOffset);
-        innerRect.setAttribute("y", upY + foldOffset);
-        innerRect.setAttribute("width", Math.max(0, drawItemW - (2 * foldOffset)));
-        innerRect.setAttribute("height", Math.max(0, drawItemH - (2 * foldOffset)));
+        innerRect.setAttribute("x", x1);
+        innerRect.setAttribute("y", y1);
+        innerRect.setAttribute("width", Math.max(0, x2 - x1));
+        innerRect.setAttribute("height", Math.max(0, y2 - y1));
         innerRect.setAttribute("fill", "rgba(212, 175, 55, 0.15)");
-        innerRect.setAttribute("stroke", "#d4af37");
-        innerRect.setAttribute("stroke-width", "1.5");
-        innerRect.setAttribute("stroke-dasharray", "3 3");
+        innerRect.setAttribute("stroke", "#10b981");
+        innerRect.setAttribute("stroke-width", "1.2");
+        innerRect.setAttribute("stroke-dasharray", "3 2");
         group.appendChild(innerRect);
+
+        // Intermediate Dashed Green Fold Lines across 4 flaps
+        const createFoldLine = (lx1, ly1, lx2, ly2) => {
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", lx1);
+          line.setAttribute("y1", ly1);
+          line.setAttribute("x2", lx2);
+          line.setAttribute("y2", ly2);
+          line.setAttribute("stroke", "#10b981");
+          line.setAttribute("stroke-width", "1");
+          line.setAttribute("stroke-dasharray", "3 2");
+          return line;
+        };
+
+        const hPx = boxHVal * scale;
+        const tPx = boxTVal * scale;
+
+        // Top & Bottom Flap Fold Lines
+        const topFold1 = y1 - hPx;
+        if (topFold1 > y0 && topFold1 < y1) group.appendChild(createFoldLine(x1, topFold1, x2, topFold1));
+        const botFold1 = y2 + hPx;
+        if (botFold1 > y2 && botFold1 < y3) group.appendChild(createFoldLine(x1, botFold1, x2, botFold1));
+
+        if (boxFoldTypeVal === 'double') {
+          const topFold2 = y1 - hPx - tPx;
+          if (topFold2 > y0 && topFold2 < y1) group.appendChild(createFoldLine(x1, topFold2, x2, topFold2));
+          const botFold2 = y2 + hPx + tPx;
+          if (botFold2 > y2 && botFold2 < y3) group.appendChild(createFoldLine(x1, botFold2, x2, botFold2));
+
+          const topFold3 = y1 - (2 * hPx) - tPx;
+          if (topFold3 > y0 && topFold3 < y1) group.appendChild(createFoldLine(x1, topFold3, x2, topFold3));
+          const botFold3 = y2 + (2 * hPx) + tPx;
+          if (botFold3 > y2 && botFold3 < y3) group.appendChild(createFoldLine(x1, botFold3, x2, botFold3));
+        }
+
+        // Left & Right Flap Fold Lines
+        const leftFold1 = x1 - hPx;
+        if (leftFold1 > x0 && leftFold1 < x1) group.appendChild(createFoldLine(leftFold1, y1, leftFold1, y2));
+        const rightFold1 = x2 + hPx;
+        if (rightFold1 > x2 && rightFold1 < x3) group.appendChild(createFoldLine(rightFold1, y1, rightFold1, y2));
+
+        if (boxFoldTypeVal === 'double') {
+          const leftFold2 = x1 - hPx - tPx;
+          if (leftFold2 > x0 && leftFold2 < x1) group.appendChild(createFoldLine(leftFold2, y1, leftFold2, y2));
+          const rightFold2 = x2 + hPx + tPx;
+          if (rightFold2 > x2 && rightFold2 < x3) group.appendChild(createFoldLine(rightFold2, y1, rightFold2, y2));
+
+          const leftFold3 = x1 - (2 * hPx) - tPx;
+          if (leftFold3 > x0 && leftFold3 < x1) group.appendChild(createFoldLine(leftFold3, y1, leftFold3, y2));
+          const rightFold3 = x2 + (2 * hPx) + tPx;
+          if (rightFold3 > x2 && rightFold3 < x3) group.appendChild(createFoldLine(rightFold3, y1, rightFold3, y2));
+        }
+
+        // Piece Counter Label in Center Box Base
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", x1 + (x2 - x1) / 2);
+        text.setAttribute("y", y1 + (y2 - y1) / 2 + 4);
+        text.setAttribute("class", "svg-up-label");
+        text.setAttribute("font-size", "11px");
+        text.textContent = upCounter;
+        group.appendChild(text);
+
+      } else {
+        // --- STANDARD FLAT RECTANGLE RENDERING ---
+        const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect.setAttribute("x", upX);
+        rect.setAttribute("y", upY);
+        rect.setAttribute("width", drawItemW);
+        rect.setAttribute("height", drawItemH);
+        rect.setAttribute("class", "svg-up-box");
+        group.appendChild(rect);
+
+        // Add label inside each piece
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", upX + (drawItemW / 2));
+        text.setAttribute("y", upY + (drawItemH / 2));
+        text.setAttribute("class", "svg-up-label");
+        text.textContent = upCounter;
+        group.appendChild(text);
       }
-
-      // Add label inside each piece
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", upX + (drawItemW / 2));
-      text.setAttribute("y", upY + (drawItemH / 2));
-      text.setAttribute("class", "svg-up-label");
-
-      text.textContent = upCounter;
-      group.appendChild(text);
 
       svg.appendChild(group);
       upCounter++;
@@ -2682,7 +2824,7 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
     textItemDim.setAttribute("font-size", "9px");
     textItemDim.setAttribute("font-weight", "600");
     textItemDim.setAttribute("text-anchor", "middle");
-    textItemDim.textContent = `${itemW} x ${itemH} cm`;
+    textItemDim.textContent = `${itemW.toFixed(1)} x ${itemH.toFixed(1)} cm${sideFold > 0 ? ' (Unfolded Flat)' : ''}`;
     svg.appendChild(textItemDim);
   }
 }
@@ -3190,18 +3332,20 @@ function initDigital3DListeners() {
   const inputW = document.getElementById("itemHeight");
   const inputH = document.getElementById("boxDepthH");
   const inputT = document.getElementById("wallThickness");
+  const inputLock = document.getElementById("insideFoldLock");
 
   const updateBox = () => {
     const L = parseFloat(inputL ? inputL.value : 0) || 0;
     const W = parseFloat(inputW ? inputW.value : 0) || 0;
     const H = parseFloat(inputH ? inputH.value : 0) || 0;
     const T = parseFloat(inputT ? inputT.value : 0) || 0;
+    const lockVal = parseFloat(inputLock ? inputLock.value : 1.0) || 1.0;
 
     drawDigital3DBox(L, W, H, T);
     calculateAndUpdate();
   };
 
-  [inputL, inputW, inputH, inputT].forEach(inp => {
+  [inputL, inputW, inputH, inputT, inputLock].forEach(inp => {
     if (inp) {
       inp.addEventListener("input", updateBox);
       inp.addEventListener("change", updateBox);

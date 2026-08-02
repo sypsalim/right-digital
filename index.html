@@ -100,7 +100,7 @@
                 <label class="extra-checkbox-label" for="extraDieCylinder">
                   <input type="checkbox" id="extraDieCylinder">
                   <div class="extra-info">
-                    <span class="extra-title">Cylinder / سلندر</span>
+                    <span class="extra-title">Cylinder Cut / قص قالب سلندر</span>
                     <span class="extra-desc" id="dieCylinderPriceText">0.30 SR / sheet</span>
                   </div>
                 </label>
@@ -109,19 +109,53 @@
                   <span class="rate-unit">SR</span>
                 </div>
               </div>
-              
+
               <!-- Manual Option -->
               <div class="extra-checkbox-card custom-extra-card" id="dieManualCardEl">
                 <label class="extra-checkbox-label" for="extraDieManual">
                   <input type="checkbox" id="extraDieManual">
                   <div class="extra-info">
-                    <span class="extra-title">Manual / يدوي</span>
-                    <span class="extra-desc" id="dieManualPriceText">0.15 SR / sheet</span>
+                    <span class="extra-title">Manual Cut / قص قالب يدوي</span>
+                    <span class="extra-desc" id="dieManualPriceText">0.35 SR / sheet</span>
                   </div>
                 </label>
                 <div class="extra-rate-input-wrapper">
-                  <input type="number" id="dieManualRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.15">
+                  <input type="number" id="dieManualRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.35">
                   <span class="rate-unit">SR</span>
+                </div>
+              </div>
+
+              <!-- Die Board Option -->
+              <div class="extra-checkbox-card custom-extra-card" id="dieBoardCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                  <label class="extra-checkbox-label" for="extraDieBoard" style="flex: 1; cursor: pointer;">
+                    <input type="checkbox" id="extraDieBoard">
+                    <div class="extra-info">
+                      <span class="extra-title">Die Board / قالب قص خشب (سكينة)</span>
+                      <span class="extra-desc" id="dieBoardPriceText">Full size die board: 150.00 SR per part</span>
+                    </div>
+                  </label>
+                </div>
+                <div id="dieBoardDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                  <div class="form-row" style="gap: 12px;">
+                    <div class="form-group min-w-150" style="flex: 1;">
+                      <label for="dieBoardPartsInput">Number of Parts / عدد القطع بالقالب</label>
+                      <div class="input-with-unit">
+                        <input type="number" id="dieBoardPartsInput" value="1" min="1" step="1" class="form-input">
+                        <span class="unit">parts</span>
+                      </div>
+                    </div>
+                    <div class="form-group min-w-150" style="flex: 1;">
+                      <label for="dieBoardRateInput">Cost Per Part / تكلفة القطعة الواحدة</label>
+                      <div class="input-with-unit">
+                        <input type="number" id="dieBoardRateInput" value="150.00" min="0" step="5" class="form-input">
+                        <span class="unit">SR</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div id="dieBoardNotice" style="margin-top: 8px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-gold); padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
+                    <!-- Dynamic Die Board cost notice -->
+                  </div>
                 </div>
               </div>
               
@@ -286,16 +320,23 @@
           </div>
           <div class="form-row" style="margin-top: 8px;">
             <div class="form-group" style="flex: 1.5;">
-              <label for="boxFoldType">Box Wall Type / نوع طَي العلبة</label>
-              <select id="boxFoldType" class="form-select">
-                <option value="double" selected>Double-Wall Fold / جدار مزدوج (2H + T + 1.9 cm)</option>
-                <option value="single">Single-Wall Fold / جدار مفرد (H + T + 1.9 cm)</option>
-              </select>
+              <label for="designSpace">Design Space (CM) / مسافة التصميم (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="designSpace" value="0" min="0" step="0.1" class="form-input" placeholder="0">
+                <span class="unit">cm</span>
+              </div>
             </div>
             <div class="form-group" style="flex: 1;">
               <label for="wallThickness">Wall Thickness (T) / سماكة الجدار (سم)</label>
               <div class="input-with-unit">
                 <input type="number" id="wallThickness" value="0" min="0" step="0.1" class="form-input" placeholder="0">
+                <span class="unit">cm</span>
+              </div>
+            </div>
+            <div class="form-group" style="flex: 1.2;">
+              <label for="insideFoldLock">Inside Fold Lock / قفل الطي (سم)</label>
+              <div class="input-with-unit">
+                <input type="number" id="insideFoldLock" value="1.0" min="1.0" max="2.5" step="0.1" class="form-input" placeholder="1.0">
                 <span class="unit">cm</span>
               </div>
             </div>
@@ -319,15 +360,7 @@
             <button type="button" class="btn-subtle" onclick="setQuickSize(21, 14.8)">A5 Flyer (21x14.8)</button>
             <button type="button" class="btn-subtle" onclick="setQuickSize(29.7, 21)">A4 Flyer (29.7x21)</button>
           </div>
-          <div class="form-row" id="bcModeContainer" style="margin-top: 8px;">
-            <label class="extra-checkbox-card" id="businessCardModeCard" style="width: 100%;">
-              <input type="checkbox" id="businessCardMode">
-              <div class="extra-info">
-                <span class="extra-title">Business Card Print Mode / وضع طباعة الكرت الشخصي</span>
-                <span class="extra-desc">Calculates A3 Sheet Cost and Print Cost (0.048 SR/piece) separately</span>
-              </div>
-            </label>
-          </div>
+
           <div class="form-row" id="backSidePrintContainer" style="margin-top: 8px;">
             <label class="extra-checkbox-card" id="backSidePrintCard" style="width: 100%;">
               <input type="checkbox" id="backSidePrint">
@@ -425,11 +458,11 @@
                 <input type="checkbox" id="extraPolarCutting">
                 <div class="extra-info">
                   <span class="extra-title">Polar Cutting / قص بولار</span>
-                  <span class="extra-desc" id="polarCuttingPriceText">0.50 SR / sheet</span>
+                  <span class="extra-desc" id="polarCuttingPriceText">8.50 SR / 100 pcs pack</span>
                 </div>
               </label>
               <div class="extra-rate-input-wrapper">
-                <input type="number" id="polarCuttingRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.50">
+                <input type="number" id="polarCuttingRateInput" min="0" step="0.50" class="form-input rate-adj-input" placeholder="8.50">
                 <span class="rate-unit">SR</span>
               </div>
             </div>
@@ -458,7 +491,7 @@
               <input type="checkbox" id="extraPacking" checked>
               <div class="extra-info">
                 <span class="extra-title">Packing / تغليف مغلفات</span>
-                <span class="extra-desc">0.50 SR / 100 pcs pack</span>
+                <span class="extra-desc" id="packingPriceText">5.00 SR / 100 pcs pack</span>
               </div>
             </label>
             
@@ -658,12 +691,16 @@
               <span class="inv-value" id="invBcCutCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowDieCylinder">
-              <span class="inv-label">Cylinder Die Cutting / قص قالب سلندر:</span>
+              <span class="inv-label">Cylinder Die Cut / قص قالب سلندر:</span>
               <span class="inv-value" id="invDieCylinderCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowDieManual">
-              <span class="inv-label">Manual Die Cutting / قص قالب يدوي:</span>
+              <span class="inv-label">Manual Die Cut / قص قالب يدوي:</span>
               <span class="inv-value" id="invDieManualCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowDieBoard">
+              <span class="inv-label">Die Board / قالب قص خشب:</span>
+              <span class="inv-value" id="invDieBoardCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowBackSide">
               <span class="inv-label">Both Side Print Cost / تكلفة طباعة الخلفية:</span>
