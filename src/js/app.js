@@ -2070,18 +2070,18 @@ function getSheetDimensions() {
 }
 
 // Evaluates layout options for a given parent sheet (S_W, S_H) and child item (i_w, i_h)
-function calculateLayoutOptions(S_W, S_H, i_w, i_h) {
+function calculateLayoutOptions(S_W, S_H, i_w, i_h, designSpace = 0) {
   // Option 1: Horizontal Layout (no rotation of item)
-  const cols_H = Math.floor(S_W / i_w);
-  const rows_H = Math.floor(S_H / i_h);
+  const cols_H = designSpace > 0 ? Math.floor((S_W + designSpace) / (i_w + designSpace)) : Math.floor(S_W / i_w);
+  const rows_H = designSpace > 0 ? Math.floor((S_H + designSpace) / (i_h + designSpace)) : Math.floor(S_H / i_h);
   const ups_H = Math.max(0, cols_H * rows_H);
   const area_H = ups_H * i_w * i_h;
   const totalSheetArea = S_W * S_H;
   const wastePercent_H = totalSheetArea > 0 ? ((totalSheetArea - area_H) / totalSheetArea) * 100 : 100;
 
   // Option 2: Vertical Layout (item is rotated 90 degrees)
-  const cols_V = Math.floor(S_W / i_h);
-  const rows_V = Math.floor(S_H / i_w);
+  const cols_V = designSpace > 0 ? Math.floor((S_W + designSpace) / (i_h + designSpace)) : Math.floor(S_W / i_h);
+  const rows_V = designSpace > 0 ? Math.floor((S_H + designSpace) / (i_w + designSpace)) : Math.floor(S_H / i_w);
   const ups_V = Math.max(0, cols_V * rows_V);
   const area_V = ups_V * i_w * i_h;
   const wastePercent_V = totalSheetArea > 0 ? ((totalSheetArea - area_V) / totalSheetArea) * 100 : 100;
@@ -2154,23 +2154,23 @@ function calculateAndUpdate() {
     sideFold = (2 * boxH) + boxT + insideFoldLock;
   }
 
-  const effective_w = i_w + (2 * sideFold) + (2 * designSpace);
-  const effective_h = i_h + (2 * sideFold) + (2 * designSpace);
+  const flat_w = i_w + (2 * sideFold);
+  const flat_h = i_h + (2 * sideFold);
 
   // Show/Hide Unfolded Box / Cut Size Notice in Section 3
   const boxFoldNotice = document.getElementById('boxFoldInfoNotice');
   if (boxFoldNotice) {
     if (boxH > 0 || designSpace > 0) {
       boxFoldNotice.classList.remove('hidden');
-      const isExceeding = (effective_w > S_W || effective_h > S_H) && (effective_w > S_H || effective_h > S_W);
+      const isExceeding = (flat_w > S_W || flat_h > S_H) && (flat_w > S_H || flat_h > S_W);
       const foldDesc = boxH > 0 ? `Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> (Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock ${insideFoldLock.toFixed(1)}cm)` : '';
-      const dsDesc = designSpace > 0 ? `Design Space per Side: <strong>${designSpace.toFixed(2)} cm</strong>` : '';
+      const dsDesc = designSpace > 0 ? `Design Space Between Items: <strong>${designSpace.toFixed(2)} cm</strong>` : '';
       const notesArray = [foldDesc, dsDesc].filter(Boolean).join(' | ');
 
       if (isExceeding) {
         boxFoldNotice.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
-            ⚠️ Notice: Required Unfolded Size (${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
+            ⚠️ Notice: Required Unfolded Size (${flat_w.toFixed(2)} × ${flat_h.toFixed(2)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
             ${notesArray}<br>
@@ -2180,7 +2180,7 @@ function calculateAndUpdate() {
       } else {
         boxFoldNotice.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
-            📐 Required Unfolded Flat Size: ${effective_w.toFixed(2)} × ${effective_h.toFixed(2)} cm
+            📐 Unfolded Flat Size: ${flat_w.toFixed(2)} × ${flat_h.toFixed(2)} cm ${designSpace > 0 ? `(+${designSpace.toFixed(2)} cm space between items)` : ''}
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
             ${notesArray}
@@ -2193,8 +2193,8 @@ function calculateAndUpdate() {
   }
 
 
-  // 1. Calculate Layout Options based on the true unfolded flat box dimensions
-  const layout = calculateLayoutOptions(S_W, S_H, effective_w, effective_h);
+  // 1. Calculate Layout Options based on the true unfolded flat box dimensions & design space
+  const layout = calculateLayoutOptions(S_W, S_H, flat_w, flat_h, designSpace);
   
   // Decide which is the best layout (the one with max ups, or lowest wastage)
   let bestDirection = 'horizontal';
@@ -2217,7 +2217,7 @@ function calculateAndUpdate() {
   const wastePercent = activeLayout.wastagePercent;
 
   // 3. Render SVG Layout
-  renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, i_w, i_h, sideFold);
+  renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, i_w, i_h, sideFold, designSpace);
 
   // 4. Render Stats
   document.getElementById('valUps').innerText = ups;
@@ -2595,8 +2595,16 @@ function calculateAndUpdate() {
   document.getElementById('gsmBadge').innerText = specName;
 
   document.getElementById('invSheetSize').innerText = `${S_W} x ${S_H} cm (${isPortraitOrientation ? 'Portrait' : 'Landscape'})`;
-  if (sideFold > 0) {
-    document.getElementById('invCutSize').innerText = `${effective_w.toFixed(2)} x ${effective_h.toFixed(2)} cm (Box Base: ${i_w} x ${i_h} cm)`;
+  if (sideFold > 0 || designSpace > 0) {
+    const flat_w = i_w + (2 * sideFold);
+    const flat_h = i_h + (2 * sideFold);
+    if (sideFold > 0 && designSpace > 0) {
+      document.getElementById('invCutSize').innerText = `${flat_w.toFixed(2)} x ${flat_h.toFixed(2)} cm Net (${designSpace}cm space between items)`;
+    } else if (sideFold > 0) {
+      document.getElementById('invCutSize').innerText = `${flat_w.toFixed(2)} x ${flat_h.toFixed(2)} cm (Box Base: ${i_w} x ${i_h} cm)`;
+    } else {
+      document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm (${designSpace}cm space between items)`;
+    }
   } else {
     document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm`;
   }
@@ -2779,7 +2787,7 @@ function renderComparisonTable(layout, bestDirection, activeDirection) {
 }
 
 // --- RENDER VISUAL SVG PREVIEW ---
-function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, origH = 0, sideFold = 0) {
+function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, origH = 0, sideFold = 0, designSpace = 0) {
   const svg = document.getElementById('layoutSvg');
   if (!svg) return;
   svg.innerHTML = '';
@@ -2838,35 +2846,46 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
   // 3. Draw Ups Grid
   const cols = activeLayout.cols;
   const rows = activeLayout.rows;
-  const itemW = activeLayout.itemW;
-  const itemH = activeLayout.itemH;
+  const itemFlatW = activeLayout.itemW; // true unfolded flat item width
+  const itemFlatH = activeLayout.itemH; // true unfolded flat item height
 
-  const drawItemW = itemW * scale;
-  const drawItemH = itemH * scale;
+  const drawItemFlatW = itemFlatW * scale;
+  const drawItemFlatH = itemFlatH * scale;
+  const gapPx = designSpace * scale;
 
   // Fetch current box depth, wall thickness, and inside fold lock for detailed die-cut net rendering
   const boxHVal = parseFloat(document.getElementById('boxDepthH')?.value || 0);
   const boxTVal = parseFloat(document.getElementById('wallThickness')?.value || 0);
-  const insideFoldLockVal = parseFloat(document.getElementById('insideFoldLock')?.value || 1.0);
   const boxFoldTypeVal = document.getElementById('boxFoldType')?.value || 'double';
 
   let upCounter = 1;
-  // Die cutting gripper margin: Position layout on the right side, keeping 1 cm from the right paper edge
+
+  // Total span of items layout on sheet including design space gaps
+  const totalLayoutWCm = cols > 0 ? (cols * itemFlatW + (cols - 1) * designSpace) : 0;
+  const totalLayoutHCm = rows > 0 ? (rows * itemFlatH + (rows - 1) * designSpace) : 0;
+
+  // Position layout keeping 1cm right gripper margin if it fits
   const rightGripperMarginCm = 1.0;
   let startXCm = 0;
-  if (S_W >= (cols * itemW + rightGripperMarginCm)) {
-    startXCm = S_W - (cols * itemW) - rightGripperMarginCm;
-  } else if (S_W >= cols * itemW) {
-    startXCm = S_W - (cols * itemW);
+  if (S_W >= (totalLayoutWCm + rightGripperMarginCm)) {
+    startXCm = S_W - totalLayoutWCm - rightGripperMarginCm;
+  } else if (S_W >= totalLayoutWCm) {
+    startXCm = S_W - totalLayoutWCm;
   } else {
     startXCm = 0;
   }
   const startXPx = startXCm * scale;
 
+  let startYCm = 0;
+  if (S_H >= totalLayoutHCm) {
+    startYCm = (S_H - totalLayoutHCm) / 2;
+  }
+  const startYPx = startYCm * scale;
+
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      const upX = offsetX + startXPx + (c * drawItemW);
-      const upY = offsetY + (r * drawItemH);
+      const upX = offsetX + startXPx + (c * (drawItemFlatW + gapPx));
+      const upY = offsetY + startYPx + (r * (drawItemFlatH + gapPx));
 
       // Create grouping for hover effects and clean structures
       const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
@@ -2876,25 +2895,13 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
         const foldOffset = sideFold * scale;
         const x0 = upX;
         const x1 = upX + foldOffset;
-        const x2 = upX + drawItemW - foldOffset;
-        const x3 = upX + drawItemW;
+        const x2 = upX + drawItemFlatW - foldOffset;
+        const x3 = upX + drawItemFlatW;
 
         const y0 = upY;
         const y1 = upY + foldOffset;
-        const y2 = upY + drawItemH - foldOffset;
-        const y3 = upY + drawItemH;
-
-        // Outer Bounding Box (semi-transparent helper)
-        const outerRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        outerRect.setAttribute("x", upX);
-        outerRect.setAttribute("y", upY);
-        outerRect.setAttribute("width", drawItemW);
-        outerRect.setAttribute("height", drawItemH);
-        outerRect.setAttribute("fill", "rgba(15, 23, 42, 0.05)");
-        outerRect.setAttribute("stroke", "rgba(156, 163, 175, 0.2)");
-        outerRect.setAttribute("stroke-width", "0.5");
-        outerRect.setAttribute("stroke-dasharray", "2 2");
-        group.appendChild(outerRect);
+        const y2 = upY + drawItemFlatH - foldOffset;
+        const y3 = upY + drawItemFlatH;
 
         // Solid Red Die-Cut Perimeter Path (12-point cross shape)
         const dieCutPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -2983,21 +2990,40 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
         rect.setAttribute("x", upX);
         rect.setAttribute("y", upY);
-        rect.setAttribute("width", drawItemW);
-        rect.setAttribute("height", drawItemH);
+        rect.setAttribute("width", drawItemFlatW);
+        rect.setAttribute("height", drawItemFlatH);
         rect.setAttribute("class", "svg-up-box");
         group.appendChild(rect);
 
         // Add label inside each piece
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", upX + (drawItemW / 2));
-        text.setAttribute("y", upY + (drawItemH / 2));
+        text.setAttribute("x", upX + (drawItemFlatW / 2));
+        text.setAttribute("y", upY + (drawItemFlatH / 2));
         text.setAttribute("class", "svg-up-label");
         text.textContent = upCounter;
         group.appendChild(text);
       }
 
       svg.appendChild(group);
+
+      // Render space dimension arrow / line between adjacent items horizontally
+      if (designSpace > 0 && c < cols - 1) {
+        const gapStartX = upX + drawItemFlatW;
+        const gapEndX = gapStartX + gapPx;
+        const gapMidY = upY + (drawItemFlatH / 2);
+
+        // Line across gap
+        const gapLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        gapLine.setAttribute("x1", gapStartX);
+        gapLine.setAttribute("y1", gapMidY);
+        gapLine.setAttribute("x2", gapEndX);
+        gapLine.setAttribute("y2", gapMidY);
+        gapLine.setAttribute("stroke", "#f59e0b");
+        gapLine.setAttribute("stroke-width", "1");
+        gapLine.setAttribute("stroke-dasharray", "2 1");
+        svg.appendChild(gapLine);
+      }
+
       upCounter++;
     }
   }
@@ -3025,13 +3051,18 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
   // Item dimension overlay on the first item (if exists)
   if (cols > 0 && rows > 0) {
     const textItemDim = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    textItemDim.setAttribute("x", offsetX + (drawItemW / 2));
-    textItemDim.setAttribute("y", offsetY + drawItemH + 15);
+    textItemDim.setAttribute("x", offsetX + startXPx + (drawItemFlatW / 2));
+    textItemDim.setAttribute("y", offsetY + startYPx + drawItemFlatH + 15);
     textItemDim.setAttribute("fill", "#10b981");
     textItemDim.setAttribute("font-size", "9px");
     textItemDim.setAttribute("font-weight", "600");
     textItemDim.setAttribute("text-anchor", "middle");
-    textItemDim.textContent = `${itemW.toFixed(1)} x ${itemH.toFixed(1)} cm${sideFold > 0 ? ' (Unfolded Flat)' : ''}`;
+
+    let dimLabel = `${itemFlatW.toFixed(1)} x ${itemFlatH.toFixed(1)} cm`;
+    if (sideFold > 0) dimLabel += ' (Unfolded Flat)';
+    if (designSpace > 0) dimLabel += ` [${designSpace.toFixed(1)}cm Space]`;
+
+    textItemDim.textContent = dimLabel;
     svg.appendChild(textItemDim);
   }
 }
