@@ -3493,11 +3493,11 @@ input:checked + .slider:before {
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 6.00, '50x33': 5.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
-    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 5.50, '50x33': 4.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 5.00, '50x33': 4.50, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
-    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 4.00, '50x33': 3.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
-    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 3.00, '50x33': 2.50, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
+    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.25, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.85, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
+    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.80, '50x33': 2.60, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 2.00, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
+    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.85, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
 
 
@@ -4304,7 +4304,10 @@ function loadPricingFromStorage() {
             currentPricing.paperGsmRates[gsm] = JSON.parse(JSON.stringify(DEFAULT_PRICING.paperGsmRates[gsm]));
           } else {
             Object.keys(DEFAULT_PRICING.paperGsmRates[gsm]).forEach(sz => {
-              if (currentPricing.paperGsmRates[gsm][sz] === undefined || currentPricing.paperGsmRates[gsm][sz] >= 6.00) {
+              const oldDefaults70 = [6.00, 5.50, 5.00, 4.00, 3.00];
+              const oldDefaults50 = [5.00, 4.50, 3.50, 2.50];
+              const val = currentPricing.paperGsmRates[gsm][sz];
+              if (val === undefined || (sz === '70x33' && (oldDefaults70.includes(val) || val > 3.50)) || (sz === '50x33' && (oldDefaults50.includes(val) || val > 3.25))) {
                 currentPricing.paperGsmRates[gsm][sz] = DEFAULT_PRICING.paperGsmRates[gsm][sz];
               }
             });
