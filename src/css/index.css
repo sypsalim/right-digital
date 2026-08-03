@@ -1604,9 +1604,6 @@ input:checked + .slider:before {
   width: 100%;
 }
 
-.die-cutting-options #dieBoardCardEl {
-  grid-column: 1 / -1;
-}
 
 @media (max-width: 580px) {
   .die-cutting-options {

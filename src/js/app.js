@@ -74,7 +74,8 @@ const DEFAULT_PRICING = {
     businessCardPolarCutPrice: 8.50, // Polar Cutting cost per 100 pcs pack
     dieCylinder: 0.30, // Cylinder Die Cutting cost per sheet
     dieManual: 0.35,   // Manual Die Cutting cost per sheet
-    dieBoard: 150.00   // Die Board cost per part
+    dieBoard: 150.00,  // Die Board cost per part
+    offsetSetup: 250.00 // Offset setup cost
   },
 
   // T-Shirt & Cup rates in SR
@@ -862,6 +863,9 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.dieManual === undefined) {
           currentPricing.fixedRates.dieManual = 0.15;
         }
+        if (currentPricing.fixedRates.offsetSetup === undefined) {
+          currentPricing.fixedRates.offsetSetup = 250.00;
+        }
       }
       if (!currentPricing.plotterTierRates) {
         currentPricing.plotterTierRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterTierRates));
@@ -1045,6 +1049,7 @@ function initUI() {
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
+    'extraOffsetPrint', 'offsetSetupRateInput', 'offsetBacksidePrint',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
@@ -1427,6 +1432,10 @@ function initUI() {
   const dieBoardRateInput = document.getElementById('dieBoardRateInput');
   if (dieBoardRateInput) {
     dieBoardRateInput.value = (currentPricing.fixedRates.dieBoard !== undefined ? currentPricing.fixedRates.dieBoard : 150.00).toFixed(2);
+  }
+  const offsetSetupRateInput = document.getElementById('offsetSetupRateInput');
+  if (offsetSetupRateInput) {
+    offsetSetupRateInput.value = (currentPricing.fixedRates.offsetSetup !== undefined ? currentPricing.fixedRates.offsetSetup : 250.00).toFixed(2);
   }
 
   // Mutually exclusive toggle for Die Cutting
@@ -2411,6 +2420,57 @@ function calculateAndUpdate() {
     dieBoardPriceText.innerText = optDieBoard ? `${dieBoardCost.toFixed(2)} SR (${dieBoardParts} part${dieBoardParts > 1 ? 's' : ''} @ ${dieBoardRate.toFixed(2)} SR)` : `Full size die board: ${dieBoardRate.toFixed(2)} SR per part`;
   }
 
+  // Offset Print option
+  const optOffsetPrint = document.getElementById('extraOffsetPrint') && document.getElementById('extraOffsetPrint').checked;
+  const offsetPrintDetailsRow = document.getElementById('offsetPrintDetailsRow');
+  if (offsetPrintDetailsRow) {
+    if (optOffsetPrint) {
+      offsetPrintDetailsRow.classList.remove('hidden');
+    } else {
+      offsetPrintDetailsRow.classList.add('hidden');
+    }
+  }
+
+  const offsetSetupRate = optOffsetPrint ? (parseFloat(document.getElementById('offsetSetupRateInput')?.value) || 250.00) : 250.00;
+  const isBacksideOffset = optOffsetPrint && (document.getElementById('offsetBacksidePrint')?.checked || document.getElementById('backSidePrint')?.checked);
+
+  let offsetFrontCost = 0;
+  let offsetBacksideCost = 0;
+  let offsetTotalCost = 0;
+  let thousandUnits = 0;
+  let frontTierRate = 300.00;
+
+  if (optOffsetPrint) {
+    thousandUnits = Math.max(1, Math.ceil(qty / 1000));
+    
+    // Front run rate tier based on quantity
+    if (qty > 5000) {
+      frontTierRate = 175.00;
+    } else if (qty > 2500) {
+      frontTierRate = 200.00;
+    } else if (qty > 500) {
+      frontTierRate = 250.00;
+    } else {
+      frontTierRate = 300.00;
+    }
+
+    offsetFrontCost = thousandUnits * frontTierRate;
+    offsetBacksideCost = isBacksideOffset ? (thousandUnits * 150.00) : 0;
+    offsetTotalCost = offsetSetupRate + offsetFrontCost + offsetBacksideCost;
+  }
+
+  const offsetNotice = document.getElementById('offsetPrintNotice');
+  if (offsetNotice && optOffsetPrint) {
+    offsetNotice.innerHTML = `<strong>Total Offset Cost:</strong> ${offsetTotalCost.toFixed(2)} SR (Setup: ${offsetSetupRate.toFixed(2)} SR + Front Run: ${offsetFrontCost.toFixed(2)} SR [${thousandUnits}k @ ${frontTierRate.toFixed(2)} SR/1k]${isBacksideOffset ? ` + Backside: ${offsetBacksideCost.toFixed(2)} SR [${thousandUnits}k @ 150.00 SR/1k]` : ''})`;
+  }
+
+  const offsetPrintPriceText = document.getElementById('offsetPrintPriceText');
+  if (offsetPrintPriceText) {
+    offsetPrintPriceText.innerText = optOffsetPrint 
+      ? `${offsetTotalCost.toFixed(2)} SR (Setup ${offsetSetupRate.toFixed(2)} SR + Run ${offsetFrontCost.toFixed(2)} SR${isBacksideOffset ? ' + Backside' : ''})`
+      : `Setup ${offsetSetupRate.toFixed(2)} SR + Tier Run Rate`;
+  }
+
   // Plastic Window option
   const optPlastic = document.getElementById('extraPlastic') && document.getElementById('extraPlastic').checked;
   const plasticDetailsRow = document.getElementById('plasticDetailsRow');
@@ -2504,7 +2564,7 @@ function calculateAndUpdate() {
 
 
   // Base total invoice cost before profit
-  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
+  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + offsetTotalCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
 
   // Add Quantity-Based Profit Margin
   function getProfitPercent(quantity) {
@@ -2582,6 +2642,13 @@ function calculateAndUpdate() {
   toggleInvoiceRow('invRowDieBoard', optDieBoard && dieBoardCost > 0, 'invDieBoardCost', dieBoardCost);
   if (optDieBoard && dieBoardCost > 0) {
     document.getElementById('invDieBoardCost').innerText = `${dieBoardCost.toFixed(2)} SR (${dieBoardParts} part${dieBoardParts > 1 ? 's' : ''} @ ${dieBoardRate.toFixed(2)} SR)`;
+  }
+
+  // Offset Print Invoice Row
+  toggleInvoiceRow('invRowOffsetPrint', optOffsetPrint && offsetTotalCost > 0, 'invOffsetPrintCost', offsetTotalCost);
+  if (optOffsetPrint && offsetTotalCost > 0) {
+    document.getElementById('invRowOffsetPrint').classList.remove('hidden');
+    document.getElementById('invOffsetPrintCost').innerText = `${offsetTotalCost.toFixed(2)} SR (Setup: ${offsetSetupRate.toFixed(2)} SR + Run: ${(offsetFrontCost + offsetBacksideCost).toFixed(2)} SR)`;
   }
 
   // Pre-Press Setup Invoice Rows

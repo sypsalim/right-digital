@@ -126,7 +126,7 @@
               </div>
 
               <!-- Die Board Option -->
-              <div class="extra-checkbox-card custom-extra-card" id="dieBoardCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div class="extra-checkbox-card custom-extra-card" id="dieBoardCardEl" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
                 <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                   <label class="extra-checkbox-label" for="extraDieBoard" style="flex: 1; cursor: pointer;">
                     <input type="checkbox" id="extraDieBoard">
@@ -155,6 +155,39 @@
                   </div>
                   <div id="dieBoardNotice" style="margin-top: 8px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-gold); padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
                     <!-- Dynamic Die Board cost notice -->
+                  </div>
+                </div>
+              </div>
+
+              <!-- Offset Print Option -->
+              <div class="extra-checkbox-card custom-extra-card" id="offsetPrintCardEl" style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                  <label class="extra-checkbox-label" for="extraOffsetPrint" style="flex: 1; cursor: pointer;">
+                    <input type="checkbox" id="extraOffsetPrint">
+                    <div class="extra-info">
+                      <span class="extra-title">Offset Print / طباعة أوفست</span>
+                      <span class="extra-desc" id="offsetPrintPriceText">Setup 250.00 SR + Tier Run Rate</span>
+                    </div>
+                  </label>
+                </div>
+                <div id="offsetPrintDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                  <div class="form-row" style="gap: 12px; flex-wrap: wrap;">
+                    <div class="form-group min-w-150" style="flex: 1;">
+                      <label for="offsetSetupRateInput">Offset Setup Cost / تكلفة التجهيز</label>
+                      <div class="input-with-unit">
+                        <input type="number" id="offsetSetupRateInput" value="250.00" min="0" step="10" class="form-input">
+                        <span class="unit">SR</span>
+                      </div>
+                    </div>
+                    <div class="form-group min-w-150" style="flex: 1; display: flex; align-items: flex-end; padding-bottom: 6px;">
+                      <label class="extra-checkbox-label" for="offsetBacksidePrint">
+                        <input type="checkbox" id="offsetBacksidePrint">
+                        <span style="font-size: 0.85rem; font-weight: 600;">Backside Print / طباعة وجه ثانٍ (+150 SR/1k)</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div id="offsetPrintNotice" style="margin-top: 8px; background: rgba(212, 175, 55, 0.1); border: 1px solid var(--primary-gold); padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
+                    <!-- Dynamic Offset Cost notice -->
                   </div>
                 </div>
               </div>
@@ -701,6 +734,10 @@
             <div class="invoice-row hidden" id="invRowDieBoard">
               <span class="inv-label">Die Board / قالب قص خشب:</span>
               <span class="inv-value" id="invDieBoardCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowOffsetPrint">
+              <span class="inv-label">Offset Print Cost / تكلفة طباعة الأوفست:</span>
+              <span class="inv-value" id="invOffsetPrintCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowBackSide">
               <span class="inv-label">Both Side Print Cost / تكلفة طباعة الخلفية:</span>
