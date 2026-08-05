@@ -2020,15 +2020,18 @@ body[data-theme="light"],
 [data-theme="light"] .form-input,
 [data-theme="light"] .form-select,
 [data-theme="light"] input[type="number"],
-[data-theme="light"] input[type="text"] {
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input,
+[data-theme="light"] select {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: rgba(15, 23, 42, 0.25) !important;
-  font-weight: 600 !important;
+  font-weight: 700 !important;
 }
 
 [data-theme="light"] .form-input:focus,
-[data-theme="light"] .form-select:focus {
+[data-theme="light"] .form-select:focus,
+[data-theme="light"] input:focus {
   background-color: #ffffff !important;
   color: #0f172a !important;
   border-color: #008B8B !important;
@@ -2036,19 +2039,32 @@ body[data-theme="light"],
 }
 
 [data-theme="light"] .input-with-unit .unit,
-[data-theme="light"] .rate-unit {
-  color: #334155 !important;
+[data-theme="light"] .rate-unit,
+[data-theme="light"] .extra-rate-input-wrapper .unit {
+  color: #0f172a !important;
   font-weight: 700 !important;
 }
 
 [data-theme="light"] .extra-rate-input-wrapper {
-  background: rgba(255, 255, 255, 0.7) !important;
+  background: rgba(255, 255, 255, 0.9) !important;
   border-color: rgba(15, 23, 42, 0.2) !important;
 }
 
-[data-theme="light"] .extra-rate-input-wrapper .form-input {
+[data-theme="light"] .extra-rate-input-wrapper .form-input,
+[data-theme="light"] .extra-rate-input-wrapper input {
   background-color: transparent !important;
   color: #0f172a !important;
+  font-weight: 700 !important;
+}
+
+/* Ensure inputs inside checked extra cards keep dark text on white background */
+[data-theme="light"] .extra-checkbox-card:has(input:checked) input,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) select,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .form-input,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .unit,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .rate-unit {
+  color: #0f172a !important;
+  font-weight: 700 !important;
 }
 
 /* Light Notice & Alert Strips */
@@ -2099,20 +2115,11 @@ body[data-theme="light"],
   box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
-[data-theme="light"] .paper-mode-btn.active *,
-[data-theme="light"] .size-btn.active *,
-[data-theme="light"] .gsm-btn.active *,
-[data-theme="light"] .tab-btn.active *,
-[data-theme="light"] .extra-checkbox-card:has(input:checked) * {
-  color: #ffffff !important;
-  font-weight: 700 !important;
-}
-
-[data-theme="light"] .paper-mode-btn.active *,
-[data-theme="light"] .size-btn.active *,
-[data-theme="light"] .gsm-btn.active *,
-[data-theme="light"] .tab-btn.active *,
-[data-theme="light"] .extra-checkbox-card:has(input:checked) * {
+[data-theme="light"] .paper-mode-btn.active .paper-mode-btn-text,
+[data-theme="light"] .size-btn.active .size-name,
+[data-theme="light"] .gsm-btn.active .gsm-val,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-title,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc {
   color: #ffffff !important;
   font-weight: 700 !important;
 }
