@@ -859,14 +859,19 @@ input:checked + .slider:before {
   gap: 8px;
 }
 
-.badge {
-  font-size: 0.72rem;
-  font-weight: 600;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-light);
-  padding: 3px 8px;
-  border-radius: 4px;
-  color: var(--text-muted);
+.badge,
+.invoice-badges .badge,
+#jobTypeBadge,
+#gsmBadge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: #f59e0b !important;
+  background-color: #f59e0b !important;
+  border: 1px solid #b45309 !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4) !important;
 }
 
 .invoice-table {
