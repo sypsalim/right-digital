@@ -139,6 +139,7 @@ const DEFAULT_PAPER_SIZES = [
   { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset' },
   { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset' },
   { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, mode: 'offset' },
+  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, mode: 'offset' },
   { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33, mode: 'digital' },
   { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33, mode: 'digital' },
   { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3', mode: 'digital' },
@@ -1040,7 +1041,7 @@ function initUI() {
       currentPaperMode = 'digital';
       btnModeDigital.classList.add('active');
       btnModeOffset.classList.remove('active');
-      if (['size_100_70', 'size_90_64', 'size_50_70'].includes(selectedPaperSizeId)) {
+      if (['size_100_70', 'size_90_64', 'size_50_70', 'size_50_35'].includes(selectedPaperSizeId)) {
         selectedPaperSizeId = 'size_70_33';
       }
       renderPaperSizeButtons();
@@ -2291,6 +2292,9 @@ function calculateAndUpdate() {
       } else if (selectedPaperSizeId === 'size_50_70') {
         const val = document.getElementById('offsetCost100_70')?.value;
         baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 2;
+      } else if (selectedPaperSizeId === 'size_50_35') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 4;
       } else {
         baseSheetPrice = 1.65;
       }
