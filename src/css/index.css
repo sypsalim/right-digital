@@ -274,9 +274,9 @@ body {
 }
 
 .tab-btn.active {
-  background: var(--primary-gold);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-sm);
+  background: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .tab-btn svg {
@@ -285,6 +285,55 @@ body {
 
 .tab-btn.active svg {
   transform: scale(1.1);
+}
+
+/* Paper Mode Switcher (Digital vs Offset) */
+.paper-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 5px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-light);
+  margin-bottom: 4px;
+}
+
+.paper-mode-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  font-family: 'Tajawal', var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.paper-mode-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.paper-mode-btn.active {
+  background: #008B8B !important;
+  border-color: #006666 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.offset-prices-wrapper {
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  margin-top: 6px;
 }
 
 /* Slider Toggle Switch */
@@ -378,9 +427,10 @@ input:checked + .slider:before {
 }
 
 .size-btn.active {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: var(--primary-gold);
-  box-shadow: var(--shadow-glow);
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .size-name {
@@ -394,7 +444,7 @@ input:checked + .slider:before {
 }
 
 .size-btn.active .size-dims {
-  color: var(--primary-gold-light);
+  color: #e2e8f0 !important;
 }
 
 /* GSM Presets Grid */
@@ -424,9 +474,10 @@ input:checked + .slider:before {
 }
 
 .gsm-btn.active {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: var(--primary-gold);
-  box-shadow: var(--shadow-glow);
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .gsm-val {
@@ -930,8 +981,8 @@ input:checked + .slider:before {
 }
 
 .settings-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   padding: 10px 16px;
@@ -1802,8 +1853,8 @@ input:checked + .slider:before {
 }
 
 .theme-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   padding: 8px 16px;
@@ -1820,17 +1871,18 @@ input:checked + .slider:before {
 }
 
 .theme-toggle-btn:hover {
-  background: #737150 !important;
-  background-color: #737150 !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   border-color: #ffffff !important;
 }
 
-[data-theme="light"] {
+[data-theme="light"],
+body[data-theme="light"] {
   /* Core Colors */
-  --bg-app: #87855f;                      /* Background: #87855f */
-  --bg-card: #7eb9bf;                     /* Main Frames / Cards: #7eb9bf */
-  --bg-card-hover: #6faab0;
+  --bg-app: #C3DEEB;                      /* Background: #C3DEEB Soft Sky Blue */
+  --bg-card: #357fa1;                     /* Main Frames / Cards: #357fa1 */
+  --bg-card-hover: #2d6b88;
   --border-light: rgba(15, 23, 42, 0.15); 
   --border-active: #0c153b;               
 
@@ -1842,7 +1894,7 @@ input:checked + .slider:before {
   --accent-rose: #dc2626;
   --accent-rose-dark: #991b1b;
 
-  --text-main: #0f172a;                   /* Dark Text on #7eb9bf Cards */
+  --text-main: #0f172a;                   /* Dark Text on Cards */
   --text-muted: #334155;                  
   --text-dark: #0f172a;                   
   --text-gold: #0c153b;
@@ -1854,11 +1906,12 @@ input:checked + .slider:before {
 }
 
 /* Light Theme Layout & Text Rules */
+body[data-theme="light"],
 [data-theme="light"] body {
-  background-color: #87855f;
+  background-color: #C3DEEB !important;
   background-image: 
-    radial-gradient(at 10% 10%, rgba(126, 185, 191, 0.25) 0px, transparent 50%),
-    radial-gradient(at 90% 80%, rgba(135, 133, 95, 0.25) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, rgba(53, 127, 161, 0.15) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(195, 222, 235, 0.35) 0px, transparent 50%) !important;
   color: #0f172a;
 }
 
@@ -1890,17 +1943,17 @@ input:checked + .slider:before {
 }
 
 [data-theme="light"] .theme-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: #d6dbe0 !important;
+  background-color: #d6dbe0 !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.3) !important;
 }
 
 [data-theme="light"] .theme-toggle-btn:hover {
-  background: #737150 !important;
-  background-color: #737150 !important;
-  color: #ffffff !important;
-  border-color: #ffffff !important;
+  background: #c3c8cf !important;
+  background-color: #c3c8cf !important;
+  color: #0f172a !important;
+  border-color: #0f172a !important;
 }
 
 /* Main Frames (Cards) inside Light Mode */
@@ -1908,40 +1961,54 @@ input:checked + .slider:before {
 [data-theme="light"] .results-card,
 [data-theme="light"] .modal-content,
 [data-theme="light"] .drawer-content {
-  background: #7eb9bf !important;
-  color: #0f172a !important;
-  border-color: rgba(15, 23, 42, 0.18) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  background: #357fa1 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
 [data-theme="light"] .config-card h3,
 [data-theme="light"] .results-card h3,
-[data-theme="light"] .config-card h4 {
-  color: #0f172a !important;
-  border-left-color: #0c153b !important;
+[data-theme="light"] .config-card h4,
+[data-theme="light"] .card-header h3 {
+  color: #ffffff !important;
+  border-left-color: #ffffff !important;
+}
+
+[data-theme="light"] .form-group label,
+[data-theme="light"] .switch-label,
+[data-theme="light"] .inv-label,
+[data-theme="light"] .inv-value,
+[data-theme="light"] .extra-title {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .extra-desc,
+[data-theme="light"] .size-dims {
+  color: #e2e8f0 !important;
 }
 
 /* Job Tabs in Light Theme */
 [data-theme="light"] .job-tabs {
-  background: #7eb9bf !important;
-  border-color: rgba(15, 23, 42, 0.2);
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .tab-btn {
-  color: #0f172a;
+  color: #ffffff;
   font-weight: 700;
 }
 
 [data-theme="light"] .tab-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 [data-theme="light"] .tab-btn.active {
-  background: #0c153b;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(12, 21, 59, 0.3);
+  background: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 /* Input elements in Light Theme */
@@ -1959,8 +2026,8 @@ input:checked + .slider:before {
 [data-theme="light"] .form-select:focus {
   background-color: #ffffff !important;
   color: #0f172a !important;
-  border-color: #0c153b !important;
-  box-shadow: 0 0 0 3px rgba(12, 21, 59, 0.25) !important;
+  border-color: #008B8B !important;
+  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.25) !important;
 }
 
 [data-theme="light"] .input-with-unit .unit,
@@ -2001,34 +2068,47 @@ input:checked + .slider:before {
 /* Buttons and Presets in Light Mode */
 [data-theme="light"] .size-btn,
 [data-theme="light"] .gsm-btn,
+[data-theme="light"] .paper-mode-btn,
 [data-theme="light"] .extra-checkbox-card {
-  background: rgba(255, 255, 255, 0.4);
-  border-color: rgba(15, 23, 42, 0.15);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
 }
 
 [data-theme="light"] .size-btn:hover,
 [data-theme="light"] .gsm-btn:hover,
+[data-theme="light"] .paper-mode-btn:hover,
 [data-theme="light"] .extra-checkbox-card:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: #0c153b;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: #008B8B;
 }
 
+[data-theme="light"] .paper-mode-btn.active,
 [data-theme="light"] .size-btn.active,
 [data-theme="light"] .gsm-btn.active,
 [data-theme="light"] .tab-btn.active,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) {
-  background: #87855f !important;
-  border-color: #0f172a !important;
-  color: #0f172a !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  background: #008B8B !important;
+  border-color: #005f5f !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
+[data-theme="light"] .paper-mode-btn.active *,
 [data-theme="light"] .size-btn.active *,
 [data-theme="light"] .gsm-btn.active *,
 [data-theme="light"] .tab-btn.active *,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) * {
-  color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .paper-mode-btn.active *,
+[data-theme="light"] .size-btn.active *,
+[data-theme="light"] .gsm-btn.active *,
+[data-theme="light"] .tab-btn.active *,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) * {
+  color: #ffffff !important;
   font-weight: 700 !important;
 }
 

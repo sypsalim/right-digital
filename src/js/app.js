@@ -4,11 +4,11 @@
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.25, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
-    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.85, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.80, '50x33': 2.60, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
-    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 2.00, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
-    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.85, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
+    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
+    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.50, '50x33': 2.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 1.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
+    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.35, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
 
 
@@ -136,19 +136,20 @@ const DEFAULT_PRICING = {
 
 // Available sizes definitions (with default landscape values)
 const DEFAULT_PAPER_SIZES = [
-  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70 },
-  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64 },
-  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50 },
-  { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33 },
-  { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33 },
-  { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3' },
-  { id: 'size_a4', name: 'A4 Size', w: 29.7, h: 21, alias: 'A4' }
+  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset' },
+  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset' },
+  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, mode: 'offset' },
+  { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33, mode: 'digital' },
+  { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33, mode: 'digital' },
+  { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3', mode: 'digital' },
+  { id: 'size_a4', name: 'A4 Size', w: 29.7, h: 21, alias: 'A4', mode: 'digital' }
 ];
 
 
 // Active State
 let currentPricing = JSON.parse(JSON.stringify(DEFAULT_PRICING));
 let currentJobType = 'paper'; // 'paper' or 'sticker'
+let currentPaperMode = 'digital'; // 'digital' or 'offset'
 let selectedPaperSizeId = 'size_70_33';
 let selectedGsm = '350';
 let isPortraitOrientation = false;
@@ -1030,6 +1031,34 @@ function initUI() {
     calculateAndUpdate();
   });
 
+  // 1.5. Setup Paper Mode Switcher (Digital vs Offset)
+  const btnModeDigital = document.getElementById('btnModeDigital');
+  const btnModeOffset = document.getElementById('btnModeOffset');
+
+  if (btnModeDigital && btnModeOffset) {
+    btnModeDigital.addEventListener('click', () => {
+      currentPaperMode = 'digital';
+      btnModeDigital.classList.add('active');
+      btnModeOffset.classList.remove('active');
+      if (['size_100_70', 'size_90_64', 'size_50_70'].includes(selectedPaperSizeId)) {
+        selectedPaperSizeId = 'size_70_33';
+      }
+      renderPaperSizeButtons();
+      calculateAndUpdate();
+    });
+
+    btnModeOffset.addEventListener('click', () => {
+      currentPaperMode = 'offset';
+      btnModeOffset.classList.add('active');
+      btnModeDigital.classList.remove('active');
+      if (['size_70_33', 'size_50_33', 'size_a3', 'size_a4'].includes(selectedPaperSizeId)) {
+        selectedPaperSizeId = 'size_100_70';
+      }
+      renderPaperSizeButtons();
+      calculateAndUpdate();
+    });
+  }
+
   // 2. Setup Paper Size List
   renderPaperSizeButtons();
 
@@ -1047,6 +1076,7 @@ function initUI() {
   // 5. Inputs Auto-change
   const inputIds = [
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'designSpace', 'stickerType', 'stickerColors',
+    'offsetCost100_70', 'offsetCost90_64',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
@@ -1485,11 +1515,31 @@ function initUI() {
 // Render Paper Size Buttons
 function renderPaperSizeButtons() {
   const container = document.getElementById('paperSizesList');
+  if (!container) return;
   container.innerHTML = '';
 
-  DEFAULT_PAPER_SIZES.forEach(size => {
-    // All sizes are now allowed for sticker jobs (70x33, 50x33, A3, A4)
+  const offsetWrapper = document.getElementById('offsetPricesWrapper');
+  if (offsetWrapper) {
+    if (currentJobType === 'paper' && currentPaperMode === 'offset') {
+      offsetWrapper.classList.remove('hidden');
+    } else {
+      offsetWrapper.classList.add('hidden');
+    }
+  }
 
+  const filteredSizes = DEFAULT_PAPER_SIZES.filter(s => {
+    if (currentJobType === 'sticker') return true;
+    return s.mode === currentPaperMode;
+  });
+
+  // Ensure active selection is within filtered sizes
+  if (!filteredSizes.some(s => s.id === selectedPaperSizeId)) {
+    if (filteredSizes.length > 0) {
+      selectedPaperSizeId = filteredSizes[0].id;
+    }
+  }
+
+  filteredSizes.forEach(size => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `size-btn ${size.id === selectedPaperSizeId ? 'active' : ''}`;
@@ -1519,6 +1569,7 @@ function renderPaperSizeButtons() {
 // Render GSM Buttons
 function renderGsmButtons() {
   const container = document.getElementById('paperGsmList');
+  if (!container) return;
   container.innerHTML = '';
 
   const gsms = ['350', '300', '250', '150', '100'];
@@ -1526,23 +1577,9 @@ function renderGsmButtons() {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `gsm-btn ${gsm === selectedGsm ? 'active' : ''}`;
-    
-    // Find active paper size display name
-    const activeSize = DEFAULT_PAPER_SIZES.find(s => s.id === selectedPaperSizeId);
-    const key = activeSize ? (activeSize.alias || `${activeSize.w}x${activeSize.h}`) : '70x33';
-    
-    // Format the price key correctly (A3/A4 vs 70x33/50x33)
-    let rateKey = key;
-    if (key === 'A3 Size') rateKey = 'A3';
-    if (key === 'A4 Size') rateKey = 'A4';
-    if (key === '70x33 cm') rateKey = '70x33';
-    if (key === '50x33 cm') rateKey = '50x33';
-
-    const priceVal = currentPricing.paperGsmRates[gsm][rateKey] || 0;
 
     btn.innerHTML = `
       <span class="gsm-val">${gsm} GSM</span>
-      <span class="gsm-price">${priceVal.toFixed(2)} SR</span>
     `;
 
     btn.addEventListener('click', () => {
@@ -2242,11 +2279,29 @@ function calculateAndUpdate() {
   if (currentJobType === 'paper') {
     if (isBcMode && selectedGsm === '300') {
       baseSheetPrice = currentPricing.fixedRates.businessCardA3SheetPrice !== undefined ? currentPricing.fixedRates.businessCardA3SheetPrice : 0.75;
+      jobName = `Business Card (${selectedGsm} GSM)`;
+      specName = `BC ${selectedGsm} GSM`;
+    } else if (currentPaperMode === 'offset') {
+      if (selectedPaperSizeId === 'size_100_70') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.65;
+      } else if (selectedPaperSizeId === 'size_90_64') {
+        const val = document.getElementById('offsetCost90_64')?.value;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.35;
+      } else if (selectedPaperSizeId === 'size_50_70') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 2;
+      } else {
+        baseSheetPrice = 1.65;
+      }
+      jobName = `Offset Paper (${selectedGsm} GSM)`;
+      specName = `Offset ${selectedGsm} GSM`;
     } else {
+      // Digital Paper Mode
       baseSheetPrice = currentPricing.paperGsmRates[selectedGsm][sizeLabel] || 0;
+      jobName = `Digital Paper (${selectedGsm} GSM)`;
+      specName = `Digital ${selectedGsm} GSM`;
     }
-    jobName = `Standard Paper (${selectedGsm} GSM)`;
-    specName = `${selectedGsm} GSM`;
   } else {
     // Sticker Job
     const mat = document.getElementById('stickerType').value;
@@ -2594,7 +2649,10 @@ function calculateAndUpdate() {
 
 
   // 9. Update UI Invoice card
-  document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? (isBcMode ? 'Business Card Job' : 'Paper Job') : 'Sticker Job';
+  const paperJobBadgeText = isBcMode 
+    ? 'Business Card Job' 
+    : (currentPaperMode === 'offset' ? 'Offset Paper Job' : 'Digital Paper Job');
+  document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? paperJobBadgeText : 'Sticker Job';
   document.getElementById('gsmBadge').innerText = specName;
 
   document.getElementById('invSheetSize').innerText = `${S_W} x ${S_H} cm (${isPortraitOrientation ? 'Portrait' : 'Landscape'})`;
