@@ -286,9 +286,9 @@ body {
 }
 
 .tab-btn.active {
-  background: var(--primary-gold);
-  color: var(--text-dark);
-  box-shadow: var(--shadow-sm);
+  background: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .tab-btn svg {
@@ -297,6 +297,55 @@ body {
 
 .tab-btn.active svg {
   transform: scale(1.1);
+}
+
+/* Paper Mode Switcher (Digital vs Offset) */
+.paper-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 5px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-light);
+  margin-bottom: 4px;
+}
+
+.paper-mode-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  font-family: 'Tajawal', var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.paper-mode-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.paper-mode-btn.active {
+  background: #008B8B !important;
+  border-color: #006666 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.offset-prices-wrapper {
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  margin-top: 6px;
 }
 
 /* Slider Toggle Switch */
@@ -390,9 +439,10 @@ input:checked + .slider:before {
 }
 
 .size-btn.active {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: var(--primary-gold);
-  box-shadow: var(--shadow-glow);
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .size-name {
@@ -406,7 +456,7 @@ input:checked + .slider:before {
 }
 
 .size-btn.active .size-dims {
-  color: var(--primary-gold-light);
+  color: #e2e8f0 !important;
 }
 
 /* GSM Presets Grid */
@@ -436,9 +486,10 @@ input:checked + .slider:before {
 }
 
 .gsm-btn.active {
-  background: rgba(212, 175, 55, 0.15);
-  border-color: var(--primary-gold);
-  box-shadow: var(--shadow-glow);
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 .gsm-val {
@@ -942,8 +993,8 @@ input:checked + .slider:before {
 }
 
 .settings-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   padding: 10px 16px;
@@ -1814,8 +1865,8 @@ input:checked + .slider:before {
 }
 
 .theme-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   padding: 8px 16px;
@@ -1832,17 +1883,18 @@ input:checked + .slider:before {
 }
 
 .theme-toggle-btn:hover {
-  background: #737150 !important;
-  background-color: #737150 !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
   color: #ffffff !important;
   border-color: #ffffff !important;
 }
 
-[data-theme="light"] {
+[data-theme="light"],
+body[data-theme="light"] {
   /* Core Colors */
-  --bg-app: #87855f;                      /* Background: #87855f */
-  --bg-card: #7eb9bf;                     /* Main Frames / Cards: #7eb9bf */
-  --bg-card-hover: #6faab0;
+  --bg-app: #C3DEEB;                      /* Background: #C3DEEB Soft Sky Blue */
+  --bg-card: #357fa1;                     /* Main Frames / Cards: #357fa1 */
+  --bg-card-hover: #2d6b88;
   --border-light: rgba(15, 23, 42, 0.15); 
   --border-active: #0c153b;               
 
@@ -1854,7 +1906,7 @@ input:checked + .slider:before {
   --accent-rose: #dc2626;
   --accent-rose-dark: #991b1b;
 
-  --text-main: #0f172a;                   /* Dark Text on #7eb9bf Cards */
+  --text-main: #0f172a;                   /* Dark Text on Cards */
   --text-muted: #334155;                  
   --text-dark: #0f172a;                   
   --text-gold: #0c153b;
@@ -1866,11 +1918,12 @@ input:checked + .slider:before {
 }
 
 /* Light Theme Layout & Text Rules */
+body[data-theme="light"],
 [data-theme="light"] body {
-  background-color: #87855f;
+  background-color: #C3DEEB !important;
   background-image: 
-    radial-gradient(at 10% 10%, rgba(126, 185, 191, 0.25) 0px, transparent 50%),
-    radial-gradient(at 90% 80%, rgba(135, 133, 95, 0.25) 0px, transparent 50%);
+    radial-gradient(at 10% 10%, rgba(53, 127, 161, 0.15) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(195, 222, 235, 0.35) 0px, transparent 50%) !important;
   color: #0f172a;
 }
 
@@ -1902,17 +1955,17 @@ input:checked + .slider:before {
 }
 
 [data-theme="light"] .theme-toggle-btn {
-  background: #87855f !important;
-  background-color: #87855f !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: #d6dbe0 !important;
+  background-color: #d6dbe0 !important;
+  color: #0f172a !important;
+  border-color: rgba(15, 23, 42, 0.3) !important;
 }
 
 [data-theme="light"] .theme-toggle-btn:hover {
-  background: #737150 !important;
-  background-color: #737150 !important;
-  color: #ffffff !important;
-  border-color: #ffffff !important;
+  background: #c3c8cf !important;
+  background-color: #c3c8cf !important;
+  color: #0f172a !important;
+  border-color: #0f172a !important;
 }
 
 /* Main Frames (Cards) inside Light Mode */
@@ -1920,40 +1973,54 @@ input:checked + .slider:before {
 [data-theme="light"] .results-card,
 [data-theme="light"] .modal-content,
 [data-theme="light"] .drawer-content {
-  background: #7eb9bf !important;
-  color: #0f172a !important;
-  border-color: rgba(15, 23, 42, 0.18) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+  background: #357fa1 !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
 }
 
 [data-theme="light"] .config-card h3,
 [data-theme="light"] .results-card h3,
-[data-theme="light"] .config-card h4 {
-  color: #0f172a !important;
-  border-left-color: #0c153b !important;
+[data-theme="light"] .config-card h4,
+[data-theme="light"] .card-header h3 {
+  color: #ffffff !important;
+  border-left-color: #ffffff !important;
+}
+
+[data-theme="light"] .form-group label,
+[data-theme="light"] .switch-label,
+[data-theme="light"] .inv-label,
+[data-theme="light"] .inv-value,
+[data-theme="light"] .extra-title {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .extra-desc,
+[data-theme="light"] .size-dims {
+  color: #e2e8f0 !important;
 }
 
 /* Job Tabs in Light Theme */
 [data-theme="light"] .job-tabs {
-  background: #7eb9bf !important;
-  border-color: rgba(15, 23, 42, 0.2);
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-color: rgba(255, 255, 255, 0.2);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="light"] .tab-btn {
-  color: #0f172a;
+  color: #ffffff;
   font-weight: 700;
 }
 
 [data-theme="light"] .tab-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
 }
 
 [data-theme="light"] .tab-btn.active {
-  background: #0c153b;
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(12, 21, 59, 0.3);
+  background: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
 /* Input elements in Light Theme */
@@ -1971,8 +2038,8 @@ input:checked + .slider:before {
 [data-theme="light"] .form-select:focus {
   background-color: #ffffff !important;
   color: #0f172a !important;
-  border-color: #0c153b !important;
-  box-shadow: 0 0 0 3px rgba(12, 21, 59, 0.25) !important;
+  border-color: #008B8B !important;
+  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.25) !important;
 }
 
 [data-theme="light"] .input-with-unit .unit,
@@ -2013,34 +2080,47 @@ input:checked + .slider:before {
 /* Buttons and Presets in Light Mode */
 [data-theme="light"] .size-btn,
 [data-theme="light"] .gsm-btn,
+[data-theme="light"] .paper-mode-btn,
 [data-theme="light"] .extra-checkbox-card {
-  background: rgba(255, 255, 255, 0.4);
-  border-color: rgba(15, 23, 42, 0.15);
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
 }
 
 [data-theme="light"] .size-btn:hover,
 [data-theme="light"] .gsm-btn:hover,
+[data-theme="light"] .paper-mode-btn:hover,
 [data-theme="light"] .extra-checkbox-card:hover {
-  background: rgba(255, 255, 255, 0.7);
-  border-color: #0c153b;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: #008B8B;
 }
 
+[data-theme="light"] .paper-mode-btn.active,
 [data-theme="light"] .size-btn.active,
 [data-theme="light"] .gsm-btn.active,
 [data-theme="light"] .tab-btn.active,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) {
-  background: #87855f !important;
-  border-color: #0f172a !important;
-  color: #0f172a !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+  background: #008B8B !important;
+  border-color: #005f5f !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
 }
 
+[data-theme="light"] .paper-mode-btn.active *,
 [data-theme="light"] .size-btn.active *,
 [data-theme="light"] .gsm-btn.active *,
 [data-theme="light"] .tab-btn.active *,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) * {
-  color: #0f172a !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .paper-mode-btn.active *,
+[data-theme="light"] .size-btn.active *,
+[data-theme="light"] .gsm-btn.active *,
+[data-theme="light"] .tab-btn.active *,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) * {
+  color: #ffffff !important;
   font-weight: 700 !important;
 }
 
@@ -2209,9 +2289,46 @@ input:checked + .slider:before {
               <span class="switch-label">Portrait</span>
             </div>
           </div>
+
+          <!-- Mode Switcher: DIGITAL vs OFFSET -->
+          <div class="paper-mode-tabs" id="paperModeTabs">
+            <button type="button" class="paper-mode-btn active" id="btnModeDigital" data-mode="digital">
+              <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
+              DIGITAL PRINT / ديجيتال
+            </button>
+            <button type="button" class="paper-mode-btn" id="btnModeOffset" data-mode="offset">
+              <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h8v2zm0-4h-8v-2h8v2zm0-4h-8V9h8v2zm0-4h-8V5h8v2z"/></svg>
+              OFFSET PRINT / أوفست
+            </button>
+          </div>
+
           <div class="size-presets" id="paperSizesList">
             <!-- Dynamically generated buttons -->
           </div>
+
+          <!-- Offset Live Editable Sheet Prices Row (Only visible in Offset Mode) -->
+          <div class="offset-prices-wrapper hidden" id="offsetPricesWrapper">
+            <h4 style="font-size: 0.85rem; font-weight: 600; color: var(--primary-gold-light); margin-bottom: 8px;">
+              Offset Paper Sheet Cost / تكلفة ورق الأوفست (قابل للتعديل المباشر)
+            </h4>
+            <div class="form-row" style="gap: 12px; flex-wrap: wrap;">
+              <div class="form-group min-w-150" style="flex: 1;" id="offsetCost100_70Group">
+                <label for="offsetCost100_70">1. 100x70 cm Paper Sheet Cost</label>
+                <div class="input-with-unit">
+                  <input type="number" id="offsetCost100_70" value="1.65" min="0" step="0.05" class="form-input">
+                  <span class="unit">SR</span>
+                </div>
+              </div>
+              <div class="form-group min-w-150" style="flex: 1;" id="offsetCost90_64Group">
+                <label for="offsetCost90_64">2. 90x64 cm Paper Sheet Cost</label>
+                <div class="input-with-unit">
+                  <input type="number" id="offsetCost90_64" value="1.35" min="0" step="0.05" class="form-input">
+                  <span class="unit">SR</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <hr class="card-divider" style="border: 0; border-top: 1px solid var(--border-light); margin: 8px 0;">
           <div class="die-cutting-section">
             <h4 style="font-size: 0.9rem; font-weight: 600; color: var(--primary-gold-light); margin-bottom: 12px; font-family: 'Tajawal', 'Outfit', sans-serif;">
@@ -3493,11 +3610,11 @@ input:checked + .slider:before {
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.25, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
-    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.85, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.80, '50x33': 2.60, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
-    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 2.00, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
-    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.85, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
+    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
+    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.50, '50x33': 2.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 1.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
+    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.35, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
 
 
@@ -3625,19 +3742,21 @@ const DEFAULT_PRICING = {
 
 // Available sizes definitions (with default landscape values)
 const DEFAULT_PAPER_SIZES = [
-  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70 },
-  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64 },
-  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50 },
-  { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33 },
-  { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33 },
-  { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3' },
-  { id: 'size_a4', name: 'A4 Size', w: 29.7, h: 21, alias: 'A4' }
+  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset' },
+  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset' },
+  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, mode: 'offset' },
+  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, mode: 'offset' },
+  { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33, mode: 'digital' },
+  { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33, mode: 'digital' },
+  { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3', mode: 'digital' },
+  { id: 'size_a4', name: 'A4 Size', w: 29.7, h: 21, alias: 'A4', mode: 'digital' }
 ];
 
 
 // Active State
 let currentPricing = JSON.parse(JSON.stringify(DEFAULT_PRICING));
 let currentJobType = 'paper'; // 'paper' or 'sticker'
+let currentPaperMode = 'digital'; // 'digital' or 'offset'
 let selectedPaperSizeId = 'size_70_33';
 let selectedGsm = '350';
 let isPortraitOrientation = false;
@@ -4519,6 +4638,34 @@ function initUI() {
     calculateAndUpdate();
   });
 
+  // 1.5. Setup Paper Mode Switcher (Digital vs Offset)
+  const btnModeDigital = document.getElementById('btnModeDigital');
+  const btnModeOffset = document.getElementById('btnModeOffset');
+
+  if (btnModeDigital && btnModeOffset) {
+    btnModeDigital.addEventListener('click', () => {
+      currentPaperMode = 'digital';
+      btnModeDigital.classList.add('active');
+      btnModeOffset.classList.remove('active');
+      if (['size_100_70', 'size_90_64', 'size_50_70', 'size_50_35'].includes(selectedPaperSizeId)) {
+        selectedPaperSizeId = 'size_70_33';
+      }
+      renderPaperSizeButtons();
+      calculateAndUpdate();
+    });
+
+    btnModeOffset.addEventListener('click', () => {
+      currentPaperMode = 'offset';
+      btnModeOffset.classList.add('active');
+      btnModeDigital.classList.remove('active');
+      if (['size_70_33', 'size_50_33', 'size_a3', 'size_a4'].includes(selectedPaperSizeId)) {
+        selectedPaperSizeId = 'size_100_70';
+      }
+      renderPaperSizeButtons();
+      calculateAndUpdate();
+    });
+  }
+
   // 2. Setup Paper Size List
   renderPaperSizeButtons();
 
@@ -4536,6 +4683,7 @@ function initUI() {
   // 5. Inputs Auto-change
   const inputIds = [
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'designSpace', 'stickerType', 'stickerColors',
+    'offsetCost100_70', 'offsetCost90_64',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraPolarCutting', 'polarCuttingRateInput',
@@ -4974,11 +5122,31 @@ function initUI() {
 // Render Paper Size Buttons
 function renderPaperSizeButtons() {
   const container = document.getElementById('paperSizesList');
+  if (!container) return;
   container.innerHTML = '';
 
-  DEFAULT_PAPER_SIZES.forEach(size => {
-    // All sizes are now allowed for sticker jobs (70x33, 50x33, A3, A4)
+  const offsetWrapper = document.getElementById('offsetPricesWrapper');
+  if (offsetWrapper) {
+    if (currentJobType === 'paper' && currentPaperMode === 'offset') {
+      offsetWrapper.classList.remove('hidden');
+    } else {
+      offsetWrapper.classList.add('hidden');
+    }
+  }
 
+  const filteredSizes = DEFAULT_PAPER_SIZES.filter(s => {
+    if (currentJobType === 'sticker') return true;
+    return s.mode === currentPaperMode;
+  });
+
+  // Ensure active selection is within filtered sizes
+  if (!filteredSizes.some(s => s.id === selectedPaperSizeId)) {
+    if (filteredSizes.length > 0) {
+      selectedPaperSizeId = filteredSizes[0].id;
+    }
+  }
+
+  filteredSizes.forEach(size => {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `size-btn ${size.id === selectedPaperSizeId ? 'active' : ''}`;
@@ -5008,6 +5176,7 @@ function renderPaperSizeButtons() {
 // Render GSM Buttons
 function renderGsmButtons() {
   const container = document.getElementById('paperGsmList');
+  if (!container) return;
   container.innerHTML = '';
 
   const gsms = ['350', '300', '250', '150', '100'];
@@ -5015,23 +5184,9 @@ function renderGsmButtons() {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = `gsm-btn ${gsm === selectedGsm ? 'active' : ''}`;
-    
-    // Find active paper size display name
-    const activeSize = DEFAULT_PAPER_SIZES.find(s => s.id === selectedPaperSizeId);
-    const key = activeSize ? (activeSize.alias || `${activeSize.w}x${activeSize.h}`) : '70x33';
-    
-    // Format the price key correctly (A3/A4 vs 70x33/50x33)
-    let rateKey = key;
-    if (key === 'A3 Size') rateKey = 'A3';
-    if (key === 'A4 Size') rateKey = 'A4';
-    if (key === '70x33 cm') rateKey = '70x33';
-    if (key === '50x33 cm') rateKey = '50x33';
-
-    const priceVal = currentPricing.paperGsmRates[gsm][rateKey] || 0;
 
     btn.innerHTML = `
       <span class="gsm-val">${gsm} GSM</span>
-      <span class="gsm-price">${priceVal.toFixed(2)} SR</span>
     `;
 
     btn.addEventListener('click', () => {
@@ -5731,11 +5886,32 @@ function calculateAndUpdate() {
   if (currentJobType === 'paper') {
     if (isBcMode && selectedGsm === '300') {
       baseSheetPrice = currentPricing.fixedRates.businessCardA3SheetPrice !== undefined ? currentPricing.fixedRates.businessCardA3SheetPrice : 0.75;
+      jobName = `Business Card (${selectedGsm} GSM)`;
+      specName = `BC ${selectedGsm} GSM`;
+    } else if (currentPaperMode === 'offset') {
+      if (selectedPaperSizeId === 'size_100_70') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.65;
+      } else if (selectedPaperSizeId === 'size_90_64') {
+        const val = document.getElementById('offsetCost90_64')?.value;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.35;
+      } else if (selectedPaperSizeId === 'size_50_70') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 2;
+      } else if (selectedPaperSizeId === 'size_50_35') {
+        const val = document.getElementById('offsetCost100_70')?.value;
+        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 4;
+      } else {
+        baseSheetPrice = 1.65;
+      }
+      jobName = `Offset Paper (${selectedGsm} GSM)`;
+      specName = `Offset ${selectedGsm} GSM`;
     } else {
+      // Digital Paper Mode
       baseSheetPrice = currentPricing.paperGsmRates[selectedGsm][sizeLabel] || 0;
+      jobName = `Digital Paper (${selectedGsm} GSM)`;
+      specName = `Digital ${selectedGsm} GSM`;
     }
-    jobName = `Standard Paper (${selectedGsm} GSM)`;
-    specName = `${selectedGsm} GSM`;
   } else {
     // Sticker Job
     const mat = document.getElementById('stickerType').value;
@@ -6083,7 +6259,10 @@ function calculateAndUpdate() {
 
 
   // 9. Update UI Invoice card
-  document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? (isBcMode ? 'Business Card Job' : 'Paper Job') : 'Sticker Job';
+  const paperJobBadgeText = isBcMode 
+    ? 'Business Card Job' 
+    : (currentPaperMode === 'offset' ? 'Offset Paper Job' : 'Digital Paper Job');
+  document.getElementById('jobTypeBadge').innerText = currentJobType === 'paper' ? paperJobBadgeText : 'Sticker Job';
   document.getElementById('gsmBadge').innerText = specName;
 
   document.getElementById('invSheetSize').innerText = `${S_W} x ${S_H} cm (${isPortraitOrientation ? 'Portrait' : 'Landscape'})`;
