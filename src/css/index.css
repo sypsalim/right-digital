@@ -1222,12 +1222,19 @@ input:checked + .slider:before {
 
 /* PRINT MEDIA DESIGN styles */
 @media print {
+  @page {
+    margin: 12mm;
+    size: auto;
+  }
+
+  *, *::before, *::after,
   html, body, .app-container, .app-body, .results-pane, .invoice-card, .invoice-card *,
   [data-theme="light"], [data-theme="light"] body, [data-theme="light"] .app-container,
   [data-theme="light"] .app-body, [data-theme="light"] .results-pane, [data-theme="light"] .invoice-card,
   [data-theme="light"] .invoice-card * {
     background: #ffffff !important;
     background-color: #ffffff !important;
+    background-image: none !important;
     color: #000000 !important;
     box-shadow: none !important;
     text-shadow: none !important;
@@ -1237,6 +1244,7 @@ input:checked + .slider:before {
   [data-theme="light"] body {
     background: #ffffff !important;
     background-color: #ffffff !important;
+    background-image: none !important;
     color: #000000 !important;
     font-size: 11pt !important;
     padding: 0 !important;
@@ -1252,6 +1260,7 @@ input:checked + .slider:before {
     gap: 0 !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
+    background-image: none !important;
   }
 
   /* Hide navigation, settings, configs, layouts */
