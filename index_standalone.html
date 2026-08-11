@@ -2236,6 +2236,36 @@ body[data-theme="light"],
   color: #4A3E31 !important;
 }
 
+/* ABSOLUTE MASTER OVERRIDE FOR DEFAULT A4 PRINTING & CLEAN WHITE PDF */
+@media print {
+  @page {
+    size: A4 portrait !important;
+    margin: 10mm 12mm !important;
+  }
+
+  html,
+  body,
+  body[data-theme="light"],
+  [data-theme="light"] body,
+  .app-container,
+  [data-theme="light"] .app-container,
+  .app-body,
+  [data-theme="light"] .app-body,
+  .results-pane,
+  [data-theme="light"] .results-pane,
+  .invoice-card,
+  [data-theme="light"] .invoice-card,
+  .invoice-card *,
+  div, section, main {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
 
 
 
