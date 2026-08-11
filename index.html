@@ -457,7 +457,7 @@
                 </div>
               </label>
               <div class="extra-rate-input-wrapper">
-                <input type="number" id="designChargeInput" min="0" step="5" class="form-input rate-adj-input" placeholder="0.00" value="0">
+                <input type="number" id="designChargeInput" min="0" step="5" class="form-input rate-adj-input" placeholder="50.00" value="50.00">
                 <span class="rate-unit">SR</span>
               </div>
             </div>
@@ -561,12 +561,19 @@
               <input type="checkbox" id="extraPacking" checked>
               <div class="extra-info">
                 <span class="extra-title">Packing / تغليف مغلفات</span>
-                <span class="extra-desc" id="packingPriceText">5.00 SR / 100 pcs pack</span>
+                <span class="extra-desc" id="packingPriceText">1.00 SR / 100 pcs pack</span>
+              </div>
+            </label>
+            <label class="extra-checkbox-card" id="bagRibbonOnlyCardEl">
+              <input type="checkbox" id="extraBagRibbonOnly">
+              <div class="extra-info">
+                <span class="extra-title">Bag Ribbons Only</span>
+                <span class="extra-desc" style="color: var(--accent-green); font-weight: 700;">1.00 SR / BAG</span>
               </div>
             </label>
             
             <!-- Plastic Window Option -->
-            <div class="extra-checkbox-card custom-extra-card" id="plasticCardEl" style="grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+            <div class="extra-checkbox-card custom-extra-card" id="plasticCardEl" style="grid-column: span 2; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
               <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
                 <label class="extra-checkbox-label" for="extraPlastic" style="flex: 1; cursor: pointer;">
                   <input type="checkbox" id="extraPlastic">
@@ -608,6 +615,14 @@
                 </div>
               </div>
             </div>
+
+            <label class="extra-checkbox-card" id="bagRibbonPrintCardEl">
+              <input type="checkbox" id="extraBagRibbonPrint">
+              <div class="extra-info">
+                <span class="extra-title">Bag Ribbon with Print</span>
+                <span class="extra-desc" style="color: var(--accent-green); font-weight: 700;">2.00 SR / BAG</span>
+              </div>
+            </label>
           </div>
         </div>
 
@@ -834,6 +849,14 @@
               <span class="inv-label">Bag Handle Rope / حبل الكيس:</span>
               <span class="inv-value" id="invRopeCost">-</span>
             </div>
+            <div class="invoice-row hidden" id="invRowBagRibbonOnly">
+              <span class="inv-label">Bag Ribbons Only / شريط كيس:</span>
+              <span class="inv-value" id="invBagRibbonOnlyCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowBagRibbonPrint">
+              <span class="inv-label">Bag Ribbon with Print / شريط كيس مع طباعة:</span>
+              <span class="inv-value" id="invBagRibbonPrintCost">-</span>
+            </div>
             <div class="invoice-row" id="invRowPacking">
               <span class="inv-label">Packing Cost / تكلفة التعبئة والتغليف:</span>
               <span class="inv-value" id="invPackingCost">-</span>
@@ -1028,6 +1051,14 @@
               <div class="form-group min-w-150">
                 <label for="rateRope">Bag Handle Rope (per item)</label>
                 <input type="number" id="rateRope" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBagRibbonOnly">Bag Ribbons Only (per bag)</label>
+                <input type="number" id="rateBagRibbonOnly" step="0.10" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBagRibbonPrint">Bag Ribbons with Print (per bag)</label>
+                <input type="number" id="rateBagRibbonPrint" step="0.10" class="form-input">
               </div>
               <div class="form-group min-w-150">
                 <label for="ratePacking">Packing (per 100 pcs pack)</label>

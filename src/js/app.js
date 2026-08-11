@@ -4,7 +4,7 @@
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 1.52, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '350': { '100x70': 1.44, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
     '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
     '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.50, '50x33': 2.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
     '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 1.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
@@ -37,9 +37,9 @@ const DEFAULT_PRICING = {
     '100x70': 0.65,
     '90x64': 0.65,
     '50x70': 0.65,
-    '70x33': 0.65,
+    '70x33': 0.45,
     '50x33': 0.45,
-    'A3': 0.35,
+    'A3': 0.40,
     'A4': 0.25
   },
 
@@ -65,10 +65,13 @@ const DEFAULT_PRICING = {
 
   // Section 8 & 9: Fixed services cost in SR
   fixedRates: {
+    designCharge: 50.00, // default design charge
     folding: 0.25,   // per piece
     pasting: 0.25,   // per piece
     rope: 0.12,      // per piece
-    packing: 5.00,   // per 100 pieces packet
+    bagRibbonOnly: 1.00,  // per bag
+    bagRibbonPrint: 2.00, // per bag (min 10 bags)
+    packing: 1.00,   // per 100 pieces packet
     businessCardPrint: 0.012, // per piece
     businessCardA3SheetPrice: 0.75, // A3 sheet price specifically for business card jobs
     businessCardPolarCutPrice: 8.50, // Polar Cutting cost per 100 pcs pack
@@ -859,14 +862,20 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.businessCardPolarCutPrice === undefined || currentPricing.fixedRates.businessCardPolarCutPrice === 0.75) {
           currentPricing.fixedRates.businessCardPolarCutPrice = 0.50;
         }
-        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing === 5.00) {
-          currentPricing.fixedRates.packing = 0.50;
+        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
+          currentPricing.fixedRates.packing = 1.00;
         }
         if (currentPricing.fixedRates.dieCylinder === undefined) {
           currentPricing.fixedRates.dieCylinder = 0.30;
         }
-        if (currentPricing.fixedRates.dieManual === undefined) {
-          currentPricing.fixedRates.dieManual = 0.15;
+        if (currentPricing.fixedRates.dieManual === undefined || currentPricing.fixedRates.dieManual === 0.15) {
+          currentPricing.fixedRates.dieManual = 0.35;
+        }
+        if (currentPricing.fixedRates.bagRibbonOnly === undefined) {
+          currentPricing.fixedRates.bagRibbonOnly = 1.00;
+        }
+        if (currentPricing.fixedRates.bagRibbonPrint === undefined) {
+          currentPricing.fixedRates.bagRibbonPrint = 2.00;
         }
         if (currentPricing.fixedRates.offsetSetup === undefined) {
           currentPricing.fixedRates.offsetSetup = 250.00;
@@ -882,8 +891,14 @@ function loadPricingFromStorage() {
         if (currentPricing.laminationRates['100x70'] === undefined || currentPricing.laminationRates['100x70'] === 1.20) {
           currentPricing.laminationRates['100x70'] = 0.65;
         }
-        if (currentPricing.laminationRates['70x33'] === undefined || currentPricing.laminationRates['70x33'] === 0.40) {
-          currentPricing.laminationRates['70x33'] = 0.65;
+        if (currentPricing.laminationRates['70x33'] === undefined || currentPricing.laminationRates['70x33'] === 0.65) {
+          currentPricing.laminationRates['70x33'] = 0.45;
+        }
+        if (currentPricing.laminationRates['50x33'] === undefined || currentPricing.laminationRates['50x33'] === 0.40) {
+          currentPricing.laminationRates['50x33'] = 0.45;
+        }
+        if (currentPricing.laminationRates['A3'] === undefined || currentPricing.laminationRates['A3'] === 0.35) {
+          currentPricing.laminationRates['A3'] = 0.40;
         }
         if (currentPricing.laminationRates['50x70'] === undefined || currentPricing.laminationRates['50x70'] === 0.45 || currentPricing.laminationRates['50x70'] === 0.80) {
           currentPricing.laminationRates['50x70'] = 0.65;
@@ -1080,6 +1095,7 @@ function initUI() {
     'offsetCost100_70', 'offsetCost90_64',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
+    'extraBagRibbonOnly', 'extraBagRibbonPrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
@@ -1087,8 +1103,6 @@ function initUI() {
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
-
-
 
   inputIds.forEach(id => {
     const el = document.getElementById(id);
@@ -1437,7 +1451,12 @@ function initUI() {
       }
       const dieManualRateInput = document.getElementById('dieManualRateInput');
       if (dieManualRateInput) {
-        dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.15).toFixed(2);
+        dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.35).toFixed(2);
+      }
+      const bagRibbonRateInput = document.getElementById('bagRibbonRateInput');
+      const bagRibbonType = document.getElementById('bagRibbonType');
+      if (bagRibbonRateInput && bagRibbonType) {
+        bagRibbonRateInput.value = bagRibbonType.value === 'ribbon_print' ? '2.00' : '1.00';
       }
       calculateAndUpdate();
     }
@@ -1792,6 +1811,10 @@ function populateSettingsDrawer() {
   document.getElementById('rateFolding').value = currentPricing.fixedRates.folding.toFixed(2);
   document.getElementById('ratePasting').value = currentPricing.fixedRates.pasting.toFixed(2);
   document.getElementById('rateRope').value = currentPricing.fixedRates.rope.toFixed(2);
+  const ribbonOnlyVal = currentPricing.fixedRates.bagRibbonOnly !== undefined ? currentPricing.fixedRates.bagRibbonOnly : 1.00;
+  if (document.getElementById('rateBagRibbonOnly')) document.getElementById('rateBagRibbonOnly').value = ribbonOnlyVal.toFixed(2);
+  const ribbonPrintVal = currentPricing.fixedRates.bagRibbonPrint !== undefined ? currentPricing.fixedRates.bagRibbonPrint : 2.00;
+  if (document.getElementById('rateBagRibbonPrint')) document.getElementById('rateBagRibbonPrint').value = ribbonPrintVal.toFixed(2);
   document.getElementById('ratePacking').value = currentPricing.fixedRates.packing.toFixed(2);
   const bcRateVal = currentPricing.fixedRates.businessCardPrint !== undefined ? currentPricing.fixedRates.businessCardPrint : 0.012;
   document.getElementById('rateBcPrint').value = bcRateVal.toFixed(3);
@@ -1974,6 +1997,8 @@ function saveSettingsFromDrawer() {
   currentPricing.fixedRates.folding = parseFloat(document.getElementById('rateFolding').value) || 0;
   currentPricing.fixedRates.pasting = parseFloat(document.getElementById('ratePasting').value) || 0;
   currentPricing.fixedRates.rope = parseFloat(document.getElementById('rateRope').value) || 0;
+  if (document.getElementById('rateBagRibbonOnly')) currentPricing.fixedRates.bagRibbonOnly = parseFloat(document.getElementById('rateBagRibbonOnly').value) || 1.00;
+  if (document.getElementById('rateBagRibbonPrint')) currentPricing.fixedRates.bagRibbonPrint = parseFloat(document.getElementById('rateBagRibbonPrint').value) || 2.00;
   currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 0;
   currentPricing.fixedRates.businessCardPrint = parseFloat(document.getElementById('rateBcPrint').value) || 0;
   currentPricing.fixedRates.businessCardA3SheetPrice = parseFloat(document.getElementById('rateBcA3Sheet').value) || 0;
@@ -2391,6 +2416,17 @@ function calculateAndUpdate() {
   // Handle Rope applies per piece (bag)
   const ropeCost = optHandleRope ? qty * currentPricing.fixedRates.rope : 0;
 
+  // Bag Ribbon Option calculations
+  const optBagRibbonOnly = document.getElementById('extraBagRibbonOnly') && document.getElementById('extraBagRibbonOnly').checked;
+  const optBagRibbonPrint = document.getElementById('extraBagRibbonPrint') && document.getElementById('extraBagRibbonPrint').checked;
+
+  const ribbonOnlyRate = (currentPricing.fixedRates && currentPricing.fixedRates.bagRibbonOnly !== undefined) ? currentPricing.fixedRates.bagRibbonOnly : 1.00;
+  const ribbonPrintRate = (currentPricing.fixedRates && currentPricing.fixedRates.bagRibbonPrint !== undefined) ? currentPricing.fixedRates.bagRibbonPrint : 2.00;
+
+  const ribbonOnlyCost = optBagRibbonOnly ? qty * ribbonOnlyRate : 0;
+  const effectivePrintQty = Math.max(10, qty);
+  const ribbonPrintCost = optBagRibbonPrint ? effectivePrintQty * ribbonPrintRate : 0;
+
   // Packing cost: 5.00 SR per 100 pieces (or packet)
   const packets = Math.ceil(qty / 100);
   const packingRate = currentPricing.fixedRates.packing !== undefined ? currentPricing.fixedRates.packing : 5.00;
@@ -2626,7 +2662,7 @@ function calculateAndUpdate() {
 
 
   // Base total invoice cost before profit
-  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + offsetTotalCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + packingCost + plasticTotalCost;
+  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + offsetTotalCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + ribbonOnlyCost + ribbonPrintCost + packingCost + plasticTotalCost;
 
   // Add Quantity-Based Profit Margin
   function getProfitPercent(quantity) {
@@ -2746,6 +2782,15 @@ function calculateAndUpdate() {
   toggleInvoiceRow('invRowFolding', optFolding, 'invFoldingCost', foldingCost);
   toggleInvoiceRow('invRowPasting', optPasting, 'invPastingCost', pastingCost);
   toggleInvoiceRow('invRowRope', optHandleRope, 'invRopeCost', ropeCost);
+  toggleInvoiceRow('invRowBagRibbonOnly', optBagRibbonOnly, 'invBagRibbonOnlyCost', ribbonOnlyCost);
+  if (optBagRibbonOnly) {
+    document.getElementById('invBagRibbonOnlyCost').innerText = `${ribbonOnlyCost.toFixed(2)} SR (${qty} bags @ ${ribbonOnlyRate.toFixed(2)} SR)`;
+  }
+  toggleInvoiceRow('invRowBagRibbonPrint', optBagRibbonPrint, 'invBagRibbonPrintCost', ribbonPrintCost);
+  if (optBagRibbonPrint) {
+    const minNote = qty < 10 ? ` (${qty} pcs - charged min 10 bags @ ${ribbonPrintRate.toFixed(2)} SR)` : ` (${qty} bags @ ${ribbonPrintRate.toFixed(2)} SR)`;
+    document.getElementById('invBagRibbonPrintCost').innerText = `${ribbonPrintCost.toFixed(2)} SR${minNote}`;
+  }
   toggleInvoiceRow('invRowPacking', optPacking, 'invPackingCost', packingCost);
 
   // Plastic Window Invoice Row
