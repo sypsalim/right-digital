@@ -1,5 +1,37 @@
 // Right Printers | رايت للطباعة - Digital Printing Estimator JavaScript Logic
 
+// --- FIREBASE AUTHENTICATION CONFIGURATION ---
+const firebaseConfig = {
+  apiKey: "AIzaSyA1bKlnqzI3URTmaE5RWVVFfI2eoJwPukE",
+  authDomain: "right-digital-estimator.firebaseapp.com",
+  projectId: "right-digital-estimator",
+  storageBucket: "right-digital-estimator.firebasestorage.app",
+  messagingSenderId: "614855173057",
+  appId: "1:614855173057:web:d28229817cd55a911fc540",
+  measurementId: "G-BK3H163N0Q"
+};
+
+let firebaseApp = null;
+let firebaseAuth = null;
+
+try {
+  if (typeof firebase !== 'undefined') {
+    firebaseApp = firebase.initializeApp(firebaseConfig);
+    firebaseAuth = firebase.auth();
+    
+    firebaseAuth.onAuthStateChanged((user) => {
+      if (user) {
+        sessionStorage.setItem('isAppUnlocked', 'true');
+        sessionStorage.setItem('isSalesAuthenticated', 'true');
+        sessionStorage.setItem('firebaseUserEmail', user.email);
+        applyAppLockStatus();
+      }
+    });
+  }
+} catch (e) {
+  console.log('[Firebase Init Notice]', e.message);
+}
+
 // --- DEFAULT SYSTEM PRICING DATA ---
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
@@ -1181,17 +1213,62 @@ function initUI() {
 
   // App lock screen submit
   if (lockScreenForm) {
-    lockScreenForm.addEventListener('submit', (e) => {
+    lockScreenForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const user = document.getElementById('lockUsername').value.trim().toLowerCase();
+      const rawUser = document.getElementById('lockUsername').value.trim();
       const pass = document.getElementById('lockPassword').value;
 
+      if (lockErrorMsg) {
+        lockErrorMsg.innerText = '';
+        lockErrorMsg.style.color = '#ef4444';
+      }
+
+      // 1. Firebase Auth check if input is an email address
+      if (firebaseAuth && rawUser.includes('@')) {
+        if (lockErrorMsg) {
+          lockErrorMsg.innerText = 'Authenticating with Firebase... / جاري التحقق...';
+          lockErrorMsg.style.color = 'var(--primary-gold-light)';
+        }
+        try {
+          const userCred = await firebaseAuth.signInWithEmailAndPassword(rawUser, pass);
+          sessionStorage.setItem('isAppUnlocked', 'true');
+          sessionStorage.setItem('isSalesAuthenticated', 'true');
+          sessionStorage.setItem('firebaseUserEmail', userCred.user.email);
+          applyAppLockStatus();
+          lockScreenForm.reset();
+          if (lockErrorMsg) lockErrorMsg.innerText = '';
+          return;
+        } catch (error) {
+          console.error('[Firebase Auth Error]', error);
+          let errText = 'Invalid email or password / البريد أو كلمة المرور غير صحيحة';
+          if (error.code === 'auth/user-not-found') {
+            errText = 'User account not found in Firebase / حساب غير موجود في فيربيز';
+          } else if (error.code === 'auth/wrong-password') {
+            errText = 'Incorrect password / كلمة المرور غير صحيحة';
+          } else if (error.code === 'auth/invalid-email') {
+            errText = 'Invalid email format / صيغة البريد غير صحيحة';
+          }
+          if (lockErrorMsg) {
+            lockErrorMsg.innerText = errText;
+            lockErrorMsg.style.color = '#ef4444';
+          }
+          const lockCard = appLockScreen.querySelector('.lock-card');
+          if (lockCard) {
+            lockCard.classList.add('shake');
+            setTimeout(() => lockCard.classList.remove('shake'), 400);
+          }
+          return;
+        }
+      }
+
+      // 2. Fallback to Local username/password
+      const user = rawUser.toLowerCase();
       const salesPass = getSalesPassword();
       const adminPass = getAdminPassword();
       const isSmsOtpEnabled = localStorage.getItem('sms_otp_enabled') !== 'false';
 
       if (user === 'sales' && pass === salesPass) {
-        lockErrorMsg.innerText = '';
+        if (lockErrorMsg) lockErrorMsg.innerText = '';
         if (isSmsOtpEnabled) {
           transitionToOtp('sales');
         } else {
@@ -1201,7 +1278,7 @@ function initUI() {
           lockScreenForm.reset();
         }
       } else if ((user === 'admin' || user === 'administrator') && pass === adminPass) {
-        lockErrorMsg.innerText = '';
+        if (lockErrorMsg) lockErrorMsg.innerText = '';
         if (isSmsOtpEnabled) {
           transitionToOtp('admin');
         } else {
@@ -1211,12 +1288,29 @@ function initUI() {
           lockScreenForm.reset();
         }
       } else {
-        lockErrorMsg.innerText = 'Incorrect Username or Password / اسم المستخدم أو كلمة المرور غير صحيحة';
+        if (lockErrorMsg) {
+          lockErrorMsg.innerText = 'Incorrect Login or Password / بيانات الدخول غير صحيحة';
+          lockErrorMsg.style.color = '#ef4444';
+        }
         const lockCard = appLockScreen.querySelector('.lock-card');
-        lockCard.classList.add('shake');
-        setTimeout(() => {
-          lockCard.classList.remove('shake');
-        }, 400);
+        if (lockCard) {
+          lockCard.classList.add('shake');
+          setTimeout(() => lockCard.classList.remove('shake'), 400);
+        }
+      }
+    });
+  }
+
+  // Sign Out Button Event Listener
+  const signOutBtn = document.getElementById('signOutBtn');
+  if (signOutBtn) {
+    signOutBtn.addEventListener('click', () => {
+      if (confirm('Are you sure you want to sign out? / هل تريد تسجيل الخروج؟')) {
+        if (firebaseAuth) {
+          firebaseAuth.signOut().catch(err => console.error(err));
+        }
+        sessionStorage.clear();
+        applyAppLockStatus();
       }
     });
   }
