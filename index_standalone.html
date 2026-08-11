@@ -1903,39 +1903,39 @@ input:checked + .slider:before {
 [data-theme="light"],
 body[data-theme="light"] {
   /* Core Colors */
-  --bg-app: #C3DEEB;                      /* Background: #C3DEEB Soft Sky Blue */
-  --bg-card: #357fa1;                     /* Main Frames / Cards: #357fa1 */
-  --bg-card-hover: #2d6b88;
-  --border-light: rgba(15, 23, 42, 0.15); 
-  --border-active: #0c153b;               
+  --bg-app: #F5F5DC;                      /* Background: #F5F5DC Beige */
+  --bg-card: #AE9882;                     /* Main Frames / Cards: #AE9882 */
+  --bg-card-hover: #9E8873;
+  --border-light: rgba(26, 21, 16, 0.18); 
+  --border-active: #5c4527;               
 
-  --primary-gold: #0c153b;                
-  --primary-gold-dark: #7eb9bf;           
-  --primary-gold-light: #0f172a;          
+  --primary-gold: #5c4527;                
+  --primary-gold-dark: #3d2d18;           
+  --primary-gold-light: #f3e5ab;          
   --accent-emerald: #059669;              
-  --accent-emerald-dark: #7eb9bf;
+  --accent-emerald-dark: #046c4e;
   --accent-rose: #dc2626;
   --accent-rose-dark: #991b1b;
 
-  --text-main: #0f172a;                   /* Dark Text on Cards */
-  --text-muted: #334155;                  
-  --text-dark: #0f172a;                   
-  --text-gold: #0c153b;
+  --text-main: #1A1510;                   /* Dark Crisp Text on Beige Cards */
+  --text-muted: #4A3E31;                  
+  --text-dark: #1A1510;                   
+  --text-gold: #5c4527;
 
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
   --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.12);
   --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.18);
-  --shadow-glow: 0 0 15px rgba(126, 185, 191, 0.4);
+  --shadow-glow: 0 0 15px rgba(174, 152, 130, 0.4);
 }
 
 /* Light Theme Layout & Text Rules */
 body[data-theme="light"],
 [data-theme="light"] body {
-  background-color: #C3DEEB !important;
+  background-color: #F5F5DC !important;
   background-image: 
-    radial-gradient(at 10% 10%, rgba(53, 127, 161, 0.15) 0px, transparent 50%),
-    radial-gradient(at 90% 80%, rgba(195, 222, 235, 0.35) 0px, transparent 50%) !important;
-  color: #0f172a;
+    radial-gradient(at 10% 10%, rgba(174, 152, 130, 0.2) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(245, 245, 220, 0.4) 0px, transparent 50%) !important;
+  color: #1A1510;
 }
 
 [data-theme="light"] .app-header {
@@ -1953,7 +1953,7 @@ body[data-theme="light"],
 }
 
 [data-theme="light"] .company-name-ar {
-  color: #38bdf8;
+  color: #f3e5ab;
 }
 
 [data-theme="light"] .info-item {
@@ -1966,17 +1966,17 @@ body[data-theme="light"],
 }
 
 [data-theme="light"] .theme-toggle-btn {
-  background: #d6dbe0 !important;
-  background-color: #d6dbe0 !important;
-  color: #0f172a !important;
-  border-color: rgba(15, 23, 42, 0.3) !important;
+  background: #E8DCC4 !important;
+  background-color: #E8DCC4 !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.3) !important;
 }
 
 [data-theme="light"] .theme-toggle-btn:hover {
-  background: #c3c8cf !important;
-  background-color: #c3c8cf !important;
-  color: #0f172a !important;
-  border-color: #0f172a !important;
+  background: #D8CCA4 !important;
+  background-color: #D8CCA4 !important;
+  color: #1A1510 !important;
+  border-color: #1A1510 !important;
 }
 
 /* Main Frames (Cards) inside Light Mode */
@@ -1984,18 +1984,18 @@ body[data-theme="light"],
 [data-theme="light"] .results-card,
 [data-theme="light"] .modal-content,
 [data-theme="light"] .drawer-content {
-  background: #357fa1 !important;
-  color: #ffffff !important;
-  border-color: rgba(255, 255, 255, 0.25) !important;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15) !important;
+  background: #AE9882 !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
 }
 
 [data-theme="light"] .config-card h3,
 [data-theme="light"] .results-card h3,
 [data-theme="light"] .config-card h4,
 [data-theme="light"] .card-header h3 {
-  color: #ffffff !important;
-  border-left-color: #ffffff !important;
+  color: #1A1510 !important;
+  border-left-color: #5c4527 !important;
 }
 
 [data-theme="light"] .form-group label,
@@ -2003,35 +2003,36 @@ body[data-theme="light"],
 [data-theme="light"] .inv-label,
 [data-theme="light"] .inv-value,
 [data-theme="light"] .extra-title {
-  color: #ffffff !important;
+  color: #1A1510 !important;
+  font-weight: 600;
 }
 
 [data-theme="light"] .extra-desc,
 [data-theme="light"] .size-dims {
-  color: #e2e8f0 !important;
+  color: #3E3326 !important;
 }
 
 /* Job Tabs in Light Theme */
 [data-theme="light"] .job-tabs {
-  background: rgba(0, 0, 0, 0.25) !important;
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: rgba(245, 245, 220, 0.6) !important;
+  border-color: rgba(26, 21, 16, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 [data-theme="light"] .tab-btn {
-  color: #ffffff;
+  color: #1A1510;
   font-weight: 700;
 }
 
 [data-theme="light"] .tab-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background: rgba(26, 21, 16, 0.1);
+  color: #1A1510;
 }
 
 [data-theme="light"] .tab-btn.active {
-  background: #008B8B !important;
+  background: #5c4527 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
 }
 
 /* Input elements in Light Theme */
@@ -2042,8 +2043,8 @@ body[data-theme="light"],
 [data-theme="light"] input,
 [data-theme="light"] select {
   background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: rgba(15, 23, 42, 0.25) !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.25) !important;
   font-weight: 700 !important;
 }
 
@@ -2051,27 +2052,27 @@ body[data-theme="light"],
 [data-theme="light"] .form-select:focus,
 [data-theme="light"] input:focus {
   background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #008B8B !important;
-  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.25) !important;
+  color: #1A1510 !important;
+  border-color: #5c4527 !important;
+  box-shadow: 0 0 0 3px rgba(92, 69, 39, 0.25) !important;
 }
 
 [data-theme="light"] .input-with-unit .unit,
 [data-theme="light"] .rate-unit,
 [data-theme="light"] .extra-rate-input-wrapper .unit {
-  color: #0f172a !important;
+  color: #1A1510 !important;
   font-weight: 700 !important;
 }
 
 [data-theme="light"] .extra-rate-input-wrapper {
   background: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(15, 23, 42, 0.2) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
 }
 
 [data-theme="light"] .extra-rate-input-wrapper .form-input,
 [data-theme="light"] .extra-rate-input-wrapper input {
   background-color: transparent !important;
-  color: #0f172a !important;
+  color: #1A1510 !important;
   font-weight: 700 !important;
 }
 
@@ -2081,7 +2082,7 @@ body[data-theme="light"],
 [data-theme="light"] .extra-checkbox-card:has(input:checked) .form-input,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) .unit,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) .rate-unit {
-  color: #0f172a !important;
+  color: #1A1510 !important;
   font-weight: 700 !important;
 }
 
@@ -2092,8 +2093,8 @@ body[data-theme="light"],
 [data-theme="light"] #dieBoardNotice,
 [data-theme="light"] .quick-size-buttons .btn-subtle {
   background: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #0c153b !important;
+  color: #1A1510 !important;
+  border-color: #5c4527 !important;
   font-weight: 600 !important;
 }
 
@@ -2101,7 +2102,7 @@ body[data-theme="light"],
 [data-theme="light"] #plasticCalcNotice *,
 [data-theme="light"] #colorChargeNotice *,
 [data-theme="light"] #dieBoardNotice * {
-  color: #0f172a !important;
+  color: #1A1510 !important;
 }
 
 /* Buttons and Presets in Light Mode */
@@ -2109,17 +2110,17 @@ body[data-theme="light"],
 [data-theme="light"] .gsm-btn,
 [data-theme="light"] .paper-mode-btn,
 [data-theme="light"] .extra-checkbox-card {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
+  background: rgba(245, 245, 220, 0.5);
+  border-color: rgba(26, 21, 16, 0.25);
+  color: #1A1510;
 }
 
 [data-theme="light"] .size-btn:hover,
 [data-theme="light"] .gsm-btn:hover,
 [data-theme="light"] .paper-mode-btn:hover,
 [data-theme="light"] .extra-checkbox-card:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: #008B8B;
+  background: rgba(245, 245, 220, 0.85);
+  border-color: #5c4527;
 }
 
 [data-theme="light"] .paper-mode-btn.active,
@@ -2127,10 +2128,10 @@ body[data-theme="light"],
 [data-theme="light"] .gsm-btn.active,
 [data-theme="light"] .tab-btn.active,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) {
-  background: #008B8B !important;
-  border-color: #005f5f !important;
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
 }
 
 [data-theme="light"] .paper-mode-btn.active .paper-mode-btn-text,
@@ -2144,15 +2145,15 @@ body[data-theme="light"],
 
 [data-theme="light"] .size-dims,
 [data-theme="light"] .gsm-price {
-  color: #334155;
+  color: #4A3E31;
 }
 
 [data-theme="light"] .extra-title {
-  color: #0f172a;
+  color: #1A1510;
 }
 
 [data-theme="light"] .extra-desc {
-  color: #334155;
+  color: #4A3E31;
 }
 
 [data-theme="light"] .preview-mode-badge {
@@ -2168,7 +2169,7 @@ body[data-theme="light"],
 }
 
 [data-theme="light"] .svg-sheet {
-  fill: #7eb9bf;
+  fill: #AE9882;
   stroke: #ffffff;
 }
 
@@ -2187,21 +2188,21 @@ body[data-theme="light"],
 
 /* Comparison Table in Light Mode */
 [data-theme="light"] .comparison-table th {
-  color: #0f172a;
-  border-bottom-color: rgba(15, 23, 42, 0.2);
+  color: #1A1510;
+  border-bottom-color: rgba(26, 21, 16, 0.2);
 }
 
 [data-theme="light"] .comparison-table td {
-  color: #0f172a;
-  border-bottom-color: rgba(15, 23, 42, 0.1);
+  color: #1A1510;
+  border-bottom-color: rgba(26, 21, 16, 0.1);
 }
 
 [data-theme="light"] .comparison-table tbody tr.better-option {
-  background: rgba(12, 21, 59, 0.12);
+  background: rgba(92, 69, 39, 0.12);
 }
 
 [data-theme="light"] .comparison-table tbody tr.better-option td {
-  color: #0f172a;
+  color: #1A1510;
 }
 
 [data-theme="light"] .comparison-status-badge.best {
@@ -2214,15 +2215,16 @@ body[data-theme="light"],
 }
 
 [data-theme="light"] .theme-card-option#themeOptLight {
-  background: #ffffff !important;
+  background: #AE9882 !important;
+  border-color: #5c4527 !important;
 }
 
 [data-theme="light"] .theme-card-option#themeOptLight h4 {
-  color: #0f172a !important;
+  color: #1A1510 !important;
 }
 
 [data-theme="light"] .theme-card-option#themeOptLight p {
-  color: #334155 !important;
+  color: #4A3E31 !important;
 }
 
 
