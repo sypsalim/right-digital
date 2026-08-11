@@ -1211,7 +1211,7 @@ function initUI() {
   const elevationForm = document.getElementById('elevationForm');
   const elevationErrorMsg = document.getElementById('elevationErrorMsg');
 
-  // App lock screen submit
+  // App lock screen submit (Strict Firebase Auth)
   if (lockScreenForm) {
     lockScreenForm.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1223,8 +1223,20 @@ function initUI() {
         lockErrorMsg.style.color = '#ef4444';
       }
 
-      // 1. Firebase Auth check if input is an email address
-      if (firebaseAuth && rawUser.includes('@')) {
+      if (!rawUser.includes('@')) {
+        if (lockErrorMsg) {
+          lockErrorMsg.innerText = 'Please enter your registered staff email address (e.g. sales@rightprinters.com) / يرجى إدخال البريد الإلكتروني للموظف';
+          lockErrorMsg.style.color = '#ef4444';
+        }
+        const lockCard = appLockScreen.querySelector('.lock-card');
+        if (lockCard) {
+          lockCard.classList.add('shake');
+          setTimeout(() => lockCard.classList.remove('shake'), 400);
+        }
+        return;
+      }
+
+      if (firebaseAuth) {
         if (lockErrorMsg) {
           lockErrorMsg.innerText = 'Authenticating with Firebase... / جاري التحقق...';
           lockErrorMsg.style.color = 'var(--primary-gold-light)';
@@ -1240,13 +1252,15 @@ function initUI() {
           return;
         } catch (error) {
           console.error('[Firebase Auth Error]', error);
-          let errText = 'Invalid email or password / البريد أو كلمة المرور غير صحيحة';
+          let errText = 'Invalid email or password / البريد الإلكتروني أو كلمة المرور غير صحيحة';
           if (error.code === 'auth/user-not-found') {
             errText = 'User account not found in Firebase / حساب غير موجود في فيربيز';
           } else if (error.code === 'auth/wrong-password') {
             errText = 'Incorrect password / كلمة المرور غير صحيحة';
           } else if (error.code === 'auth/invalid-email') {
-            errText = 'Invalid email format / صيغة البريد غير صحيحة';
+            errText = 'Invalid email address format / صيغة البريد الإلكتروني غير صحيحة';
+          } else if (error.code === 'auth/user-disabled') {
+            errText = 'This account has been disabled / تم تعطيل هذا الحساب';
           }
           if (lockErrorMsg) {
             lockErrorMsg.innerText = errText;
@@ -1259,43 +1273,10 @@ function initUI() {
           }
           return;
         }
-      }
-
-      // 2. Fallback to Local username/password
-      const user = rawUser.toLowerCase();
-      const salesPass = getSalesPassword();
-      const adminPass = getAdminPassword();
-      const isSmsOtpEnabled = localStorage.getItem('sms_otp_enabled') !== 'false';
-
-      if (user === 'sales' && pass === salesPass) {
-        if (lockErrorMsg) lockErrorMsg.innerText = '';
-        if (isSmsOtpEnabled) {
-          transitionToOtp('sales');
-        } else {
-          sessionStorage.setItem('isAppUnlocked', 'true');
-          sessionStorage.setItem('isSalesAuthenticated', 'true');
-          applyAppLockStatus();
-          lockScreenForm.reset();
-        }
-      } else if ((user === 'admin' || user === 'administrator') && pass === adminPass) {
-        if (lockErrorMsg) lockErrorMsg.innerText = '';
-        if (isSmsOtpEnabled) {
-          transitionToOtp('admin');
-        } else {
-          sessionStorage.setItem('isAppUnlocked', 'true');
-          sessionStorage.setItem('isAdminAuthenticated', 'true');
-          applyAppLockStatus();
-          lockScreenForm.reset();
-        }
       } else {
         if (lockErrorMsg) {
-          lockErrorMsg.innerText = 'Incorrect Login or Password / بيانات الدخول غير صحيحة';
+          lockErrorMsg.innerText = 'Firebase Authentication is loading. Please refresh the page / جاري تحميل نظام فيربيز... يرجى تحديث الصفحة';
           lockErrorMsg.style.color = '#ef4444';
-        }
-        const lockCard = appLockScreen.querySelector('.lock-card');
-        if (lockCard) {
-          lockCard.classList.add('shake');
-          setTimeout(() => lockCard.classList.remove('shake'), 400);
         }
       }
     });
