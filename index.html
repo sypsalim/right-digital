@@ -883,14 +883,30 @@
               <span class="inv-label" style="color: var(--accent-emerald); font-weight: 600;">Added Profit Margin / هامش الربح المضاف (<span id="invProfitPercent">0%</span>):</span>
               <span class="inv-value" id="invProfitVal" style="color: var(--accent-emerald); font-weight: 700;">+0.00 SR</span>
             </div>
-            <div class="invoice-row total-row">
-              <span class="inv-label">Total Cost / السعر الإجمالي:</span>
-              <span class="inv-value" id="invTotalVal">-</span>
+            <hr class="inv-divider">
+            <div class="invoice-row subtotal-row" id="invRowSubTotal">
+              <span class="inv-label">Sub Total (Excl. VAT) / المجموع (بدون ضريبة):</span>
+              <span class="inv-value vat-btn vat-green-btn" id="invSubTotalVal">-</span>
             </div>
-            <div class="invoice-row unit-cost-row">
-              <span class="inv-label">Cost Per Piece / تكلفة القطعة الواحدة:</span>
-              <span class="inv-value" id="invUnitCostVal">-</span>
+            <div class="invoice-row vat-row" id="invRowVat">
+              <span class="inv-label">VAT (15%) / ضريبة القيمة المضافة (١٥٪):</span>
+              <span class="inv-value vat-text-red" id="invVatVal">+0.00 SR</span>
             </div>
+            <div class="invoice-row total-row" id="invRowTotalWithVat">
+              <span class="inv-label">Total Cost (Plus VAT) / الإجمالي شامل الضريبة:</span>
+              <span class="inv-value vat-btn vat-red-btn" id="invTotalWithVatVal">-</span>
+            </div>
+            <span id="invTotalVal" style="display:none;">-</span>
+            <hr class="inv-divider">
+            <div class="invoice-row unit-cost-row unit-cost-novat">
+              <span class="inv-label">Cost Per Piece (Without VAT) / سعر القطعة بدون ضريبة:</span>
+              <span class="inv-value vat-btn vat-green-btn" id="invUnitCostNoVatVal">-</span>
+            </div>
+            <div class="invoice-row unit-cost-row unit-cost-withvat">
+              <span class="inv-label">Cost Per Piece (With VAT 15%) / سعر القطعة شامل الضريبة:</span>
+              <span class="inv-value vat-btn vat-red-btn" id="invUnitCostWithVatVal">-</span>
+            </div>
+            <span id="invUnitCostVal" style="display:none;">-</span>
           </div>
 
           <div class="invoice-actions no-print">

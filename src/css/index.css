@@ -917,36 +917,75 @@ input:checked + .slider:before {
   color: var(--text-gold) !important;
 }
 
+.subtotal-row {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+
+.vat-row {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .total-row {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: 700;
   border-top: 1px solid var(--border-light);
-  padding-top: 12px;
+  padding-top: 10px;
   margin-top: 4px;
 }
 
-.total-row .inv-value {
-  color: var(--primary-gold-light);
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
-}
-
 .unit-cost-row {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 700;
-  color: #dc2626;
-  margin-top: 6px;
-  padding-top: 6px;
+  margin-top: 4px;
+  padding-top: 4px;
 }
 
 .unit-cost-row .inv-label {
-  color: #dc2626;
   font-weight: 700;
 }
 
-.unit-cost-row .inv-value {
-  color: #dc2626;
-  font-size: 1.45rem;
+.unit-cost-novat .inv-label {
+  color: var(--accent-emerald, #10b981);
+}
+
+.unit-cost-withvat .inv-label {
+  color: #ef4444;
+}
+
+/* VAT Buttons and Badges */
+.vat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 14px;
+  border-radius: 8px;
   font-weight: 800;
+  font-size: 0.98rem;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.vat-green-btn {
+  background-color: #10b981 !important; /* GREEN COLOR BACKGROUND BUTTON FOR WITHOUT VAT */
+  color: #ffffff !important;
+  border: 1px solid #059669 !important;
+}
+
+.vat-red-btn {
+  background-color: #ef4444 !important; /* RED COLOR BACKGROUND BUTTON / BADGE FOR WITH VAT */
+  color: #ffffff !important;
+  border: 1px solid #dc2626 !important;
+}
+
+.vat-text-red {
+  color: #ef4444 !important; /* RED COLOR FOR VAT ADDED */
+  font-weight: 800;
+  font-size: 1.05rem;
 }
 
 /* Buttons */
@@ -1396,43 +1435,43 @@ input:checked + .slider:before {
 
   .total-row,
   [data-theme="light"] .total-row {
-    font-size: 14pt !important;
-    margin-top: 8px !important;
-    border-top: 2px solid #000000 !important;
+    font-size: 11pt !important;
+    margin-top: 6px !important;
+    border-top: 1px solid #000000 !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
-  }
-
-  .total-row .inv-value,
-  [data-theme="light"] .total-row .inv-value {
-    color: #000000 !important;
-    text-shadow: none !important;
   }
 
   .unit-cost-row,
   [data-theme="light"] .unit-cost-row {
-    font-size: 13pt !important;
-    font-weight: 800 !important;
-    color: #dc2626 !important;
+    font-size: 11pt !important;
+    font-weight: 700 !important;
     border-bottom: none !important;
     background: #ffffff !important;
     background-color: #ffffff !important;
-    padding-top: 6px !important;
-    margin-top: 6px !important;
+    padding-top: 4px !important;
+    margin-top: 4px !important;
   }
 
-  .unit-cost-row .inv-label,
-  [data-theme="light"] .unit-cost-row .inv-label {
-    color: #dc2626 !important;
-    font-weight: 700 !important;
-    font-size: 12pt !important;
+  .vat-green-btn,
+  [data-theme="light"] .vat-green-btn {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
 
-  .unit-cost-row .inv-value,
-  [data-theme="light"] .unit-cost-row .inv-value {
+  .vat-red-btn,
+  [data-theme="light"] .vat-red-btn {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .vat-text-red,
+  [data-theme="light"] .vat-text-red {
     color: #dc2626 !important;
-    font-weight: 800 !important;
-    font-size: 16pt !important;
   }
 
   .discount-row,

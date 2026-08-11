@@ -2912,9 +2912,33 @@ function calculateAndUpdate() {
     }
   }
 
-  // Totals
-  document.getElementById('invTotalVal').innerText = `${totalCost.toFixed(2)} SR`;
-  document.getElementById('invUnitCostVal').innerText = `${unitCost.toFixed(3)} SR`;
+  // Totals & VAT Breakdown
+  const subTotal = totalCost;
+  const vatVal = subTotal * 0.15;
+  const totalCostWithVat = subTotal + vatVal;
+  const unitCostNoVat = qty > 0 ? subTotal / qty : 0;
+  const unitCostWithVat = qty > 0 ? totalCostWithVat / qty : 0;
+
+  const elSubTotal = document.getElementById('invSubTotalVal');
+  if (elSubTotal) elSubTotal.innerText = `${subTotal.toFixed(2)} SR`;
+
+  const elVat = document.getElementById('invVatVal');
+  if (elVat) elVat.innerText = `+${vatVal.toFixed(2)} SR`;
+
+  const elTotalWithVat = document.getElementById('invTotalWithVatVal');
+  if (elTotalWithVat) elTotalWithVat.innerText = `${totalCostWithVat.toFixed(2)} SR`;
+
+  const elTotalLegacy = document.getElementById('invTotalVal');
+  if (elTotalLegacy) elTotalLegacy.innerText = `${totalCostWithVat.toFixed(2)} SR`;
+
+  const elUnitNoVat = document.getElementById('invUnitCostNoVatVal');
+  if (elUnitNoVat) elUnitNoVat.innerText = `${unitCostNoVat.toFixed(3)} SR`;
+
+  const elUnitWithVat = document.getElementById('invUnitCostWithVatVal');
+  if (elUnitWithVat) elUnitWithVat.innerText = `${unitCostWithVat.toFixed(3)} SR`;
+
+  const elUnitLegacy = document.getElementById('invUnitCostVal');
+  if (elUnitLegacy) elUnitLegacy.innerText = `${unitCostWithVat.toFixed(3)} SR`;
 }
 
 // Invoice row helper
@@ -3578,8 +3602,33 @@ function calculateTshirtCupAndUpdate() {
   document.getElementById('invLayoutType').innerText = "N/A";
   document.getElementById('invQty').innerText = `${qty} pcs`;
 
-  document.getElementById('invTotalVal').innerText = `${finalTotal.toFixed(2)} SR`;
-  document.getElementById('invUnitCostVal').innerText = `${unitCost.toFixed(3)} SR`;
+  // Totals & VAT Breakdown
+  const subTotal = finalTotal;
+  const vatVal = subTotal * 0.15;
+  const totalCostWithVat = subTotal + vatVal;
+  const unitCostNoVat = qty > 0 ? subTotal / qty : 0;
+  const unitCostWithVat = qty > 0 ? totalCostWithVat / qty : 0;
+
+  const elSubTotal = document.getElementById('invSubTotalVal');
+  if (elSubTotal) elSubTotal.innerText = `${subTotal.toFixed(2)} SR`;
+
+  const elVat = document.getElementById('invVatVal');
+  if (elVat) elVat.innerText = `+${vatVal.toFixed(2)} SR`;
+
+  const elTotalWithVat = document.getElementById('invTotalWithVatVal');
+  if (elTotalWithVat) elTotalWithVat.innerText = `${totalCostWithVat.toFixed(2)} SR`;
+
+  const elTotalLegacy = document.getElementById('invTotalVal');
+  if (elTotalLegacy) elTotalLegacy.innerText = `${totalCostWithVat.toFixed(2)} SR`;
+
+  const elUnitNoVat = document.getElementById('invUnitCostNoVatVal');
+  if (elUnitNoVat) elUnitNoVat.innerText = `${unitCostNoVat.toFixed(3)} SR`;
+
+  const elUnitWithVat = document.getElementById('invUnitCostWithVatVal');
+  if (elUnitWithVat) elUnitWithVat.innerText = `${unitCostWithVat.toFixed(3)} SR`;
+
+  const elUnitLegacy = document.getElementById('invUnitCostVal');
+  if (elUnitLegacy) elUnitLegacy.innerText = `${unitCostWithVat.toFixed(3)} SR`;
 }
 
 // --- Quantity Tiered Surcharge & Volume Discount Pricing Logic ---
