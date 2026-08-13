@@ -84,17 +84,9 @@
         <div class="config-card" id="paperSizesCard">
           <div class="card-header">
             <h3>1. Print Paper Size / مقاس ورق الطباعة</h3>
-            <div class="orientation-switch-wrapper">
-              <span class="switch-label">Landscape</span>
-              <label class="switch">
-                <input type="checkbox" id="orientationToggle">
-                <span class="slider round"></span>
-              </label>
-              <span class="switch-label">Portrait</span>
-            </div>
           </div>
 
-          <!-- Mode Switcher: DIGITAL vs OFFSET -->
+          <!-- Mode Switcher: DIGITAL vs OFFSET vs BAGS -->
           <div class="paper-mode-tabs" id="paperModeTabs">
             <button type="button" class="paper-mode-btn active" id="btnModeDigital" data-mode="digital">
               <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/></svg>
@@ -103,6 +95,10 @@
             <button type="button" class="paper-mode-btn" id="btnModeOffset" data-mode="offset">
               <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h8v2zm0-4h-8v-2h8v2zm0-4h-8V9h8v2zm0-4h-8V5h8v2z"/></svg>
               OFFSET PRINT / أوفست
+            </button>
+            <button type="button" class="paper-mode-btn" id="btnModeBags" data-mode="bags">
+              <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3zm7 17H5V8h2v2c0 .55.45 1 1 1s1-.45 1-1V8h6v2c0 .55.45 1 1 1s1-.45 1-1V8h2v12z"/></svg>
+              BAGS / أكياس
             </button>
           </div>
 
@@ -119,14 +115,21 @@
               <div class="form-group min-w-150" style="flex: 1;" id="offsetCost100_70Group">
                 <label for="offsetCost100_70">1. 100x70 cm Paper Sheet Cost</label>
                 <div class="input-with-unit">
-                  <input type="number" id="offsetCost100_70" value="1.65" min="0" step="0.05" class="form-input">
+                  <input type="number" id="offsetCost100_70" value="1.44" min="0" step="0.05" class="form-input">
                   <span class="unit">SR</span>
                 </div>
               </div>
               <div class="form-group min-w-150" style="flex: 1;" id="offsetCost90_64Group">
                 <label for="offsetCost90_64">2. 90x64 cm Paper Sheet Cost</label>
                 <div class="input-with-unit">
-                  <input type="number" id="offsetCost90_64" value="1.35" min="0" step="0.05" class="form-input">
+                  <input type="number" id="offsetCost90_64" value="1.40" min="0" step="0.05" class="form-input">
+                  <span class="unit">SR</span>
+                </div>
+              </div>
+              <div class="form-group min-w-150" style="flex: 1;" id="offsetCost50_70Group">
+                <label for="offsetCost50_70">3. 50x70 cm Paper Sheet Cost</label>
+                <div class="input-with-unit">
+                  <input type="number" id="offsetCost50_70" value="1.00" min="0" step="0.05" class="form-input">
                   <span class="unit">SR</span>
                 </div>
               </div>
@@ -414,7 +417,7 @@
             <div class="form-group" style="flex: 1.2;">
               <label for="insideFoldLock">Inside Fold Lock / قفل الطي (سم)</label>
               <div class="input-with-unit">
-                <input type="number" id="insideFoldLock" value="1.0" min="1.0" max="2.5" step="0.1" class="form-input" placeholder="1.0">
+                <input type="number" id="insideFoldLock" value="0" min="0" max="2.5" step="0.1" class="form-input" placeholder="0">
                 <span class="unit">cm</span>
               </div>
             </div>
@@ -548,7 +551,7 @@
               <input type="checkbox" id="extraFolding">
               <div class="extra-info">
                 <span class="extra-title">Folding / طوي</span>
-                <span class="extra-desc">0.25 SR / piece</span>
+                <span class="extra-desc">0.30 SR / piece</span>
               </div>
             </label>
             <label class="extra-checkbox-card">
@@ -642,9 +645,19 @@
         
         <!-- Interactive Layout Preview -->
         <div class="results-card" id="paperLayoutPreviewCard">
-          <div class="card-header">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
             <h3>Visual Sheet Layout / تخطيط توزع القطع على الفرخ</h3>
-            <span class="preview-mode-badge" id="layoutDirectionLabel">Landscape Layout</span>
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div class="orientation-switch-wrapper">
+                <span class="switch-label">Landscape</span>
+                <label class="switch">
+                  <input type="checkbox" id="orientationToggle">
+                  <span class="slider round"></span>
+                </label>
+                <span class="switch-label">Portrait</span>
+              </div>
+              <span class="preview-mode-badge" id="layoutDirectionLabel">Landscape Layout</span>
+            </div>
           </div>
           
           <div class="layout-preview-container">

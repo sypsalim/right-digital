@@ -36,11 +36,11 @@ try {
 const DEFAULT_PRICING = {
   // Section 5: Standard Paper GSM rates (per sheet size in SR)
   paperGsmRates: {
-    '350': { '100x70': 1.44, '90x64': 1.26, '50x70': 1.10, '70x33': 3.50, '50x33': 3.00, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
-    '300': { '100x70': 1.26, '90x64': 1.05, '50x70': 0.95, '70x33': 3.00, '50x33': 2.50, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 1.05, '90x64': 0.90, '50x70': 0.80, '70x33': 2.50, '50x33': 2.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
-    '150': { '100x70': 0.85, '90x64': 0.75, '50x70': 0.65, '70x33': 2.00, '50x33': 1.50, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
-    '100': { '100x70': 0.70, '90x64': 0.60, '50x70': 0.50, '70x33': 1.85, '50x33': 1.35, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
+    '350': { '100x70': 1.44, '90x64': 1.40, '50x70': 1.00, '70x33': 1.50, '50x33': 1.40, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
+    '300': { '100x70': 1.25, '90x64': 1.35, '50x70': 0.90, '70x33': 1.40, '50x33': 1.30, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
+    '250': { '100x70': 1.00, '90x64': 0.95, '50x70': 0.80, '70x33': 1.20, '50x33': 1.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '150': { '100x70': 0.80, '90x64': 0.75, '50x70': 0.60, '70x33': 1.00, '50x33': 0.90, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
+    '100': { '100x70': 0.70, '90x64': 0.65, '50x70': 0.45, '70x33': 0.95, '50x33': 0.80, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
 
 
@@ -66,20 +66,21 @@ const DEFAULT_PRICING = {
 
   // Section 7: Lamination cost per sheet size in SR
   laminationRates: {
-    '100x70': 0.65,
-    '90x64': 0.65,
-    '50x70': 0.65,
-    '70x33': 0.45,
-    '50x33': 0.45,
+    '100x70': 0.55,
+    '90x64': 0.50,
+    '50x70': 0.45,
+    '50x35': 0.55,
+    '70x33': 0.35,
+    '50x33': 0.50,
     'A3': 0.40,
-    'A4': 0.25
+    'A4': 0.30
   },
 
   // Section 8: Plotter Cut cost per sheet based on ordered quantity tier in SR
   plotterTierRates: {
-    tier1: 3.00, // Qty 1 to 24 pcs: 3.00 SR / sheet
-    tier2: 2.50, // Qty 25 to 99 pcs: 2.50 SR / sheet
-    tier3: 2.00  // Qty 100+ pcs: 2.00 SR / sheet
+    tier1: 2.00, // Qty 1 to 24 pcs: 2.00 SR / sheet
+    tier2: 1.75, // Qty 25 to 149 pcs: 1.75 SR / sheet
+    tier3: 1.50  // Qty 150+ pcs: 1.50 SR / sheet
   },
 
   // Quantity-Based Profit Margin Tiers (Percentage Added to Final Total)
@@ -98,7 +99,7 @@ const DEFAULT_PRICING = {
   // Section 8 & 9: Fixed services cost in SR
   fixedRates: {
     designCharge: 50.00, // default design charge
-    folding: 0.25,   // per piece
+    folding: 0.30,   // per piece
     pasting: 0.25,   // per piece
     rope: 0.12,      // per piece
     bagRibbonOnly: 1.00,  // per bag
@@ -173,8 +174,8 @@ const DEFAULT_PRICING = {
 const DEFAULT_PAPER_SIZES = [
   { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset' },
   { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset' },
-  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, mode: 'offset' },
-  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, mode: 'offset' },
+  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, alias: '50x70', mode: 'offset' },
+  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, alias: '50x35', mode: 'offset' },
   { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33, mode: 'digital' },
   { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33, mode: 'digital' },
   { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3', mode: 'digital' },
@@ -852,12 +853,7 @@ function loadPricingFromStorage() {
             currentPricing.paperGsmRates[gsm] = JSON.parse(JSON.stringify(DEFAULT_PRICING.paperGsmRates[gsm]));
           } else {
             Object.keys(DEFAULT_PRICING.paperGsmRates[gsm]).forEach(sz => {
-              const oldDefaults70 = [6.00, 5.50, 5.00, 4.00, 3.00];
-              const oldDefaults50 = [5.00, 4.50, 3.50, 2.50];
-              const val = currentPricing.paperGsmRates[gsm][sz];
-              if (val === undefined || (sz === '70x33' && (oldDefaults70.includes(val) || val > 3.50)) || (sz === '50x33' && (oldDefaults50.includes(val) || val > 3.25))) {
-                currentPricing.paperGsmRates[gsm][sz] = DEFAULT_PRICING.paperGsmRates[gsm][sz];
-              }
+              currentPricing.paperGsmRates[gsm][sz] = DEFAULT_PRICING.paperGsmRates[gsm][sz];
             });
           }
         });
@@ -897,6 +893,12 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
           currentPricing.fixedRates.packing = 1.00;
         }
+        if (currentPricing.fixedRates.folding === undefined || currentPricing.fixedRates.folding === 0.25) {
+          currentPricing.fixedRates.folding = 0.30;
+        }
+        if (currentPricing.fixedRates.pasting === undefined) {
+          currentPricing.fixedRates.pasting = 0.25;
+        }
         if (currentPricing.fixedRates.dieCylinder === undefined) {
           currentPricing.fixedRates.dieCylinder = 0.30;
         }
@@ -913,35 +915,19 @@ function loadPricingFromStorage() {
           currentPricing.fixedRates.offsetSetup = 250.00;
         }
       }
-      if (!currentPricing.plotterTierRates) {
+      if (currentPricing.plotterTierRates) {
+        Object.keys(DEFAULT_PRICING.plotterTierRates).forEach(tier => {
+          currentPricing.plotterTierRates[tier] = DEFAULT_PRICING.plotterTierRates[tier];
+        });
+      } else {
         currentPricing.plotterTierRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.plotterTierRates));
       }
       currentPricing.profitTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.profitTiers));
       if (!currentPricing.laminationRates) {
         currentPricing.laminationRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.laminationRates));
       } else {
-        if (currentPricing.laminationRates['100x70'] === undefined || currentPricing.laminationRates['100x70'] === 1.20) {
-          currentPricing.laminationRates['100x70'] = 0.65;
-        }
-        if (currentPricing.laminationRates['70x33'] === undefined || currentPricing.laminationRates['70x33'] === 0.65) {
-          currentPricing.laminationRates['70x33'] = 0.45;
-        }
-        if (currentPricing.laminationRates['50x33'] === undefined || currentPricing.laminationRates['50x33'] === 0.40) {
-          currentPricing.laminationRates['50x33'] = 0.45;
-        }
-        if (currentPricing.laminationRates['A3'] === undefined || currentPricing.laminationRates['A3'] === 0.35) {
-          currentPricing.laminationRates['A3'] = 0.40;
-        }
-        if (currentPricing.laminationRates['50x70'] === undefined || currentPricing.laminationRates['50x70'] === 0.45 || currentPricing.laminationRates['50x70'] === 0.80) {
-          currentPricing.laminationRates['50x70'] = 0.65;
-        }
-        if (currentPricing.laminationRates['90x64'] === undefined || currentPricing.laminationRates['90x64'] === 0.55 || currentPricing.laminationRates['90x64'] === 1.00) {
-          currentPricing.laminationRates['90x64'] = 0.65;
-        }
         Object.keys(DEFAULT_PRICING.laminationRates).forEach(sz => {
-          if (currentPricing.laminationRates[sz] === undefined) {
-            currentPricing.laminationRates[sz] = DEFAULT_PRICING.laminationRates[sz];
-          }
+          currentPricing.laminationRates[sz] = DEFAULT_PRICING.laminationRates[sz];
         });
       }
 
@@ -1079,18 +1065,40 @@ function initUI() {
     calculateAndUpdate();
   });
 
-  // 1.5. Setup Paper Mode Switcher (Digital vs Offset)
+  // 1.5. Setup Paper Mode Switcher (Digital vs Offset vs Bags)
   const btnModeDigital = document.getElementById('btnModeDigital');
   const btnModeOffset = document.getElementById('btnModeOffset');
+  const btnModeBags = document.getElementById('btnModeBags');
+
+  function updateSection3Labels() {
+    const labelWidth = document.querySelector('label[for="itemWidth"]');
+    const labelHeight = document.querySelector('label[for="itemHeight"]');
+    const labelDepth = document.querySelector('label[for="boxDepthH"]');
+    const badge3d = document.getElementById('box3dBadge');
+    
+    if (currentPaperMode === 'bags') {
+      if (labelWidth) labelWidth.innerHTML = 'Bag Length (L) / طول الكيس (سم)';
+      if (labelHeight) labelHeight.innerHTML = 'Bag Width/Gusset (W) / عرض/جانب الكيس (سم)';
+      if (labelDepth) labelDepth.innerHTML = 'Bag Height (H) / ارتفاع الكيس (سم)';
+      if (badge3d) badge3d.innerText = '3D Bag Wireframe';
+    } else {
+      if (labelWidth) labelWidth.innerHTML = 'Length (L) / الطول (سم)';
+      if (labelHeight) labelHeight.innerHTML = 'Width (W) / العرض (سم)';
+      if (labelDepth) labelDepth.innerHTML = 'Box Depth (H) / العمق (سم)';
+      if (badge3d) badge3d.innerText = '3D Wireframe';
+    }
+  }
 
   if (btnModeDigital && btnModeOffset) {
     btnModeDigital.addEventListener('click', () => {
       currentPaperMode = 'digital';
       btnModeDigital.classList.add('active');
       btnModeOffset.classList.remove('active');
+      if (btnModeBags) btnModeBags.classList.remove('active');
       if (['size_100_70', 'size_90_64', 'size_50_70', 'size_50_35'].includes(selectedPaperSizeId)) {
         selectedPaperSizeId = 'size_70_33';
       }
+      updateSection3Labels();
       renderPaperSizeButtons();
       calculateAndUpdate();
     });
@@ -1099,12 +1107,27 @@ function initUI() {
       currentPaperMode = 'offset';
       btnModeOffset.classList.add('active');
       btnModeDigital.classList.remove('active');
+      if (btnModeBags) btnModeBags.classList.remove('active');
       if (['size_70_33', 'size_50_33', 'size_a3', 'size_a4'].includes(selectedPaperSizeId)) {
         selectedPaperSizeId = 'size_100_70';
       }
+      updateSection3Labels();
       renderPaperSizeButtons();
       calculateAndUpdate();
     });
+
+    if (btnModeBags) {
+      btnModeBags.addEventListener('click', () => {
+        currentPaperMode = 'bags';
+        btnModeBags.classList.add('active');
+        btnModeDigital.classList.remove('active');
+        btnModeOffset.classList.remove('active');
+        selectedPaperSizeId = 'size_100_70';
+        updateSection3Labels();
+        renderPaperSizeButtons();
+        calculateAndUpdate();
+      });
+    }
   }
 
   // 2. Setup Paper Size List
@@ -1124,7 +1147,7 @@ function initUI() {
   // 5. Inputs Auto-change
   const inputIds = [
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'designSpace', 'stickerType', 'stickerColors',
-    'offsetCost100_70', 'offsetCost90_64',
+    'offsetCost100_70', 'offsetCost90_64', 'offsetCost50_70',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraBagRibbonOnly', 'extraBagRibbonPrint',
@@ -1624,6 +1647,7 @@ function renderPaperSizeButtons() {
 
   const filteredSizes = DEFAULT_PAPER_SIZES.filter(s => {
     if (currentJobType === 'sticker') return true;
+    if (currentPaperMode === 'bags') return true;
     return s.mode === currentPaperMode;
   });
 
@@ -1847,7 +1871,7 @@ function populateSettingsDrawer() {
   const lamContainer = document.getElementById('settingsLaminationContainer');
   if (lamContainer) {
     lamContainer.innerHTML = '';
-    const allSizes = ['100x70', '90x64', '50x70', '70x33', '50x33', 'A3', 'A4'];
+    const allSizes = ['100x70', '90x64', '50x70', '50x35', '70x33', '50x33', 'A3', 'A4'];
     allSizes.forEach(sz => {
       const val = (currentPricing.laminationRates && currentPricing.laminationRates[sz] !== undefined)
         ? currentPricing.laminationRates[sz]
@@ -1867,9 +1891,9 @@ function populateSettingsDrawer() {
     plotterContainer.innerHTML = '';
     const pTierRates = currentPricing.plotterTierRates || DEFAULT_PRICING.plotterTierRates;
     const tiers = [
-      { key: 'tier1', label: 'Qty 1 to 24 pcs (3.00 SR / sheet)', val: pTierRates.tier1 },
-      { key: 'tier2', label: 'Qty 25 to 99 pcs (2.50 SR / sheet)', val: pTierRates.tier2 },
-      { key: 'tier3', label: 'Qty 100+ pcs (2.00 SR / sheet)', val: pTierRates.tier3 }
+      { key: 'tier1', label: 'Qty 1 to 24 pcs (2.00 SR / sheet)', val: pTierRates.tier1 },
+      { key: 'tier2', label: 'Qty 25 to 149 pcs (1.75 SR / sheet)', val: pTierRates.tier2 },
+      { key: 'tier3', label: 'Qty 150+ pcs (1.50 SR / sheet)', val: pTierRates.tier3 }
     ];
     tiers.forEach(t => {
       plotterContainer.innerHTML += `
@@ -2287,21 +2311,61 @@ function calculateAndUpdate() {
 
   const boxH = boxHInput ? (parseFloat(boxHInput.value) || 0) : 0;
   const boxT = boxTInput ? (parseFloat(boxTInput.value) || 0) : 0;
-  const insideFoldLock = insideFoldLockInput ? (parseFloat(insideFoldLockInput.value) || 1.0) : 1.0;
+  const insideFoldLock = insideFoldLockInput ? (parseFloat(insideFoldLockInput.value) || 0) : 0;
   const designSpace = designSpaceInput ? (parseFloat(designSpaceInput.value) || 0) : 0;
 
   let sideFold = 0;
-  if (boxH > 0) {
-    sideFold = (2 * boxH) + boxT + insideFoldLock;
+  let flat_w = 0;
+  let flat_h = 0;
+
+  const isBagsMode = (currentPaperMode === 'bags');
+
+  if (isBagsMode) {
+    const bagL = i_w;
+    const bagW = i_h;
+    const bagH = boxH;
+    sideFold = 1.5; // 1.5 cm side glue flap
+    const topFold = 2.0; // 2 cm top handle fold
+    const bottomFold = Math.max(1.0, bagW - 2.0); // Bottom fold = Gusset size minus 2 cm
+
+    flat_w = sideFold + (2 * bagL) + (2 * bagW); // 1.5 cm Bag fold + L + W + L + W
+    flat_h = topFold + bagH + bottomFold; // 2 cm Top fold + H + Bottom fold
+  } else {
+    if (boxH > 0) {
+      sideFold = (2 * boxH) + boxT + insideFoldLock;
+    }
+    flat_w = i_w + (2 * sideFold);
+    flat_h = i_h + (2 * sideFold);
   }
 
-  const flat_w = i_w + (2 * sideFold);
-  const flat_h = i_h + (2 * sideFold);
-
-  // Show/Hide Unfolded Box / Cut Size Notice in Section 3
+  // Show/Hide Unfolded Box / Bag Open Size Notice in Section 3
   const boxFoldNotice = document.getElementById('boxFoldInfoNotice');
   if (boxFoldNotice) {
-    if (boxH > 0 || designSpace > 0) {
+    if (isBagsMode) {
+      boxFoldNotice.classList.remove('hidden');
+      const bottomFoldVal = Math.max(1.0, i_h - 2.0);
+      const isExceeding = (flat_w > S_W || flat_h > S_H) && (flat_w > S_H || flat_h > S_W);
+      if (isExceeding) {
+        boxFoldNotice.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
+            ⚠️ Notice: Bag Open Size (${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
+          </div>
+          <div style="font-size: 0.82rem; opacity: 0.9;">
+            Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | 2.0 cm Top Fold + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Fold (Gusset ${i_h}cm - 2cm)<br>
+            <em>Tip: Try selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
+          </div>
+        `;
+      } else {
+        boxFoldNotice.innerHTML = `
+          <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
+            🛍️ Bag Open Size: <strong>${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm</strong>
+          </div>
+          <div style="font-size: 0.82rem; opacity: 0.9;">
+            Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | 2.0 cm Top Fold + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Fold (Gusset ${i_h}cm - 2cm)
+          </div>
+        `;
+      }
+    } else if (boxH > 0 || designSpace > 0) {
       boxFoldNotice.classList.remove('hidden');
       const isExceeding = (flat_w > S_W || flat_h > S_H) && (flat_w > S_H || flat_h > S_W);
       const foldDesc = boxH > 0 ? `Fold Allowance per Side: <strong>${sideFold.toFixed(2)} cm</strong> (Height ${boxH}cm + Wall ${boxT}cm + Fold ${boxH}cm + Lock ${insideFoldLock.toFixed(1)}cm)` : '';
@@ -2352,7 +2416,21 @@ function calculateAndUpdate() {
 
   // 2. Compute Sheets Needed
   const ups = activeLayout.ups;
-  const sheetsNeeded = ups > 0 ? Math.ceil(qty / ups) : 0;
+  const baseSheetsNeeded = ups > 0 ? Math.ceil(qty / ups) : 0;
+  
+  // Rule for Offset Print & Bags: Add extra setup sheets per job
+  // 100x70, 90x64, 50x70 cm => +120 extra sheets
+  // 50x35 cm => +50 extra sheets
+  let extraSheets = 0;
+  if ((currentPaperMode === 'offset' || currentPaperMode === 'bags') && baseSheetsNeeded > 0) {
+    if (['size_100_70', 'size_90_64', 'size_50_70'].includes(selectedPaperSizeId)) {
+      extraSheets = 120;
+    } else if (selectedPaperSizeId === 'size_50_35') {
+      extraSheets = 50;
+    }
+  }
+  const sheetsNeeded = baseSheetsNeeded > 0 ? (baseSheetsNeeded + extraSheets) : 0;
+  
   const totalSheetArea = S_W * S_H;
   const wasteArea = activeLayout.wastageArea;
   const wastePercent = activeLayout.wastagePercent;
@@ -2362,7 +2440,11 @@ function calculateAndUpdate() {
 
   // 4. Render Stats
   document.getElementById('valUps').innerText = ups;
-  document.getElementById('valSheetsNeeded').innerText = sheetsNeeded;
+  if (extraSheets > 0) {
+    document.getElementById('valSheetsNeeded').innerHTML = `${sheetsNeeded} <span style="font-size: 0.72rem; color: var(--primary-gold-light); display: block;">(${baseSheetsNeeded} + ${extraSheets} extra)</span>`;
+  } else {
+    document.getElementById('valSheetsNeeded').innerText = sheetsNeeded;
+  }
   document.getElementById('valWastagePercent').innerText = wastePercent.toFixed(1) + '%';
   document.getElementById('valWastageArea').innerHTML = wasteArea.toFixed(1) + ' <small>cm²</small>';
   document.getElementById('layoutDirectionLabel').innerText = 
@@ -2385,18 +2467,18 @@ function calculateAndUpdate() {
     } else if (currentPaperMode === 'offset') {
       if (selectedPaperSizeId === 'size_100_70') {
         const val = document.getElementById('offsetCost100_70')?.value;
-        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.65;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.44;
       } else if (selectedPaperSizeId === 'size_90_64') {
         const val = document.getElementById('offsetCost90_64')?.value;
-        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.35;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.40;
       } else if (selectedPaperSizeId === 'size_50_70') {
-        const val = document.getElementById('offsetCost100_70')?.value;
-        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 2;
+        const val = document.getElementById('offsetCost50_70')?.value;
+        baseSheetPrice = val !== undefined && val !== '' ? parseFloat(val) : 1.00;
       } else if (selectedPaperSizeId === 'size_50_35') {
-        const val = document.getElementById('offsetCost100_70')?.value;
-        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.65) / 4;
+        const val = document.getElementById('offsetCost50_70')?.value;
+        baseSheetPrice = (val !== undefined && val !== '' ? parseFloat(val) : 1.00) / 2;
       } else {
-        baseSheetPrice = 1.65;
+        baseSheetPrice = 1.00;
       }
       jobName = `Offset Paper (${selectedGsm} GSM)`;
       specName = `Offset ${selectedGsm} GSM`;
@@ -2460,17 +2542,17 @@ function calculateAndUpdate() {
   // Plotter Cut rate based on ordered quantity tier
   function getPlotterRate(quantity) {
     const pTier = (currentPricing && currentPricing.plotterTierRates) ? currentPricing.plotterTierRates : DEFAULT_PRICING.plotterTierRates;
-    if (quantity >= 100) {
-      return pTier.tier3 !== undefined ? pTier.tier3 : 2.00;
+    if (quantity >= 150) {
+      return pTier.tier3 !== undefined ? pTier.tier3 : 1.50;
     } else if (quantity >= 25) {
-      return pTier.tier2 !== undefined ? pTier.tier2 : 2.50;
+      return pTier.tier2 !== undefined ? pTier.tier2 : 1.75;
     } else {
-      return pTier.tier1 !== undefined ? pTier.tier1 : 3.00;
+      return pTier.tier1 !== undefined ? pTier.tier1 : 2.00;
     }
   }
 
   const plotterRate = getPlotterRate(qty);
-  const plotterTierName = qty >= 100 ? 'Qty 100+' : (qty >= 25 ? 'Qty 25-99' : 'Qty 1-24');
+  const plotterTierName = qty >= 150 ? 'Qty 150+' : (qty >= 25 ? 'Qty 25-149' : 'Qty 1-24');
 
   // Update label text dynamically
   document.getElementById('laminationPriceText').innerText = 
@@ -3099,7 +3181,199 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
       // Create grouping for hover effects and clean structures
       const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
 
-      if (sideFold > 0 && boxHVal > 0) {
+      if (currentPaperMode === 'bags') {
+        // --- DIE-CUT BAG OPEN SIZE LOOKS RENDERING ---
+        const bagL = parseFloat(document.getElementById('itemWidth')?.value || 0);
+        const bagW = parseFloat(document.getElementById('itemHeight')?.value || 0);
+        const bagH = parseFloat(document.getElementById('boxDepthH')?.value || 0);
+
+        const glueFlapPx = 1.5 * scale;
+        const lengthPx = bagL * scale;
+        const gussetPx = bagW * scale;
+        const topFoldPx = 2.0 * scale;
+        const heightPx = bagH * scale;
+        const bottomFoldPx = Math.max(1.0, bagW - 2.0) * scale;
+        const halfGussetPx = (gussetPx / 2);
+
+        const x0 = upX;
+        const xGlue = upX + glueFlapPx;
+        const xL1 = xGlue + lengthPx;
+        const xG1Mid = xL1 + halfGussetPx;
+        const xG1End = xL1 + gussetPx;
+        const xL2 = xG1End + lengthPx;
+        const xG2Mid = xL2 + halfGussetPx;
+        const xG2End = xL2 + gussetPx;
+
+        const y0 = upY;
+        const yTop = upY + topFoldPx;
+        const yBodyEnd = yTop + heightPx;
+        const yBot = yBodyEnd + bottomFoldPx;
+        const yDiamondBot = yBodyEnd + halfGussetPx;
+        const yDiamondTop = yBodyEnd - halfGussetPx;
+
+        const glueSlope = Math.min(topFoldPx, 10);
+        const slotW = Math.min(lengthPx * 0.03, 6);
+
+        // Outer Die-Cut Contour Path matching yellow lines in image.png
+        const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        const d = `
+          M ${x0},${y0} 
+          L ${xG2End},${y0} 
+          L ${xG2End},${yBodyEnd} 
+          L ${xG2End - slotW},${yBot} 
+          L ${xL2 + slotW},${yBot} 
+          L ${xL2},${yBodyEnd} 
+          L ${xL2 - slotW},${yBot} 
+          L ${xG1End + slotW},${yBot} 
+          L ${xG1End},${yBodyEnd} 
+          L ${xG1End - slotW},${yBot} 
+          L ${xL1 + slotW},${yBot} 
+          L ${xL1},${yBodyEnd} 
+          L ${xL1 - slotW},${yBot} 
+          L ${xGlue + slotW},${yBot} 
+          L ${x0},${yBodyEnd} 
+          L ${x0},${y0} 
+          Z
+        `;
+        bagPath.setAttribute("d", d);
+        bagPath.setAttribute("fill", "rgba(239, 68, 68, 0.05)");
+        bagPath.setAttribute("stroke", "#ef4444");
+        bagPath.setAttribute("stroke-width", "1.5");
+        group.appendChild(bagPath);
+
+        // Helper function for dashed green fold lines
+        const createFold = (lx1, ly1, lx2, ly2, dash = "3 2") => {
+          const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          l.setAttribute("x1", lx1);
+          l.setAttribute("y1", ly1);
+          l.setAttribute("x2", lx2);
+          l.setAttribute("y2", ly2);
+          l.setAttribute("stroke", "#10b981");
+          l.setAttribute("stroke-width", "1.2");
+          l.setAttribute("stroke-dasharray", dash);
+          return l;
+        };
+
+        // Vertical Fold Creases
+        group.appendChild(createFold(xGlue, y0, xGlue, yBodyEnd));
+        group.appendChild(createFold(xL1, y0, xL1, yBodyEnd));
+        group.appendChild(createFold(xG1Mid, y0, xG1Mid, yBot));
+        group.appendChild(createFold(xG1End, y0, xG1End, yBodyEnd));
+        group.appendChild(createFold(xL2, y0, xL2, yBodyEnd));
+        group.appendChild(createFold(xG2Mid, y0, xG2Mid, yBot));
+
+        // Horizontal Fold Creases
+        group.appendChild(createFold(x0, yTop, xG2End, yTop));
+        group.appendChild(createFold(x0, yBodyEnd, xG2End, yBodyEnd));
+
+        // --- YELLOW DIMENSION ARROWS & LABELS (matching image.png) ---
+        const dimGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        dimGroup.setAttribute("class", "bag-dim-marks");
+
+        const drawYellowArrow = (x1, y1, x2, y2, labelText, isVertical = false, textOffset = 0, fontWeight = 'normal') => {
+          const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+          
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x1);
+          line.setAttribute("y1", y1);
+          line.setAttribute("x2", x2);
+          line.setAttribute("y2", y2);
+          line.setAttribute("stroke", "#fde047");
+          line.setAttribute("stroke-width", "1.8");
+          g.appendChild(line);
+
+          const span = isVertical ? Math.abs(y2 - y1) : Math.abs(x2 - x1);
+          const headSize = Math.min(4, Math.max(1.2, span / 3));
+
+          const p1 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          if (isVertical) {
+            p1.setAttribute("points", `${x1},${y1} ${x1-headSize},${y1+headSize*1.5} ${x1+headSize},${y1+headSize*1.5}`);
+          } else {
+            p1.setAttribute("points", `${x1},${y1} ${x1+headSize*1.5},${y1-headSize} ${x1+headSize*1.5},${y1+headSize}`);
+          }
+          p1.setAttribute("fill", "#fde047");
+          g.appendChild(p1);
+
+          const p2 = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+          if (isVertical) {
+            p2.setAttribute("points", `${x2},${y2} ${x2-headSize},${y2-headSize*1.5} ${x2+headSize},${y2-headSize*1.5}`);
+          } else {
+            p2.setAttribute("points", `${x2},${y2} ${x2-headSize*1.5},${y2-headSize} ${x2-headSize*1.5},${y2+headSize}`);
+          }
+          p2.setAttribute("fill", "#fde047");
+          g.appendChild(p2);
+
+          const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          t.setAttribute("fill", "#fde047");
+          t.setAttribute("font-size", "11px");
+          t.setAttribute("font-weight", "normal");
+          t.setAttribute("font-family", "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif");
+
+          if (isVertical) {
+            const midY = (y1 + y2) / 2;
+            t.setAttribute("x", x1 + textOffset);
+            t.setAttribute("y", midY);
+            t.setAttribute("text-anchor", "middle");
+            t.setAttribute("transform", `rotate(-90 ${x1 + textOffset} ${midY})`);
+            t.textContent = labelText;
+            g.appendChild(t);
+          } else {
+            const midX = (x1 + x2) / 2;
+            t.setAttribute("x", midX);
+            t.setAttribute("y", y1 + textOffset);
+            t.setAttribute("text-anchor", "middle");
+            t.textContent = labelText;
+            g.appendChild(t);
+          }
+
+          return g;
+        };
+
+        const bottomFoldCm = (bottomFoldPx / scale).toFixed(1).replace('.0', '');
+
+        // 1. JOINT 1.5 CM (on left side glue flap - horizontal direction)
+        if (glueFlapPx > 2) {
+          const yJoint = yTop + (heightPx * 0.5);
+          dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
+        }
+
+        // 2. HEIGHT (inside Panel 1)
+        if (heightPx > 10) {
+          const xH = xGlue + (lengthPx * 0.4);
+          dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
+        }
+
+        // 3. GUSSET (across Gusset 1)
+        if (gussetPx > 10) {
+          const yG = yTop + (heightPx * 0.5);
+          dimGroup.appendChild(drawYellowArrow(xL1 + 3, yG, xG1End - 3, yG, `GUSSET ${bagW} CM`, false, -6, 'normal'));
+        }
+
+        // 4. LENGTH (across Panel 2)
+        if (lengthPx > 10) {
+          const yL = yTop + (heightPx * 0.35);
+          dimGroup.appendChild(drawYellowArrow(xG1End + 3, yL, xL2 - 3, yL, `LENGTH ${bagL} CM`, false, -6, 'normal'));
+        }
+
+        // 5. FLAP (inside Panel 2 bottom flap)
+        if (bottomFoldPx > 5) {
+          const xF = xG1End + (lengthPx * 0.5);
+          dimGroup.appendChild(drawYellowArrow(xF, yBodyEnd + 3, xF, yBot - 3, `FLAP ${bottomFoldCm} CM`, true, 11, 'normal'));
+        }
+
+        group.appendChild(dimGroup);
+
+        // Label in Center Panel
+        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        text.setAttribute("x", xGlue + (lengthPx / 2));
+        text.setAttribute("y", yTop + (heightPx / 2));
+        text.setAttribute("class", "svg-up-label");
+        text.setAttribute("font-size", "12px");
+        text.setAttribute("fill", "#ffffff");
+        text.textContent = upCounter;
+        group.appendChild(text);
+
+      } else if (sideFold > 0 && boxHVal > 0) {
         // --- DIE-CUT BOX NET VISUAL RENDERING ---
         const foldOffset = sideFold * scale;
         const x0 = upX;
@@ -3264,7 +3538,7 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
     textItemDim.setAttribute("y", offsetY + startYPx + drawItemFlatH + 15);
     textItemDim.setAttribute("fill", "#10b981");
     textItemDim.setAttribute("font-size", "9px");
-    textItemDim.setAttribute("font-weight", "600");
+    textItemDim.setAttribute("font-weight", "normal");
     textItemDim.setAttribute("text-anchor", "middle");
 
     let dimLabel = `${itemFlatW.toFixed(1)} x ${itemFlatH.toFixed(1)} cm`;
@@ -3833,6 +4107,203 @@ function drawDigital3DBox(L, W, H, T) {
   container.innerHTML = svgHTML;
 }
 
+// --- 3D Bag Rendering Function ---
+function drawDigital3DBag(L, W, H) {
+  const container = document.getElementById("digitalBox3dContainer");
+  if (!container) return;
+
+  L = parseFloat(L) || 0;
+  W = parseFloat(W) || 0;
+  H = parseFloat(H) || 0;
+
+  if (L <= 0 || W <= 0 || H <= 0) {
+    container.innerHTML = '<div style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 20px;">Please enter valid Bag dimensions (Length, Width/Gusset, Height)</div>';
+    return;
+  }
+
+  const svgWidth = 380;
+  const svgHeight = 260;
+  
+  const cos30 = 0.866;
+  const sin30 = 0.5;
+
+  // 3D Isometric Coordinates for Upright Standing Bag
+  const p3d = [
+    [0, 0, 0], [L, 0, 0], [L, W, 0], [0, W, 0],
+    [0, 0, H], [L, 0, H], [L, W, H], [0, W, H]
+  ];
+
+  const p2d = p3d.map(([x, y, z]) => ({
+    x: (x - y) * cos30,
+    y: (x + y) * sin30 - z
+  }));
+
+  // Side Gusset Fold Crease Points on right panel
+  const midZ = Math.min(W * 0.75, H * 0.35);
+  const pGussetMid3d = [
+    [L, W / 2, H],
+    [L, W / 2, midZ]
+  ];
+  const pGusset2d = pGussetMid3d.map(([x, y, z]) => ({
+    x: (x - y) * cos30,
+    y: (x + y) * sin30 - z
+  }));
+
+  // Top Handle Turnover Line (green fold near top edge)
+  const topTurnH = H - Math.min(2.0, H * 0.12);
+  const pTopFold3d = [
+    [0, 0, topTurnH], [L, 0, topTurnH], [L, W, topTurnH]
+  ];
+  const pTopFold2d = pTopFold3d.map(([x, y, z]) => ({
+    x: (x - y) * cos30,
+    y: (x + y) * sin30 - z
+  }));
+
+  // Bottom Fold Line (green fold near bottom edge)
+  const botFoldH = Math.min(midZ, H * 0.2);
+  const pBotFold3d = [
+    [0, 0, botFoldH], [L, 0, botFoldH], [L, W, botFoldH]
+  ];
+  const pBotFold2d = pBotFold3d.map(([x, y, z]) => ({
+    x: (x - y) * cos30,
+    y: (x + y) * sin30 - z
+  }));
+
+  // Bounding box calculation for scaling
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  p2d.concat(pGusset2d).forEach(p => {
+    if (p.x < minX) minX = p.x;
+    if (p.x > maxX) maxX = p.x;
+    if (p.y < minY) minY = p.y;
+    if (p.y > maxY) maxY = p.y;
+  });
+
+  minY -= (H * 0.25);
+
+  const boxW = maxX - minX || 1;
+  const boxH = maxY - minY || 1;
+
+  const scale = Math.min((svgWidth - 90) / boxW, (svgHeight - 70) / boxH);
+  const cx = svgWidth / 2 - ((minX + maxX) / 2) * scale;
+  const cy = svgHeight / 2 - ((minY + maxY) / 2) * scale + 10;
+
+  const pts = p2d.map(p => ({
+    x: (p.x * scale + cx).toFixed(1),
+    y: (p.y * scale + cy).toFixed(1)
+  }));
+
+  const gMidPts = pGusset2d.map(p => ({
+    x: (p.x * scale + cx).toFixed(1),
+    y: (p.y * scale + cy).toFixed(1)
+  }));
+  const topFoldPts = pTopFold2d.map(p => ({
+    x: (p.x * scale + cx).toFixed(1),
+    y: (p.y * scale + cy).toFixed(1)
+  }));
+  const botFoldPts = pBotFold2d.map(p => ({
+    x: (p.x * scale + cx).toFixed(1),
+    y: (p.y * scale + cy).toFixed(1)
+  }));
+
+  // Handle loop coordinates (attached at 30% and 70% of Front Top Rim p4-p5 & Back Top Rim p7-p6)
+  const fH1 = { x: parseFloat(pts[4].x) + (parseFloat(pts[5].x) - parseFloat(pts[4].x)) * 0.3, y: parseFloat(pts[4].y) + (parseFloat(pts[5].y) - parseFloat(pts[4].y)) * 0.3 };
+  const fH2 = { x: parseFloat(pts[4].x) + (parseFloat(pts[5].x) - parseFloat(pts[4].x)) * 0.7, y: parseFloat(pts[4].y) + (parseFloat(pts[5].y) - parseFloat(pts[4].y)) * 0.7 };
+  const fHMid = { x: (fH1.x + fH2.x) / 2, y: Math.min(fH1.y, fH2.y) - (scale * H * 0.28) };
+
+  const bH1 = { x: parseFloat(pts[7].x) + (parseFloat(pts[6].x) - parseFloat(pts[7].x)) * 0.3, y: parseFloat(pts[7].y) + (parseFloat(pts[6].y) - parseFloat(pts[7].y)) * 0.3 };
+  const bH2 = { x: parseFloat(pts[7].x) + (parseFloat(pts[6].x) - parseFloat(pts[7].x)) * 0.7, y: parseFloat(pts[7].y) + (parseFloat(pts[6].y) - parseFloat(pts[7].y)) * 0.7 };
+  const bHMid = { x: (bH1.x + bH2.x) / 2, y: Math.min(bH1.y, bH2.y) - (scale * H * 0.28) };
+
+  const svgHTML = `
+    <svg width="100%" height="100%" viewBox="0 0 ${svgWidth} ${svgHeight}" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bagGradFront" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d4af37" stop-opacity="0.3"/>
+          <stop offset="100%" stop-color="#b89324" stop-opacity="0.12"/>
+        </linearGradient>
+        <linearGradient id="bagGradSide" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#10b981" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="#065f46" stop-opacity="0.08"/>
+        </linearGradient>
+        <linearGradient id="bagGradMouth" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2"/>
+          <stop offset="100%" stop-color="#d4af37" stop-opacity="0.05"/>
+        </linearGradient>
+        
+        <!-- Arrowhead Marker for Red Dimension Arrows -->
+        <marker id="arrowRed" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+        </marker>
+      </defs>
+
+      <!-- Back Handle Loop -->
+      <path d="M ${bH1.x},${bH1.y} Q ${bHMid.x},${bHMid.y} ${bH2.x},${bH2.y}" fill="none" stroke="#9ca3af" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+
+      <!-- Back Wireframe Lines -->
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[1].x}" y2="${pts[1].y}" stroke="#4b5563" stroke-width="1.2" stroke-dasharray="4 3" />
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[3].x}" y2="${pts[3].y}" stroke="#4b5563" stroke-width="1.2" stroke-dasharray="4 3" />
+      <line x1="${pts[0].x}" y1="${pts[0].y}" x2="${pts[4].x}" y2="${pts[4].y}" stroke="#4b5563" stroke-width="1.2" stroke-dasharray="4 3" />
+
+      <!-- Side Gusset Right Face -->
+      <polygon points="${pts[1].x},${pts[1].y} ${pts[2].x},${pts[2].y} ${pts[6].x},${pts[6].y} ${pts[5].x},${pts[5].y}" fill="url(#bagGradSide)" stroke="#10b981" stroke-width="1.5"/>
+
+      <!-- Front Main Face -->
+      <polygon points="${pts[3].x},${pts[3].y} ${pts[2].x},${pts[2].y} ${pts[6].x},${pts[6].y} ${pts[7].x},${pts[7].y}" fill="url(#bagGradFront)" stroke="#d4af37" stroke-width="2"/>
+
+      <!-- Top Mouth Inner Shadow -->
+      <polygon points="${pts[4].x},${pts[4].y} ${pts[5].x},${pts[5].y} ${pts[6].x},${pts[6].y} ${pts[7].x},${pts[7].y}" fill="url(#bagGradMouth)" stroke="#f3e5ab" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+      <!-- Green Fold Crease Lines (Turnover Top, Bottom Fold, Side Gusset Creases) -->
+      <!-- Top Turnover Fold Line -->
+      <line x1="${topFoldPts[0].x}" y1="${topFoldPts[0].y}" x2="${topFoldPts[1].x}" y2="${topFoldPts[1].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="${topFoldPts[1].x}" y1="${topFoldPts[1].y}" x2="${topFoldPts[2].x}" y2="${topFoldPts[2].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+      <!-- Bottom Base Fold Line -->
+      <line x1="${botFoldPts[0].x}" y1="${botFoldPts[0].y}" x2="${botFoldPts[1].x}" y2="${botFoldPts[1].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="${botFoldPts[1].x}" y1="${botFoldPts[1].y}" x2="${botFoldPts[2].x}" y2="${botFoldPts[2].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+      <!-- Side Gusset Vertical Crease & V-Fold -->
+      <line x1="${pts[5].x}" y1="${pts[5].y}" x2="${gMidPts[1].x}" y2="${gMidPts[1].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="${pts[1].x}" y1="${pts[1].y}" x2="${gMidPts[1].x}" y2="${gMidPts[1].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <line x1="${pts[2].x}" y1="${pts[2].y}" x2="${gMidPts[1].x}" y2="${gMidPts[1].y}" stroke="#10b981" stroke-width="1.5" stroke-dasharray="3 2"/>
+
+      <!-- Front Handle Loop -->
+      <path d="M ${fH1.x},${fH1.y} Q ${fHMid.x},${fHMid.y} ${fH2.x},${fH2.y}" fill="none" stroke="#f3e5ab" stroke-width="3" stroke-linecap="round"/>
+
+      <!-- Key Outer Edges & Vertices -->
+      <line x1="${pts[4].x}" y1="${pts[4].y}" x2="${pts[5].x}" y2="${pts[5].y}" stroke="#f3e5ab" stroke-width="2" />
+      <line x1="${pts[5].x}" y1="${pts[5].y}" x2="${pts[6].x}" y2="${pts[6].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[6].x}" y1="${pts[6].y}" x2="${pts[7].x}" y2="${pts[7].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[7].x}" y1="${pts[7].y}" x2="${pts[4].x}" y2="${pts[4].y}" stroke="#f3e5ab" stroke-width="2" />
+      <line x1="${pts[1].x}" y1="${pts[1].y}" x2="${pts[5].x}" y2="${pts[5].y}" stroke="#10b981" stroke-width="2" />
+      <line x1="${pts[2].x}" y1="${pts[2].y}" x2="${pts[6].x}" y2="${pts[6].y}" stroke="#d4af37" stroke-width="2" />
+      <line x1="${pts[3].x}" y1="${pts[3].y}" x2="${pts[7].x}" y2="${pts[7].y}" stroke="#d4af37" stroke-width="1.5" />
+
+      <!-- Vertex Dots -->
+      <circle cx="${pts[4].x}" cy="${pts[4].y}" r="3" fill="#f3e5ab" />
+      <circle cx="${pts[5].x}" cy="${pts[5].y}" r="3" fill="#d4af37" />
+      <circle cx="${pts[6].x}" cy="${pts[6].y}" r="3.5" fill="#d4af37" />
+      <circle cx="${pts[7].x}" cy="${pts[7].y}" r="3" fill="#d4af37" />
+      <circle cx="${pts[2].x}" cy="${pts[2].y}" r="3" fill="#10b981" />
+
+      <!-- Red Dimension Arrows (matching Bag 3d wire look.jpg) -->
+      <!-- Height H Arrow (vertical on left) -->
+      <line x1="${(parseFloat(pts[4].x) - 22).toFixed(1)}" y1="${pts[4].y}" x2="${(parseFloat(pts[0].x) - 22).toFixed(1)}" y2="${pts[0].y}" stroke="#ef4444" stroke-width="1.8" marker-start="url(#arrowRed)" marker-end="url(#arrowRed)"/>
+      <text x="${(parseFloat(pts[4].x) - 34).toFixed(1)}" y="${((parseFloat(pts[4].y) + parseFloat(pts[0].y)) / 2).toFixed(1)}" fill="#ef4444" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">H</text>
+
+      <!-- Length L Arrow (along bottom front) -->
+      <line x1="${pts[3].x}" y1="${(parseFloat(pts[3].y) + 16).toFixed(1)}" x2="${pts[2].x}" y2="${(parseFloat(pts[2].y) + 16).toFixed(1)}" stroke="#ef4444" stroke-width="1.8" marker-start="url(#arrowRed)" marker-end="url(#arrowRed)"/>
+      <text x="${((parseFloat(pts[3].x) + parseFloat(pts[2].x)) / 2).toFixed(1)}" y="${((parseFloat(pts[3].y) + parseFloat(pts[2].y)) / 2 + 32).toFixed(1)}" fill="#ef4444" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">L: ${L} cm</text>
+
+      <!-- Width/Gusset W Arrow (along bottom side) -->
+      <line x1="${pts[2].x}" y1="${(parseFloat(pts[2].y) + 16).toFixed(1)}" x2="${pts[1].x}" y2="${(parseFloat(pts[1].y) + 16).toFixed(1)}" stroke="#ef4444" stroke-width="1.8" marker-start="url(#arrowRed)" marker-end="url(#arrowRed)"/>
+      <text x="${((parseFloat(pts[2].x) + parseFloat(pts[1].x)) / 2 + 18).toFixed(1)}" y="${((parseFloat(pts[2].y) + parseFloat(pts[1].y)) / 2 + 32).toFixed(1)}" fill="#ef4444" font-size="12" font-weight="700" text-anchor="middle" font-family="sans-serif">W/G: ${W} cm</text>
+    </svg>
+  `;
+
+  container.innerHTML = svgHTML;
+}
+
 // --- 3D Box Auto Update Listeners ---
 function initDigital3DListeners() {
   const inputL = document.getElementById("itemWidth");
@@ -3846,10 +4317,12 @@ function initDigital3DListeners() {
     const W = parseFloat(inputW ? inputW.value : 0) || 0;
     const H = parseFloat(inputH ? inputH.value : 0) || 0;
     const T = parseFloat(inputT ? inputT.value : 0) || 0;
-    const lockVal = parseFloat(inputLock ? inputLock.value : 1.0) || 1.0;
 
-    drawDigital3DBox(L, W, H, T);
-    calculateAndUpdate();
+    if (currentPaperMode === 'bags') {
+      drawDigital3DBag(L, W, H);
+    } else {
+      drawDigital3DBox(L, W, H, T);
+    }
   };
 
   [inputL, inputW, inputH, inputT, inputLock].forEach(inp => {
