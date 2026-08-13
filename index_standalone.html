@@ -6089,6 +6089,11 @@ function calculateAndUpdate() {
   let sideFold = 0;
   let flat_w = 0;
   let flat_h = 0;
+  let isTwoPartBag = false;
+  let fullBagW = 0;
+  let fullBagH = 0;
+  let partBagW = 0;
+  let partBagH = 0;
 
   const isBagsMode = (currentPaperMode === 'bags');
 
@@ -6100,8 +6105,26 @@ function calculateAndUpdate() {
     const topFold = 2.0; // 2 cm top handle fold
     const bottomFold = Math.max(1.0, bagW - 2.0); // Bottom fold = Gusset size minus 2 cm
 
-    flat_w = sideFold + (2 * bagL) + (2 * bagW); // 1.5 cm Bag fold + L + W + L + W
-    flat_h = topFold + bagH + bottomFold; // 2 cm Top fold + H + Bottom fold
+    fullBagW = sideFold + (2 * bagL) + (2 * bagW); // 1.5 cm Joint + 2*L + 2*W
+    fullBagH = topFold + bagH + bottomFold; // 2 cm Top fold + H + Bottom fold
+
+    partBagW = sideFold + bagL + bagW; // 1.5 cm Joint + L + W
+    partBagH = fullBagH;
+
+    // Check if full bag fits on sheet in either orientation (landscape or portrait):
+    const fullFitsLandscape = (fullBagW <= S_W && fullBagH <= S_H);
+    const fullFitsPortrait = (fullBagW <= S_H && fullBagH <= S_W);
+    const isFullBagFits = fullFitsLandscape || fullFitsPortrait;
+
+    if (isFullBagFits) {
+      isTwoPartBag = false;
+      flat_w = fullBagW;
+      flat_h = fullBagH;
+    } else {
+      isTwoPartBag = true;
+      flat_w = partBagW;
+      flat_h = partBagH;
+    }
   } else {
     if (boxH > 0) {
       sideFold = (2 * boxH) + boxT + insideFoldLock;
@@ -6116,21 +6139,34 @@ function calculateAndUpdate() {
     if (isBagsMode) {
       boxFoldNotice.classList.remove('hidden');
       const bottomFoldVal = Math.max(1.0, i_h - 2.0);
-      const isExceeding = (flat_w > S_W || flat_h > S_H) && (flat_w > S_H || flat_h > S_W);
-      if (isExceeding) {
-        boxFoldNotice.innerHTML = `
-          <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
-            ⚠️ Notice: Bag Open Size (${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
-          </div>
-          <div style="font-size: 0.82rem; opacity: 0.9;">
-            Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | 2.0 cm Top Fold + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Fold (Gusset ${i_h}cm - 2cm)<br>
-            <em>Tip: Try selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
-          </div>
-        `;
+      if (isTwoPartBag) {
+        const partFits = (partBagW <= S_W && partBagH <= S_H) || (partBagW <= S_H && partBagH <= S_W);
+        if (!partFits) {
+          boxFoldNotice.innerHTML = `
+            <div style="font-weight: 700; margin-bottom: 4px; color: #f43f5e;">
+              ⚠️ Notice: Bag Part size (${partBagW.toFixed(1)} × ${partBagH.toFixed(1)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm) even when split into 2 parts!
+            </div>
+            <div style="font-size: 0.82rem; opacity: 0.9;">
+              Full Bag Open Size: ${fullBagW.toFixed(1)} × ${fullBagH.toFixed(1)} cm | Part Size: ${partBagW.toFixed(1)} × ${partBagH.toFixed(1)} cm<br>
+              <em>Tip: Try selecting a larger Paper Sheet (e.g. 100×70 cm).</em>
+            </div>
+          `;
+        } else {
+          boxFoldNotice.innerHTML = `
+            <div style="font-weight: 700; margin-bottom: 4px; color: #eab308;">
+              ⚠️ Oversized Bag Notice: Full Bag Size (${fullBagW.toFixed(1)} × ${fullBagH.toFixed(1)} cm) exceeds Sheet Dimensions (${S_W} × ${S_H} cm)!
+            </div>
+            <div style="font-size: 0.82rem; opacity: 0.9;">
+              Bag requires <strong>2 PARTS (2 Sheets per bag)</strong> for printing.<br>
+              Each Part Size: <strong>${partBagW.toFixed(1)} × ${partBagH.toFixed(1)} cm</strong> (Joint 1.5 cm + Length ${i_w} cm + Gusset ${i_h} cm | Top Fold 2.0 cm + Height ${boxH} cm + Bottom Flap ${bottomFoldVal.toFixed(1)} cm)<br>
+              <em>Total parts required for ${qty} bags = ${qty * 2} parts.</em>
+            </div>
+          `;
+        }
       } else {
         boxFoldNotice.innerHTML = `
           <div style="font-weight: 700; margin-bottom: 2px; color: var(--primary-gold-light);">
-            🛍️ Bag Open Size: <strong>${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm</strong>
+            🛍️ Bag Open Size: <strong>${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm</strong> (Single Sheet)
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
             Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | 2.0 cm Top Fold + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Fold (Gusset ${i_h}cm - 2cm)
@@ -6188,7 +6224,8 @@ function calculateAndUpdate() {
 
   // 2. Compute Sheets Needed
   const ups = activeLayout.ups;
-  const baseSheetsNeeded = ups > 0 ? Math.ceil(qty / ups) : 0;
+  const itemsToCalculate = (isBagsMode && isTwoPartBag) ? (qty * 2) : qty;
+  const baseSheetsNeeded = ups > 0 ? Math.ceil(itemsToCalculate / ups) : 0;
   
   // Rule for Offset Print & Bags: Add extra setup sheets per job
   // 100x70, 90x64, 50x70 cm => +120 extra sheets
@@ -6211,11 +6248,21 @@ function calculateAndUpdate() {
   renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, i_w, i_h, sideFold, designSpace);
 
   // 4. Render Stats
-  document.getElementById('valUps').innerText = ups;
-  if (extraSheets > 0) {
-    document.getElementById('valSheetsNeeded').innerHTML = `${sheetsNeeded} <span style="font-size: 0.72rem; color: var(--primary-gold-light); display: block;">(${baseSheetsNeeded} + ${extraSheets} extra)</span>`;
+  if (isBagsMode && isTwoPartBag) {
+    document.getElementById('valUps').innerText = ups > 0 ? `${ups} Part${ups > 1 ? 's' : ''}/sheet` : '0';
   } else {
-    document.getElementById('valSheetsNeeded').innerText = sheetsNeeded;
+    document.getElementById('valUps').innerText = ups;
+  }
+
+  if (extraSheets > 0) {
+    const partNote = (isBagsMode && isTwoPartBag) ? ` (${qty * 2} parts: 2 parts/bag)` : '';
+    document.getElementById('valSheetsNeeded').innerHTML = `${sheetsNeeded} <span style="font-size: 0.72rem; color: var(--primary-gold-light); display: block;">(${baseSheetsNeeded}${partNote} + ${extraSheets} extra)</span>`;
+  } else {
+    if (isBagsMode && isTwoPartBag) {
+      document.getElementById('valSheetsNeeded').innerHTML = `${sheetsNeeded} <span style="font-size: 0.72rem; color: var(--primary-gold-light); display: block;">(${baseSheetsNeeded} sheets: 2 parts/bag)</span>`;
+    } else {
+      document.getElementById('valSheetsNeeded').innerText = sheetsNeeded;
+    }
   }
   document.getElementById('valWastagePercent').innerText = wastePercent.toFixed(1) + '%';
   document.getElementById('valWastageArea').innerHTML = wasteArea.toFixed(1) + ' <small>cm²</small>';
@@ -6625,7 +6672,15 @@ function calculateAndUpdate() {
   document.getElementById('gsmBadge').innerText = specName;
 
   document.getElementById('invSheetSize').innerText = `${S_W} x ${S_H} cm (${isPortraitOrientation ? 'Portrait' : 'Landscape'})`;
-  if (sideFold > 0 || designSpace > 0) {
+  if (isBagsMode) {
+    if (isTwoPartBag) {
+      document.getElementById('invCutSize').innerText = `${partBagW.toFixed(1)} x ${partBagH.toFixed(1)} cm (2 Parts / Bag)`;
+      document.getElementById('invQty').innerText = `${qty} bags (${qty * 2} parts)`;
+    } else {
+      document.getElementById('invCutSize').innerText = `${fullBagW.toFixed(1)} x ${fullBagH.toFixed(1)} cm (Bag Open Size)`;
+      document.getElementById('invQty').innerText = `${qty} bags`;
+    }
+  } else if (sideFold > 0 || designSpace > 0) {
     const flat_w = i_w + (2 * sideFold);
     const flat_h = i_h + (2 * sideFold);
     if (sideFold > 0 && designSpace > 0) {
@@ -6635,11 +6690,12 @@ function calculateAndUpdate() {
     } else {
       document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm (${designSpace}cm space between items)`;
     }
+    document.getElementById('invQty').innerText = `${qty} pcs`;
   } else {
     document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm`;
+    document.getElementById('invQty').innerText = `${qty} pcs`;
   }
   document.getElementById('invLayoutType').innerText = activeDirection === 'horizontal' ? 'Standard Layout (Horizontal)' : 'Rotated Layout (Vertical)';
-  document.getElementById('invQty').innerText = `${qty} pcs`;
 
 
   if (isBcMode) {
@@ -6959,61 +7015,23 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
         const bagW = parseFloat(document.getElementById('itemHeight')?.value || 0);
         const bagH = parseFloat(document.getElementById('boxDepthH')?.value || 0);
 
-        const glueFlapPx = 1.5 * scale;
+        const sideFold = 1.5;
+        const topFold = 2.0;
+        const bottomFold = Math.max(1.0, bagW - 2.0);
+
+        const fullBagW = sideFold + (2 * bagL) + (2 * bagW);
+        const fullBagH = topFold + bagH + bottomFold;
+
+        const isTwoPartBag = (fullBagW > S_W || fullBagH > S_H) && (fullBagW > S_H || fullBagH > S_W);
+
+        const glueFlapPx = sideFold * scale;
         const lengthPx = bagL * scale;
         const gussetPx = bagW * scale;
-        const topFoldPx = 2.0 * scale;
+        const topFoldPx = topFold * scale;
         const heightPx = bagH * scale;
-        const bottomFoldPx = Math.max(1.0, bagW - 2.0) * scale;
+        const bottomFoldPx = bottomFold * scale;
         const halfGussetPx = (gussetPx / 2);
 
-        const x0 = upX;
-        const xGlue = upX + glueFlapPx;
-        const xL1 = xGlue + lengthPx;
-        const xG1Mid = xL1 + halfGussetPx;
-        const xG1End = xL1 + gussetPx;
-        const xL2 = xG1End + lengthPx;
-        const xG2Mid = xL2 + halfGussetPx;
-        const xG2End = xL2 + gussetPx;
-
-        const y0 = upY;
-        const yTop = upY + topFoldPx;
-        const yBodyEnd = yTop + heightPx;
-        const yBot = yBodyEnd + bottomFoldPx;
-        const yDiamondBot = yBodyEnd + halfGussetPx;
-        const yDiamondTop = yBodyEnd - halfGussetPx;
-
-        const glueSlope = Math.min(topFoldPx, 10);
-        const slotW = Math.min(lengthPx * 0.03, 6);
-
-        // Outer Die-Cut Contour Path matching yellow lines in image.png
-        const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-        const d = `
-          M ${x0},${y0} 
-          L ${xG2End},${y0} 
-          L ${xG2End},${yBodyEnd} 
-          L ${xG2End - slotW},${yBot} 
-          L ${xL2 + slotW},${yBot} 
-          L ${xL2},${yBodyEnd} 
-          L ${xL2 - slotW},${yBot} 
-          L ${xG1End + slotW},${yBot} 
-          L ${xG1End},${yBodyEnd} 
-          L ${xG1End - slotW},${yBot} 
-          L ${xL1 + slotW},${yBot} 
-          L ${xL1},${yBodyEnd} 
-          L ${xL1 - slotW},${yBot} 
-          L ${xGlue + slotW},${yBot} 
-          L ${x0},${yBodyEnd} 
-          L ${x0},${y0} 
-          Z
-        `;
-        bagPath.setAttribute("d", d);
-        bagPath.setAttribute("fill", "rgba(239, 68, 68, 0.05)");
-        bagPath.setAttribute("stroke", "#ef4444");
-        bagPath.setAttribute("stroke-width", "1.5");
-        group.appendChild(bagPath);
-
-        // Helper function for dashed green fold lines
         const createFold = (lx1, ly1, lx2, ly2, dash = "3 2") => {
           const l = document.createElementNS("http://www.w3.org/2000/svg", "line");
           l.setAttribute("x1", lx1);
@@ -7026,19 +7044,6 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           return l;
         };
 
-        // Vertical Fold Creases
-        group.appendChild(createFold(xGlue, y0, xGlue, yBodyEnd));
-        group.appendChild(createFold(xL1, y0, xL1, yBodyEnd));
-        group.appendChild(createFold(xG1Mid, y0, xG1Mid, yBot));
-        group.appendChild(createFold(xG1End, y0, xG1End, yBodyEnd));
-        group.appendChild(createFold(xL2, y0, xL2, yBodyEnd));
-        group.appendChild(createFold(xG2Mid, y0, xG2Mid, yBot));
-
-        // Horizontal Fold Creases
-        group.appendChild(createFold(x0, yTop, xG2End, yTop));
-        group.appendChild(createFold(x0, yBodyEnd, xG2End, yBodyEnd));
-
-        // --- YELLOW DIMENSION ARROWS & LABELS (matching image.png) ---
         const dimGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
         dimGroup.setAttribute("class", "bag-dim-marks");
 
@@ -7102,48 +7107,192 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
         };
 
         const bottomFoldCm = (bottomFoldPx / scale).toFixed(1).replace('.0', '');
+        const slotW = Math.min(lengthPx * 0.03, 6);
 
-        // 1. JOINT 1.5 CM (on left side glue flap - horizontal direction)
-        if (glueFlapPx > 2) {
-          const yJoint = yTop + (heightPx * 0.5);
-          dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
+        if (isTwoPartBag) {
+          // --- 2-PART BAG (1 PART DIELINE FORMAT FROM BAG OPEN SIZE 1 PART LOOKS.svg) ---
+          const x0 = upX;
+          const xGlue = upX + glueFlapPx;
+          const xL1 = xGlue + lengthPx;
+          const xG1Mid = xL1 + halfGussetPx;
+          const xG1End = xL1 + gussetPx;
+
+          const y0 = upY;
+          const yTop = upY + topFoldPx;
+          const yBodyEnd = yTop + heightPx;
+          const yBot = yBodyEnd + bottomFoldPx;
+          const yDiamondMid = yBodyEnd + (halfGussetPx * 0.7);
+
+          // Outer Die-Cut Contour Path matching BAG OPEN SIZE 1 PART LOOKS.svg
+          const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          const d = `
+            M ${x0},${y0} 
+            L ${xG1End},${y0} 
+            L ${xG1End},${yBodyEnd} 
+            L ${xG1End - slotW},${yBot} 
+            L ${xL1 + slotW},${yBot} 
+            L ${xL1},${yBodyEnd} 
+            L ${xL1 - slotW},${yBot} 
+            L ${xGlue + slotW},${yBot} 
+            L ${x0},${yBodyEnd} 
+            L ${x0},${y0} 
+            Z
+          `;
+          bagPath.setAttribute("d", d);
+          bagPath.setAttribute("fill", "rgba(239, 68, 68, 0.05)");
+          bagPath.setAttribute("stroke", "#ef4444");
+          bagPath.setAttribute("stroke-width", "1.5");
+          group.appendChild(bagPath);
+
+          // Vertical Fold Creases
+          group.appendChild(createFold(xGlue, y0, xGlue, yBodyEnd));
+          group.appendChild(createFold(xL1, y0, xL1, yBodyEnd));
+          group.appendChild(createFold(xG1Mid, y0, xG1Mid, yBot));
+
+          // Horizontal Fold Creases
+          group.appendChild(createFold(x0, yTop, xG1End, yTop));
+          group.appendChild(createFold(x0, yBodyEnd, xG1End, yBodyEnd));
+
+          // Diagonal fold crease in bottom gusset flap matching SVG
+          const polyGussetFold = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+          polyGussetFold.setAttribute("points", `${xL1},${yBodyEnd} ${xG1Mid},${yDiamondMid} ${xG1End},${yBodyEnd}`);
+          polyGussetFold.setAttribute("fill", "none");
+          polyGussetFold.setAttribute("stroke", "#10b981");
+          polyGussetFold.setAttribute("stroke-width", "1.2");
+          polyGussetFold.setAttribute("stroke-dasharray", "3 2");
+          group.appendChild(polyGussetFold);
+
+          // Yellow dimension line marks (matching prompt drawing)
+          if (glueFlapPx > 2) {
+            const yJoint = yTop + (heightPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
+          }
+
+          if (heightPx > 10) {
+            const xH = xGlue + (lengthPx * 0.4);
+            dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
+          }
+
+          if (lengthPx > 10) {
+            const yL = yTop + (heightPx * 0.35);
+            dimGroup.appendChild(drawYellowArrow(xGlue + 3, yL, xL1 - 3, yL, `LENGTH ${bagL} CM`, false, -6, 'normal'));
+          }
+
+          if (gussetPx > 10) {
+            const yG = yTop + (heightPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xL1 + 3, yG, xG1End - 3, yG, `GUSSET ${bagW} CM`, false, -6, 'normal'));
+          }
+
+          if (bottomFoldPx > 5) {
+            const xF = xGlue + (lengthPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xF, yBodyEnd + 3, xF, yBot - 3, `FLAP ${bottomFoldCm} CM`, true, 11, 'normal'));
+          }
+
+          group.appendChild(dimGroup);
+
+          // Label inside piece
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", xGlue + (lengthPx / 2));
+          text.setAttribute("y", yTop + (heightPx / 2));
+          text.setAttribute("class", "svg-up-label");
+          text.setAttribute("font-size", "12px");
+          text.setAttribute("fill", "#ffffff");
+          text.textContent = (cols * rows > 1) ? `Part ${upCounter}` : `Part 1 / 2`;
+          group.appendChild(text);
+
+        } else {
+          // --- SINGLE SHEET FULL BAG (BAG OPEN SIZE LOOKS.svg FORMAT) ---
+          const x0 = upX;
+          const xGlue = upX + glueFlapPx;
+          const xL1 = xGlue + lengthPx;
+          const xG1Mid = xL1 + halfGussetPx;
+          const xG1End = xL1 + gussetPx;
+          const xL2 = xG1End + lengthPx;
+          const xG2Mid = xL2 + halfGussetPx;
+          const xG2End = xL2 + gussetPx;
+
+          const y0 = upY;
+          const yTop = upY + topFoldPx;
+          const yBodyEnd = yTop + heightPx;
+          const yBot = yBodyEnd + bottomFoldPx;
+
+          // Outer Contour
+          const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          const d = `
+            M ${x0},${y0} 
+            L ${xG2End},${y0} 
+            L ${xG2End},${yBodyEnd} 
+            L ${xG2End - slotW},${yBot} 
+            L ${xL2 + slotW},${yBot} 
+            L ${xL2},${yBodyEnd} 
+            L ${xL2 - slotW},${yBot} 
+            L ${xG1End + slotW},${yBot} 
+            L ${xG1End},${yBodyEnd} 
+            L ${xG1End - slotW},${yBot} 
+            L ${xL1 + slotW},${yBot} 
+            L ${xL1},${yBodyEnd} 
+            L ${xL1 - slotW},${yBot} 
+            L ${xGlue + slotW},${yBot} 
+            L ${x0},${yBodyEnd} 
+            L ${x0},${y0} 
+            Z
+          `;
+          bagPath.setAttribute("d", d);
+          bagPath.setAttribute("fill", "rgba(239, 68, 68, 0.05)");
+          bagPath.setAttribute("stroke", "#ef4444");
+          bagPath.setAttribute("stroke-width", "1.5");
+          group.appendChild(bagPath);
+
+          // Vertical Folds
+          group.appendChild(createFold(xGlue, y0, xGlue, yBodyEnd));
+          group.appendChild(createFold(xL1, y0, xL1, yBodyEnd));
+          group.appendChild(createFold(xG1Mid, y0, xG1Mid, yBot));
+          group.appendChild(createFold(xG1End, y0, xG1End, yBodyEnd));
+          group.appendChild(createFold(xL2, y0, xL2, yBodyEnd));
+          group.appendChild(createFold(xG2Mid, y0, xG2Mid, yBot));
+
+          // Horizontal Folds
+          group.appendChild(createFold(x0, yTop, xG2End, yTop));
+          group.appendChild(createFold(x0, yBodyEnd, xG2End, yBodyEnd));
+
+          // Yellow Dimension Marks
+          if (glueFlapPx > 2) {
+            const yJoint = yTop + (heightPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
+          }
+
+          if (heightPx > 10) {
+            const xH = xGlue + (lengthPx * 0.4);
+            dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
+          }
+
+          if (gussetPx > 10) {
+            const yG = yTop + (heightPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xL1 + 3, yG, xG1End - 3, yG, `GUSSET ${bagW} CM`, false, -6, 'normal'));
+          }
+
+          if (lengthPx > 10) {
+            const yL = yTop + (heightPx * 0.35);
+            dimGroup.appendChild(drawYellowArrow(xG1End + 3, yL, xL2 - 3, yL, `LENGTH ${bagL} CM`, false, -6, 'normal'));
+          }
+
+          if (bottomFoldPx > 5) {
+            const xF = xG1End + (lengthPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xF, yBodyEnd + 3, xF, yBot - 3, `FLAP ${bottomFoldCm} CM`, true, 11, 'normal'));
+          }
+
+          group.appendChild(dimGroup);
+
+          // Piece Label
+          const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          text.setAttribute("x", xGlue + (lengthPx / 2));
+          text.setAttribute("y", yTop + (heightPx / 2));
+          text.setAttribute("class", "svg-up-label");
+          text.setAttribute("font-size", "12px");
+          text.setAttribute("fill", "#ffffff");
+          text.textContent = upCounter;
+          group.appendChild(text);
         }
-
-        // 2. HEIGHT (inside Panel 1)
-        if (heightPx > 10) {
-          const xH = xGlue + (lengthPx * 0.4);
-          dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
-        }
-
-        // 3. GUSSET (across Gusset 1)
-        if (gussetPx > 10) {
-          const yG = yTop + (heightPx * 0.5);
-          dimGroup.appendChild(drawYellowArrow(xL1 + 3, yG, xG1End - 3, yG, `GUSSET ${bagW} CM`, false, -6, 'normal'));
-        }
-
-        // 4. LENGTH (across Panel 2)
-        if (lengthPx > 10) {
-          const yL = yTop + (heightPx * 0.35);
-          dimGroup.appendChild(drawYellowArrow(xG1End + 3, yL, xL2 - 3, yL, `LENGTH ${bagL} CM`, false, -6, 'normal'));
-        }
-
-        // 5. FLAP (inside Panel 2 bottom flap)
-        if (bottomFoldPx > 5) {
-          const xF = xG1End + (lengthPx * 0.5);
-          dimGroup.appendChild(drawYellowArrow(xF, yBodyEnd + 3, xF, yBot - 3, `FLAP ${bottomFoldCm} CM`, true, 11, 'normal'));
-        }
-
-        group.appendChild(dimGroup);
-
-        // Label in Center Panel
-        const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", xGlue + (lengthPx / 2));
-        text.setAttribute("y", yTop + (heightPx / 2));
-        text.setAttribute("class", "svg-up-label");
-        text.setAttribute("font-size", "12px");
-        text.setAttribute("fill", "#ffffff");
-        text.textContent = upCounter;
-        group.appendChild(text);
 
       } else if (sideFold > 0 && boxHVal > 0) {
         // --- DIE-CUT BOX NET VISUAL RENDERING ---
