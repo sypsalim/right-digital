@@ -1109,6 +1109,7 @@ function initUI() {
     const wallThicknessGroup = document.getElementById('wallThicknessGroup');
     const insideFoldLockGroup = document.getElementById('insideFoldLockGroup');
     const bagFlapGroup = document.getElementById('bagFlapGroup');
+    const bagBottomFlapGroup = document.getElementById('bagBottomFlapGroup');
     
     if (currentPaperMode === 'bags') {
       if (labelWidth) labelWidth.innerHTML = 'Bag Length (L) / طول الكيس (سم)';
@@ -1118,6 +1119,7 @@ function initUI() {
       if (wallThicknessGroup) wallThicknessGroup.classList.add('hidden');
       if (insideFoldLockGroup) insideFoldLockGroup.classList.add('hidden');
       if (bagFlapGroup) bagFlapGroup.classList.remove('hidden');
+      if (bagBottomFlapGroup) bagBottomFlapGroup.classList.remove('hidden');
 
       const bagFlapInput = document.getElementById('bagFlap');
       if (bagFlapInput && (!bagFlapInput.value || bagFlapInput.value === '2.0' || bagFlapInput.value === '1.5')) {
@@ -1134,6 +1136,7 @@ function initUI() {
       if (wallThicknessGroup) wallThicknessGroup.classList.remove('hidden');
       if (insideFoldLockGroup) insideFoldLockGroup.classList.remove('hidden');
       if (bagFlapGroup) bagFlapGroup.classList.add('hidden');
+      if (bagBottomFlapGroup) bagBottomFlapGroup.classList.add('hidden');
     }
   }
 
@@ -1198,7 +1201,7 @@ function initUI() {
 
   // 5. Inputs Auto-change
   const inputIds = [
-    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'bagFlap', 'designSpace', 'stickerType', 'stickerColors',
+    'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'bagFlap', 'bagBottomFlap', 'designSpace', 'stickerType', 'stickerColors',
     'offsetCost100_70', 'offsetCost90_64', 'offsetCost50_70',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
     'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
@@ -2392,8 +2395,16 @@ function calculateAndUpdate() {
     sideFold = 1.5; // 1.5 cm side glue flap
     const bagFlapInputVal = parseFloat(document.getElementById('bagFlap')?.value);
     const defaultTopFold = (bagH <= 30 && bagL <= 30) ? 1.5 : 2.0;
-    const topFold = (!isNaN(bagFlapInputVal) && bagFlapInputVal >= 0) ? bagFlapInputVal : defaultTopFold; // Bag Top Flap (1.5 cm small bag, 2.0 cm big bag)
-    const bottomFold = Math.max(1.0, bagW - 2.0); // Bottom fold = Gusset size minus 2 cm
+    const topFold = (!isNaN(bagFlapInputVal) && bagFlapInputVal >= 0) ? bagFlapInputVal : defaultTopFold; // Bag Top Handle Flap
+
+    const defaultBottomFold = Math.max(1.0, bagW - 2.0); // Default Bottom Flap = Gusset minus 2 cm
+    const bagBottomFlapInput = document.getElementById('bagBottomFlap');
+    const bagBottomFlapVal = parseFloat(bagBottomFlapInput?.value);
+    const bottomFold = (!isNaN(bagBottomFlapVal) && bagBottomFlapVal >= 0) ? bagBottomFlapVal : defaultBottomFold;
+
+    if (bagBottomFlapInput && !bagBottomFlapInput.value) {
+      bagBottomFlapInput.placeholder = defaultBottomFold.toFixed(1);
+    }
 
     fullBagW = sideFold + (2 * bagL) + (2 * bagW); // 1.5 cm Joint + 2*L + 2*W
     fullBagH = topFold + bagH + bottomFold; // Top fold + H + Bottom fold
@@ -2428,9 +2439,13 @@ function calculateAndUpdate() {
   if (boxFoldNotice) {
     if (isBagsMode) {
       boxFoldNotice.classList.remove('hidden');
-      const bottomFoldVal = Math.max(1.0, i_h - 2.0);
+      const defaultBottomFold = Math.max(1.0, i_h - 2.0);
+      const bagBottomFlapVal = parseFloat(document.getElementById('bagBottomFlap')?.value);
+      const bottomFoldVal = (!isNaN(bagBottomFlapVal) && bagBottomFlapVal >= 0) ? bagBottomFlapVal : defaultBottomFold;
+
       const bagFlapInputVal = parseFloat(document.getElementById('bagFlap')?.value);
-      const topFoldVal = !isNaN(bagFlapInputVal) && bagFlapInputVal >= 0 ? bagFlapInputVal : 2.0;
+      const defaultTopFold = (boxH <= 30 && i_w <= 30) ? 1.5 : 2.0;
+      const topFoldVal = (!isNaN(bagFlapInputVal) && bagFlapInputVal >= 0) ? bagFlapInputVal : defaultTopFold;
       if (isTwoPartBag) {
         const partFits = (partBagW <= S_W && partBagH <= S_H) || (partBagW <= S_H && partBagH <= S_W);
         if (!partFits) {
@@ -2461,7 +2476,7 @@ function calculateAndUpdate() {
             🛍️ Bag Open Size: <strong>${flat_w.toFixed(1)} × ${flat_h.toFixed(1)} cm</strong> (Single Sheet)
           </div>
           <div style="font-size: 0.82rem; opacity: 0.9;">
-            Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | ${topFoldVal.toFixed(1)} cm Top Flap + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Fold (Gusset ${i_h}cm - 2cm)
+            Formula: Left side 1.5 cm Bag Fold + 2×L (${(2*i_w).toFixed(1)}cm) + 2×Gusset (${(2*i_h).toFixed(1)}cm) | ${topFoldVal.toFixed(1)} cm Top Flap + ${boxH}cm Height + ${bottomFoldVal.toFixed(1)}cm Bottom Flap (Gusset ${i_h}cm - 2cm)
           </div>
         `;
       }
@@ -3310,8 +3325,12 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
 
         const sideFold = 1.5;
         const bagFlapInputVal = parseFloat(document.getElementById('bagFlap')?.value);
-        const topFold = !isNaN(bagFlapInputVal) && bagFlapInputVal >= 0 ? bagFlapInputVal : 2.0;
-        const bottomFold = Math.max(1.0, bagW - 2.0);
+        const defaultTopFold = (bagH <= 30 && bagL <= 30) ? 1.5 : 2.0;
+        const topFold = (!isNaN(bagFlapInputVal) && bagFlapInputVal >= 0) ? bagFlapInputVal : defaultTopFold;
+
+        const defaultBottomFold = Math.max(1.0, bagW - 2.0);
+        const bagBottomFlapVal = parseFloat(document.getElementById('bagBottomFlap')?.value);
+        const bottomFold = (!isNaN(bagBottomFlapVal) && bagBottomFlapVal >= 0) ? bagBottomFlapVal : defaultBottomFold;
 
         const fullBagW = sideFold + (2 * bagL) + (2 * bagW);
         const fullBagH = topFold + bagH + bottomFold;
