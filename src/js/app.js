@@ -3406,7 +3406,7 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           const yTop = upY + topFoldPx;
           const yBodyEnd = yTop + heightPx;
           const yBot = yBodyEnd + bottomFoldPx;
-          const yDiamondMid = yBodyEnd + (halfGussetPx * 0.7);
+          const yDiamondMid = yBodyEnd - (halfGussetPx * 0.7);
 
           // Outer Die-Cut Contour Path matching BAG OPEN SIZE 1 PART LOOKS.svg
           const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -3438,7 +3438,7 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           group.appendChild(createFold(x0, yTop, xG1End, yTop));
           group.appendChild(createFold(x0, yBodyEnd, xG1End, yBodyEnd));
 
-          // Diagonal fold crease in bottom gusset flap matching SVG
+          // Diagonal fold crease in gusset panel (pointing up into gusset panel)
           const polyGussetFold = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
           polyGussetFold.setAttribute("points", `${xL1},${yBodyEnd} ${xG1Mid},${yDiamondMid} ${xG1End},${yBodyEnd}`);
           polyGussetFold.setAttribute("fill", "none");
@@ -3500,6 +3500,7 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           const yTop = upY + topFoldPx;
           const yBodyEnd = yTop + heightPx;
           const yBot = yBodyEnd + bottomFoldPx;
+          const yDiamondMid = yBodyEnd - (halfGussetPx * 0.7);
 
           // Outer Contour
           const bagPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
@@ -3539,6 +3540,23 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           // Horizontal Folds
           group.appendChild(createFold(x0, yTop, xG2End, yTop));
           group.appendChild(createFold(x0, yBodyEnd, xG2End, yBodyEnd));
+
+          // Diagonal fold creases in gusset panels (pointing up into gusset panels)
+          const polyGussetFold1 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+          polyGussetFold1.setAttribute("points", `${xL1},${yBodyEnd} ${xG1Mid},${yDiamondMid} ${xG1End},${yBodyEnd}`);
+          polyGussetFold1.setAttribute("fill", "none");
+          polyGussetFold1.setAttribute("stroke", "#10b981");
+          polyGussetFold1.setAttribute("stroke-width", "1.2");
+          polyGussetFold1.setAttribute("stroke-dasharray", "3 2");
+          group.appendChild(polyGussetFold1);
+
+          const polyGussetFold2 = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+          polyGussetFold2.setAttribute("points", `${xL2},${yBodyEnd} ${xG2Mid},${yDiamondMid} ${xG2End},${yBodyEnd}`);
+          polyGussetFold2.setAttribute("fill", "none");
+          polyGussetFold2.setAttribute("stroke", "#10b981");
+          polyGussetFold2.setAttribute("stroke-width", "1.2");
+          polyGussetFold2.setAttribute("stroke-dasharray", "3 2");
+          group.appendChild(polyGussetFold2);
 
           // Yellow Dimension Marks
           if (glueFlapPx > 2) {
