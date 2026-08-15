@@ -114,6 +114,14 @@ const DEFAULT_PRICING = {
     offsetSetup: 250.00 // Offset setup cost
   },
 
+  // Default Offset Setup Rates per Paper Size (in SR)
+  offsetSetupRates: {
+    'size_100_70': 250.00,
+    'size_90_64': 250.00,
+    'size_50_70': 150.00,
+    'size_50_35': 100.00
+  },
+
   // T-Shirt & Cup rates in SR
   tshirtLaserRates: {
     'A3': 50.00,
@@ -172,15 +180,29 @@ const DEFAULT_PRICING = {
 
 // Available sizes definitions (with default landscape values)
 const DEFAULT_PAPER_SIZES = [
-  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset' },
-  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset' },
-  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, alias: '50x70', mode: 'offset' },
-  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, alias: '50x35', mode: 'offset' },
+  { id: 'size_100_70', name: '100x70 cm', w: 100, h: 70, mode: 'offset', defaultSetup: 250.00 },
+  { id: 'size_90_64', name: '90x64 cm', w: 90, h: 64, mode: 'offset', defaultSetup: 250.00 },
+  { id: 'size_50_70', name: '50x70 cm', w: 70, h: 50, alias: '50x70', mode: 'offset', defaultSetup: 150.00 },
+  { id: 'size_50_35', name: '50x35 cm', w: 50, h: 35, alias: '50x35', mode: 'offset', defaultSetup: 100.00 },
   { id: 'size_70_33', name: '70x33 cm', w: 70, h: 33, mode: 'digital' },
   { id: 'size_50_33', name: '50x33 cm', w: 50, h: 33, mode: 'digital' },
   { id: 'size_a3', name: 'A3 Size', w: 42, h: 29.7, alias: 'A3', mode: 'digital' },
   { id: 'size_a4', name: 'A4 Size', w: 29.7, h: 21, alias: 'A4', mode: 'digital' }
 ];
+
+// Helper function to get default offset setup cost by paper size
+function getOffsetSetupCostForSize(sizeId) {
+  if (typeof currentPricing !== 'undefined' && currentPricing && currentPricing.offsetSetupRates && currentPricing.offsetSetupRates[sizeId] !== undefined) {
+    return currentPricing.offsetSetupRates[sizeId];
+  }
+  const sz = DEFAULT_PAPER_SIZES.find(s => s.id === sizeId);
+  if (sz && sz.defaultSetup !== undefined) {
+    return sz.defaultSetup;
+  }
+  if (sizeId === 'size_50_70') return 150.00;
+  if (sizeId === 'size_50_35') return 100.00;
+  return (typeof currentPricing !== 'undefined' && currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.offsetSetup !== undefined) ? currentPricing.fixedRates.offsetSetup : 250.00;
+}
 
 
 // Active State
@@ -915,6 +937,15 @@ function loadPricingFromStorage() {
           currentPricing.fixedRates.offsetSetup = 250.00;
         }
       }
+      if (!currentPricing.offsetSetupRates) {
+        currentPricing.offsetSetupRates = JSON.parse(JSON.stringify(DEFAULT_PRICING.offsetSetupRates));
+      } else {
+        Object.keys(DEFAULT_PRICING.offsetSetupRates).forEach(k => {
+          if (currentPricing.offsetSetupRates[k] === undefined) {
+            currentPricing.offsetSetupRates[k] = DEFAULT_PRICING.offsetSetupRates[k];
+          }
+        });
+      }
       if (currentPricing.plotterTierRates) {
         Object.keys(DEFAULT_PRICING.plotterTierRates).forEach(tier => {
           currentPricing.plotterTierRates[tier] = DEFAULT_PRICING.plotterTierRates[tier];
@@ -1110,6 +1141,10 @@ function initUI() {
       if (btnModeBags) btnModeBags.classList.remove('active');
       if (['size_70_33', 'size_50_33', 'size_a3', 'size_a4'].includes(selectedPaperSizeId)) {
         selectedPaperSizeId = 'size_100_70';
+      }
+      const offsetSetupRateInput = document.getElementById('offsetSetupRateInput');
+      if (offsetSetupRateInput) {
+        offsetSetupRateInput.value = getOffsetSetupCostForSize(selectedPaperSizeId).toFixed(2);
       }
       updateSection3Labels();
       renderPaperSizeButtons();
@@ -1586,7 +1621,7 @@ function initUI() {
   }
   const offsetSetupRateInput = document.getElementById('offsetSetupRateInput');
   if (offsetSetupRateInput) {
-    offsetSetupRateInput.value = (currentPricing.fixedRates.offsetSetup !== undefined ? currentPricing.fixedRates.offsetSetup : 250.00).toFixed(2);
+    offsetSetupRateInput.value = getOffsetSetupCostForSize(selectedPaperSizeId).toFixed(2);
   }
 
   // Mutually exclusive toggle for Die Cutting
@@ -1678,6 +1713,14 @@ function renderPaperSizeButtons() {
       userForcedOrientation = null; // reset forced layout direction
       document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
+
+      if (currentPaperMode === 'offset' || size.mode === 'offset') {
+        const offsetSetupRateInput = document.getElementById('offsetSetupRateInput');
+        if (offsetSetupRateInput) {
+          offsetSetupRateInput.value = getOffsetSetupCostForSize(size.id).toFixed(2);
+        }
+      }
+
       calculateAndUpdate();
     });
 
@@ -2733,7 +2776,8 @@ function calculateAndUpdate() {
     }
   }
 
-  const offsetSetupRate = optOffsetPrint ? (parseFloat(document.getElementById('offsetSetupRateInput')?.value) || 250.00) : 250.00;
+  const defaultSetupRate = getOffsetSetupCostForSize(selectedPaperSizeId);
+  const offsetSetupRate = optOffsetPrint ? (parseFloat(document.getElementById('offsetSetupRateInput')?.value) || defaultSetupRate) : defaultSetupRate;
   const isBacksideOffset = optOffsetPrint && (document.getElementById('offsetBacksidePrint')?.checked || document.getElementById('backSidePrint')?.checked);
 
   let offsetFrontCost = 0;
