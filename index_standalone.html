@@ -4897,6 +4897,14 @@ function initUI() {
       if (wallThicknessGroup) wallThicknessGroup.classList.add('hidden');
       if (insideFoldLockGroup) insideFoldLockGroup.classList.add('hidden');
       if (bagFlapGroup) bagFlapGroup.classList.remove('hidden');
+
+      const bagFlapInput = document.getElementById('bagFlap');
+      if (bagFlapInput && (!bagFlapInput.value || bagFlapInput.value === '2.0' || bagFlapInput.value === '1.5')) {
+        const bagH = parseFloat(document.getElementById('boxDepthH')?.value || 0);
+        const bagL = parseFloat(document.getElementById('itemWidth')?.value || 0);
+        const isSmallBag = (bagH <= 30 && bagL <= 30);
+        bagFlapInput.value = isSmallBag ? '1.5' : '2.0';
+      }
     } else {
       if (labelWidth) labelWidth.innerHTML = 'Length (L) / الطول (سم)';
       if (labelHeight) labelHeight.innerHTML = 'Width (W) / العرض (سم)';
@@ -6162,7 +6170,8 @@ function calculateAndUpdate() {
     const bagH = boxH;
     sideFold = 1.5; // 1.5 cm side glue flap
     const bagFlapInputVal = parseFloat(document.getElementById('bagFlap')?.value);
-    const topFold = !isNaN(bagFlapInputVal) && bagFlapInputVal >= 0 ? bagFlapInputVal : 2.0; // Bag Top Flap
+    const defaultTopFold = (bagH <= 30 && bagL <= 30) ? 1.5 : 2.0;
+    const topFold = (!isNaN(bagFlapInputVal) && bagFlapInputVal >= 0) ? bagFlapInputVal : defaultTopFold; // Bag Top Flap (1.5 cm small bag, 2.0 cm big bag)
     const bottomFold = Math.max(1.0, bagW - 2.0); // Bottom fold = Gusset size minus 2 cm
 
     fullBagW = sideFold + (2 * bagL) + (2 * bagW); // 1.5 cm Joint + 2*L + 2*W
@@ -7227,23 +7236,28 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           group.appendChild(polyGussetFold);
 
           // Yellow dimension line marks (matching prompt drawing)
+          if (topFoldPx > 3) {
+            const xTF = xGlue + (lengthPx * 0.25);
+            dimGroup.appendChild(drawYellowArrow(xTF, y0 + 1, xTF, yTop - 1, `TOP FOLD ${topFold.toFixed(1)} CM`, true, -9, 'normal'));
+          }
+
           if (glueFlapPx > 2) {
             const yJoint = yTop + (heightPx * 0.5);
             dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
           }
 
-          if (heightPx > 10) {
-            const xH = xGlue + (lengthPx * 0.4);
-            dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
+          if (heightPx > 8) {
+            const xH = xGlue + (lengthPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xH, yTop + 2, xH, yBodyEnd - 2, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
           }
 
           if (lengthPx > 10) {
-            const yL = yTop + (heightPx * 0.35);
+            const yL = yTop + (heightPx * 0.25);
             dimGroup.appendChild(drawYellowArrow(xGlue + 3, yL, xL1 - 3, yL, `LENGTH ${bagL} CM`, false, -6, 'normal'));
           }
 
           if (gussetPx > 10) {
-            const yG = yTop + (heightPx * 0.5);
+            const yG = yTop + (heightPx * 0.25);
             dimGroup.appendChild(drawYellowArrow(xL1 + 3, yG, xG1End - 3, yG, `GUSSET ${bagW} CM`, false, -6, 'normal'));
           }
 
@@ -7338,14 +7352,19 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
           group.appendChild(polyGussetFold2);
 
           // Yellow Dimension Marks
+          if (topFoldPx > 3) {
+            const xTF = xGlue + (lengthPx * 0.25);
+            dimGroup.appendChild(drawYellowArrow(xTF, y0 + 1, xTF, yTop - 1, `TOP FOLD ${topFold.toFixed(1)} CM`, true, -9, 'normal'));
+          }
+
           if (glueFlapPx > 2) {
             const yJoint = yTop + (heightPx * 0.5);
             dimGroup.appendChild(drawYellowArrow(x0 + 1, yJoint, xGlue - 1, yJoint, `JOINT 1.5 CM`, false, -6, 'normal'));
           }
 
-          if (heightPx > 10) {
-            const xH = xGlue + (lengthPx * 0.4);
-            dimGroup.appendChild(drawYellowArrow(xH, yTop + 5, xH, yBodyEnd - 5, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
+          if (heightPx > 8) {
+            const xH = xGlue + (lengthPx * 0.5);
+            dimGroup.appendChild(drawYellowArrow(xH, yTop + 2, xH, yBodyEnd - 2, `HEIGHT ${bagH} CM`, true, -9, 'normal'));
           }
 
           if (gussetPx > 10) {
