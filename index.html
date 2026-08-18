@@ -641,6 +641,74 @@
               </div>
             </div>
 
+            <!-- GOLD FOIL Stamping Option -->
+            <div class="extra-checkbox-card custom-extra-card" id="goldFoilCardEl" style="grid-column: span 2; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <label class="extra-checkbox-label" for="extraGoldFoil" style="flex: 1; cursor: pointer;">
+                  <input type="checkbox" id="extraGoldFoil">
+                  <div class="extra-info">
+                    <span class="extra-title" style="color: #f59e0b; font-weight: 700;">★ GOLD FOIL / البصمة الحرارية</span>
+                    <span class="extra-desc" id="goldFoilSummaryText">Hot Foil Stamping Cleche & Film Material Cost</span>
+                  </div>
+                </label>
+              </div>
+              <div id="goldFoilDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--primary-gold-light); margin-bottom: 8px;">
+                  FOIL CLECHE SIZE / مقاس وتكلفة كليشة البصمة
+                </div>
+                <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 10px;">
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="foilLength">Length (L) / الطول (سم)</label>
+                    <input type="number" id="foilLength" value="10" min="0.1" step="0.1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="foilHeight">Height (H) / الارتفاع (سم)</label>
+                    <input type="number" id="foilHeight" value="10" min="0.1" step="0.1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-150" style="flex: 1.5;">
+                    <label>Cleche Size & Cost / المساحة والتكلفة (0.81 SR/cm²)</label>
+                    <div id="foilClecheResultCol" style="background: rgba(212, 175, 55, 0.15); border: 1px solid var(--primary-gold); padding: 9px 12px; border-radius: var(--border-radius-sm); font-weight: 700; color: #f59e0b; font-size: 0.9rem;">
+                      100 SQCM = 81.00 SR
+                    </div>
+                  </div>
+                </div>
+
+                <div style="font-weight: 700; font-size: 0.9rem; color: var(--primary-gold-light); margin-bottom: 6px;">
+                  Foil Material Color / لون البصمة
+                </div>
+                <div class="foil-color-btn-group" style="margin-bottom: 12px;">
+                  <button type="button" class="foil-color-btn active" data-color="gold">
+                    <span style="font-size: 1.1rem;">★</span> GOLD (0.0015 SR/cm²) / ذهبي
+                  </button>
+                  <button type="button" class="foil-color-btn" data-color="rainbow">
+                    <span style="font-size: 1.1rem;">🌈</span> RAINBOW (0.0038 SR/cm²) / رينبو
+                  </button>
+                </div>
+
+                <div id="goldFoilCalcNotice" style="margin-top: 8px; background: rgba(212, 175, 55, 0.08); border: 1px solid var(--primary-gold); padding: 10px 14px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">
+                  <!-- Dynamic breakdown details populated by JS -->
+                </div>
+              </div>
+            </div>
+
+            <!-- UV COST Option -->
+            <div class="extra-checkbox-card custom-extra-card" id="uvCostCardEl" style="grid-column: span 2; display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                <label class="extra-checkbox-label" for="extraUvCost" style="flex: 1; cursor: pointer;">
+                  <input type="checkbox" id="extraUvCost">
+                  <div class="extra-info">
+                    <span class="extra-title" style="color: #06b6d4; font-weight: 700;">✨ UV COST / ورنيش يو في</span>
+                    <span class="extra-desc" id="uvCostSummaryText">UV Coating service rate per 500 & 1000 sheets tier</span>
+                  </div>
+                </label>
+              </div>
+              <div id="uvCostDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                <div id="uvCostCalcNotice" style="background: rgba(6, 182, 212, 0.08); border: 1px solid #06b6d4; padding: 10px 14px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">
+                  <!-- Dynamic UV breakdown details populated by JS -->
+                </div>
+              </div>
+            </div>
+
             <label class="extra-checkbox-card" id="bagRibbonPrintCardEl">
               <input type="checkbox" id="extraBagRibbonPrint">
               <div class="extra-info">
@@ -900,6 +968,14 @@
               <span class="inv-label">Plastic Window Cost / تكلفة نافذة البلاستيك:</span>
               <span class="inv-value" id="invPlasticCost">-</span>
             </div>
+            <div class="invoice-row hidden" id="invRowGoldFoil">
+              <span class="inv-label">Gold Foil Stamping Cost / تكلفة البصمة الحرارية:</span>
+              <span class="inv-value" id="invGoldFoilCost">-</span>
+            </div>
+            <div class="invoice-row hidden" id="invRowUvCost">
+              <span class="inv-label">UV Coating Cost / تكلفة الورنيش UV:</span>
+              <span class="inv-value" id="invUvCostCost">-</span>
+            </div>
             <hr class="inv-divider">
 
             <div class="invoice-row discount-row" id="invRowDiscount">
@@ -1089,6 +1165,11 @@
               <!-- Dynamically populated inputs -->
             </div>
 
+            <h4 class="finish-group-title">UV Coating Rates (per Sheet Size & Tier in SR)</h4>
+            <div class="form-row flex-wrap" id="settingsUvContainer">
+              <!-- Dynamically populated inputs -->
+            </div>
+
             <h4 class="finish-group-title">Other Fixed Service Rates (SR)</h4>
             <div class="form-row flex-wrap">
               <div class="form-group min-w-150">
@@ -1134,6 +1215,18 @@
               <div class="form-group min-w-150">
                 <label for="rateDieManual">Manual Die Cut (per sheet)</label>
                 <input type="number" id="rateDieManual" step="0.01" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateCleche">Cleche Rate (per SQCM)</label>
+                <input type="number" id="rateCleche" step="0.01" class="form-input" value="0.81">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateFoilGold">Gold Foil Rate (per SQCM)</label>
+                <input type="number" id="rateFoilGold" step="0.0001" class="form-input" value="0.0015">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateFoilRainbow">Rainbow Foil Rate (per SQCM)</label>
+                <input type="number" id="rateFoilRainbow" step="0.0001" class="form-input" value="0.0038">
               </div>
             </div>
           </div>
