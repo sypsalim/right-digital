@@ -38,7 +38,7 @@ const DEFAULT_PRICING = {
   paperGsmRates: {
     '350': { '100x70': 1.44, '90x64': 1.40, '50x70': 1.00, '70x33': 1.50, '50x33': 1.40, 'A3': 4.50, 'A4': 2.50, 'backSide': 2.50 },
     '300': { '100x70': 1.25, '90x64': 1.35, '50x70': 0.90, '70x33': 1.40, '50x33': 1.30, 'A3': 4.00, 'A4': 2.00, 'backSide': 2.00 },
-    '250': { '100x70': 1.00, '90x64': 0.95, '50x70': 0.80, '70x33': 1.20, '50x33': 1.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
+    '250': { '100x70': 1.00, '90x64': 1.00, '50x70': 0.80, '70x33': 1.20, '50x33': 1.00, 'A3': 3.50, 'A4': 2.50, 'backSide': 2.00 },
     '150': { '100x70': 0.80, '90x64': 0.75, '50x70': 0.60, '70x33': 1.00, '50x33': 0.90, 'A3': 3.00, 'A4': 2.00, 'backSide': 1.50 },
     '100': { '100x70': 0.70, '90x64': 0.65, '50x70': 0.45, '70x33': 0.95, '50x33': 0.80, 'A3': 2.50, 'A4': 2.00, 'backSide': 1.50 }
   },
@@ -78,9 +78,9 @@ const DEFAULT_PRICING = {
 
   // Section 8: Plotter Cut cost per sheet based on ordered quantity tier in SR
   plotterTierRates: {
-    tier1: 2.00, // Qty 1 to 24 pcs: 2.00 SR / sheet
-    tier2: 1.75, // Qty 25 to 149 pcs: 1.75 SR / sheet
-    tier3: 1.50  // Qty 150+ pcs: 1.50 SR / sheet
+    tier1: 3.50, // Qty 1 to 24 sheets: 3.50 SR / sheet
+    tier2: 3.00, // Qty 25 to 149 sheets: 3.00 SR / sheet
+    tier3: 2.50  // Qty 150+ sheets: 2.50 SR / sheet
   },
 
   // UV Coating service rates per sheet size & tier in SR
@@ -100,9 +100,9 @@ const DEFAULT_PRICING = {
     tier1: 40,    // Qty 1 to 99 pcs: +40%
     tier100: 38,  // Qty 100 to 324 pcs: +38%
     tier325: 36,  // Qty 325 to 449 pcs: +36%
-    tier450: 34,  // Qty 450 to 1249 pcs: +34%
-    tier1250: 32, // Qty 1250 to 3499 pcs: +32%
-    tier3500: 26  // Qty 3500+ pcs: +26%
+    tier450: 30,  // Qty 450 to 1000 pcs: +30%
+    tier1250: 27, // Qty 1250 to 3000 pcs: +27%
+    tier3500: 25  // Qty 3500+ pcs: +25%
   },
 
 
@@ -120,13 +120,14 @@ const DEFAULT_PRICING = {
     businessCardPrint: 0.012, // per piece
     businessCardA3SheetPrice: 0.75, // A3 sheet price specifically for business card jobs
     businessCardPolarCutPrice: 8.50, // Polar Cutting cost per 100 pcs pack
-    dieCylinder: 0.30, // Cylinder Die Cutting cost per sheet
-    dieManual: 0.35,   // Manual Die Cutting cost per sheet
+    dieCylinder: 0.35, // Cylinder Die Cutting cost per sheet
+    dieManual: 0.40,   // Manual Die Cutting cost per sheet
     dieBoard: 150.00,  // Die Board cost per part
     offsetSetup: 250.00, // Offset setup cost
     clecheRatePerSqcm: 0.81, // Hot Foil Cleche rate per SQCM
     goldFoilColorRate: 0.0015, // Gold Foil Material cost per SQCM
     rainbowFoilColorRate: 0.0038, // Rainbow Foil Material cost per SQCM
+    foilImpressionRate: 0.25, // Gold Foil Impression cost per sheet (0.25 SR)
     foilMargin: 1.5 // Extra margin for foil film (cm)
   },
 
@@ -171,12 +172,12 @@ const DEFAULT_PRICING = {
     'SMALL': 18.00
   },
 
-  // Section 6: Discount Tiers (based on printed sheets)
+  // Section 6: Discount Tiers (based on printed sheets - Default 0%)
   discountTiers: [
     { min: 0, max: 450, discount: 0 },
-    { min: 500, max: 1000, discount: 2.5 },
-    { min: 2500, max: 5000, discount: 5 },
-    { min: 6000, max: 10000, discount: 7 }
+    { min: 500, max: 1000, discount: 0 },
+    { min: 2500, max: 5000, discount: 0 },
+    { min: 6000, max: 10000, discount: 0 }
   ],
 
   // Quantity Multipliers & Volume Discount Tiers (based on 100 Pcs base rate)
@@ -880,9 +881,14 @@ function loadPricingFromStorage() {
   if (stored) {
     try {
       currentPricing = JSON.parse(stored);
-      // Fallback check in case stored structure lacks new fields or uses old 2-tier default
-      if (!currentPricing.discountTiers || (Array.isArray(currentPricing.discountTiers) && currentPricing.discountTiers.length <= 2)) {
+      if (!currentPricing.discountTiers || !Array.isArray(currentPricing.discountTiers) || currentPricing.discountTiers.length === 0) {
         currentPricing.discountTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.discountTiers));
+      } else {
+        currentPricing.discountTiers.forEach(tier => {
+          if (tier.discount === 2.5 || tier.discount === 5 || tier.discount === 7) {
+            tier.discount = 0;
+          }
+        });
       }
       if (!currentPricing.quantityTiers) {
         currentPricing.quantityTiers = JSON.parse(JSON.stringify(DEFAULT_PRICING.quantityTiers));
@@ -940,11 +946,11 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.pasting === undefined) {
           currentPricing.fixedRates.pasting = 0.25;
         }
-        if (currentPricing.fixedRates.dieCylinder === undefined) {
-          currentPricing.fixedRates.dieCylinder = 0.30;
+        if (currentPricing.fixedRates.dieCylinder === undefined || currentPricing.fixedRates.dieCylinder === 0.30) {
+          currentPricing.fixedRates.dieCylinder = 0.35;
         }
-        if (currentPricing.fixedRates.dieManual === undefined || currentPricing.fixedRates.dieManual === 0.15) {
-          currentPricing.fixedRates.dieManual = 0.35;
+        if (currentPricing.fixedRates.dieManual === undefined || currentPricing.fixedRates.dieManual === 0.15 || currentPricing.fixedRates.dieManual === 0.35) {
+          currentPricing.fixedRates.dieManual = 0.40;
         }
         if (currentPricing.fixedRates.bagRibbonOnly === undefined) {
           currentPricing.fixedRates.bagRibbonOnly = 1.00;
@@ -954,6 +960,9 @@ function loadPricingFromStorage() {
         }
         if (currentPricing.fixedRates.offsetSetup === undefined) {
           currentPricing.fixedRates.offsetSetup = 250.00;
+        }
+        if (currentPricing.fixedRates.foilImpressionRate === undefined) {
+          currentPricing.fixedRates.foilImpressionRate = 0.25;
         }
       }
       if (!currentPricing.offsetSetupRates) {
@@ -1239,7 +1248,7 @@ function initUI() {
     'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
     'extraOffsetPrint', 'offsetSetupRateInput', 'offsetBacksidePrint',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
-    'extraGoldFoil', 'foilLength', 'foilHeight',
+    'extraGoldFoil', 'foilLength', 'foilHeight', 'foilImpressionRateInput',
     'extraUvCost',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
@@ -1595,6 +1604,7 @@ function initUI() {
 
   // Settings tab selection
   const setTabBtns = document.querySelectorAll('.setting-tab-btn');
+  const drawerBodyEl = document.querySelector('.drawer-body');
   setTabBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       setTabBtns.forEach(b => b.classList.remove('active'));
@@ -1604,27 +1614,124 @@ function initUI() {
       sections.forEach(sec => sec.classList.add('hidden'));
       
       const targetId = btn.getAttribute('data-target');
-      document.getElementById(targetId).classList.remove('hidden');
+      const targetSec = document.getElementById(targetId);
+      if (targetSec) targetSec.classList.remove('hidden');
+
+      if (drawerBodyEl) {
+        drawerBodyEl.scrollTop = 0;
+      }
     });
   });
+
+  // Settings Drawer Search & Filter
+  const settingsSearchInput = document.getElementById('settingsSearchInput');
+  if (settingsSearchInput) {
+    settingsSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const sections = document.querySelectorAll('.setting-section');
+      
+      if (!query) {
+        // Reset tabs to show active tab section
+        const activeTabBtn = document.querySelector('.setting-tab-btn.active');
+        sections.forEach(sec => sec.classList.add('hidden'));
+        if (activeTabBtn) {
+          const targetId = activeTabBtn.getAttribute('data-target');
+          const targetSec = document.getElementById(targetId);
+          if (targetSec) targetSec.classList.remove('hidden');
+        }
+        document.querySelectorAll('.settings-edit-table tbody tr, .setting-section .form-group').forEach(el => el.classList.remove('hidden'));
+        return;
+      }
+
+      // Filter elements matching query
+      sections.forEach(sec => {
+        let hasMatchInSection = false;
+        
+        const rows = sec.querySelectorAll('.settings-edit-table tbody tr');
+        rows.forEach(tr => {
+          const text = tr.innerText.toLowerCase();
+          if (text.includes(query)) {
+            tr.classList.remove('hidden');
+            hasMatchInSection = true;
+          } else {
+            tr.classList.add('hidden');
+          }
+        });
+
+        const formGroups = sec.querySelectorAll('.form-group');
+        formGroups.forEach(fg => {
+          const text = fg.innerText.toLowerCase();
+          if (text.includes(query)) {
+            fg.classList.remove('hidden');
+            hasMatchInSection = true;
+          } else {
+            fg.classList.add('hidden');
+          }
+        });
+
+        const headings = sec.querySelectorAll('h3, h4');
+        headings.forEach(h => {
+          if (h.innerText.toLowerCase().includes(query)) {
+            hasMatchInSection = true;
+          }
+        });
+
+        if (hasMatchInSection) {
+          sec.classList.remove('hidden');
+        } else {
+          sec.classList.add('hidden');
+        }
+      });
+    });
+  }
+
+  // Auto-Save and Live Change Handler for Settings Drawer
+  let drawerAutoSaveTimer = null;
+  const autoSaveBadgeEl = document.getElementById('autoSaveBadge');
+
+  function triggerDrawerAutoSave(targetInput) {
+    if (targetInput && targetInput.id !== 'settingsSearchInput') {
+      targetInput.classList.add('field-modified');
+    }
+    if (autoSaveBadgeEl) {
+      autoSaveBadgeEl.innerText = 'Saving...';
+      autoSaveBadgeEl.classList.remove('hidden');
+    }
+    clearTimeout(drawerAutoSaveTimer);
+    drawerAutoSaveTimer = setTimeout(() => {
+      saveSettingsFromDrawer();
+      renderGsmButtons();
+      syncMainScreenRateInputs();
+      calculateAndUpdate();
+      if (autoSaveBadgeEl) {
+        autoSaveBadgeEl.innerText = '✓ Auto-saved';
+        setTimeout(() => {
+          autoSaveBadgeEl.classList.add('hidden');
+        }, 2000);
+      }
+    }, 250);
+  }
+
+  if (settingsDrawer) {
+    settingsDrawer.addEventListener('input', (e) => {
+      const t = e.target;
+      if (!t || t.id === 'settingsSearchInput') return;
+      triggerDrawerAutoSave(t);
+    });
+
+    settingsDrawer.addEventListener('change', (e) => {
+      const t = e.target;
+      if (!t || t.id === 'settingsSearchInput') return;
+      triggerDrawerAutoSave(t);
+    });
+  }
 
   // Save Settings Button
   document.getElementById('saveSettingsBtn').addEventListener('click', () => {
     if (saveSettingsFromDrawer() !== false) {
       settingsDrawer.classList.remove('open');
-      renderGsmButtons(); // re-render to reflect new prices on buttons
-      const polarCutRateInput = document.getElementById('polarCuttingRateInput');
-      if (polarCutRateInput) {
-        polarCutRateInput.value = (currentPricing.fixedRates.businessCardPolarCutPrice !== undefined ? currentPricing.fixedRates.businessCardPolarCutPrice : 0.50).toFixed(2);
-      }
-      const dieCylinderRateInput = document.getElementById('dieCylinderRateInput');
-      if (dieCylinderRateInput) {
-        dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.30).toFixed(2);
-      }
-      const dieManualRateInput = document.getElementById('dieManualRateInput');
-      if (dieManualRateInput) {
-        dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.15).toFixed(2);
-      }
+      renderGsmButtons();
+      syncMainScreenRateInputs();
       calculateAndUpdate();
     }
   });
@@ -1642,11 +1749,11 @@ function initUI() {
       }
       const dieCylinderRateInput = document.getElementById('dieCylinderRateInput');
       if (dieCylinderRateInput) {
-        dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.30).toFixed(2);
+        dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.35).toFixed(2);
       }
       const dieManualRateInput = document.getElementById('dieManualRateInput');
       if (dieManualRateInput) {
-        dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.35).toFixed(2);
+        dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.40).toFixed(2);
       }
       const bagRibbonRateInput = document.getElementById('bagRibbonRateInput');
       const bagRibbonType = document.getElementById('bagRibbonType');
@@ -1671,11 +1778,11 @@ function initUI() {
   // Populate default die cutting rates on main screen
   const dieCylinderRateInput = document.getElementById('dieCylinderRateInput');
   if (dieCylinderRateInput) {
-    dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.30).toFixed(2);
+    dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.35).toFixed(2);
   }
   const dieManualRateInput = document.getElementById('dieManualRateInput');
   if (dieManualRateInput) {
-    dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.35).toFixed(2);
+    dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.40).toFixed(2);
   }
   const dieBoardRateInput = document.getElementById('dieBoardRateInput');
   if (dieBoardRateInput) {
@@ -1926,23 +2033,25 @@ function populateSettingsDrawer() {
   }
 
   const discountBody = document.getElementById('settingsDiscountBody');
-  discountBody.innerHTML = '';
-  currentPricing.discountTiers.forEach((tier, index) => {
-    const tr = document.createElement('tr');
-    const maxVal = tier.max === Infinity ? '' : tier.max;
-    tr.innerHTML = `
-      <td>
-        <input type="number" class="table-input disc-min" data-index="${index}" value="${tier.min}">
-      </td>
-      <td>
-        <input type="number" class="table-input disc-max" data-index="${index}" placeholder="Infinity" value="${maxVal}">
-      </td>
-      <td>
-        <input type="number" step="0.5" class="table-input disc-val" data-index="${index}" value="${tier.discount}">%
-      </td>
-    `;
-    discountBody.appendChild(tr);
-  });
+  if (discountBody) {
+    discountBody.innerHTML = '';
+    (currentPricing.discountTiers || []).forEach((tier, index) => {
+      const tr = document.createElement('tr');
+      const maxVal = tier.max === Infinity ? '' : tier.max;
+      tr.innerHTML = `
+        <td>
+          <input type="number" class="table-input disc-min" data-index="${index}" value="${tier.min}">
+        </td>
+        <td>
+          <input type="number" class="table-input disc-max" data-index="${index}" placeholder="Infinity" value="${maxVal}">
+        </td>
+        <td>
+          <input type="number" step="0.5" class="table-input disc-val" data-index="${index}" value="${tier.discount}">%
+        </td>
+      `;
+      discountBody.appendChild(tr);
+    });
+  }
 
   // 3.5. Quantity Profit Margin Tiers
   const profitBody = document.getElementById('settingsProfitTierBody');
@@ -1996,9 +2105,9 @@ function populateSettingsDrawer() {
     plotterContainer.innerHTML = '';
     const pTierRates = currentPricing.plotterTierRates || DEFAULT_PRICING.plotterTierRates;
     const tiers = [
-      { key: 'tier1', label: 'Qty 1 to 24 pcs (2.00 SR / sheet)', val: pTierRates.tier1 },
-      { key: 'tier2', label: 'Qty 25 to 149 pcs (1.75 SR / sheet)', val: pTierRates.tier2 },
-      { key: 'tier3', label: 'Qty 150+ pcs (1.50 SR / sheet)', val: pTierRates.tier3 }
+      { key: 'tier1', label: '1 ~ 24 Sheets Cost (3.50 SR / sheet)', val: pTierRates.tier1 },
+      { key: 'tier2', label: '25 ~ 149 Sheets Cost (3.00 SR / sheet)', val: pTierRates.tier2 },
+      { key: 'tier3', label: '150 ~ 500* Sheets Cost (2.50 SR / sheet)', val: pTierRates.tier3 }
     ];
     tiers.forEach(t => {
       plotterContainer.innerHTML += `
@@ -2058,9 +2167,9 @@ function populateSettingsDrawer() {
   document.getElementById('rateBcA3Sheet').value = bcSheetRateVal.toFixed(2);
   const bcPolarRateVal = currentPricing.fixedRates.businessCardPolarCutPrice !== undefined ? currentPricing.fixedRates.businessCardPolarCutPrice : 0.50;
   document.getElementById('rateBcPolarCut').value = bcPolarRateVal.toFixed(2);
-  const dieCylinderRateVal = currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.30;
+  const dieCylinderRateVal = currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.35;
   document.getElementById('rateDieCylinder').value = dieCylinderRateVal.toFixed(2);
-  const dieManualRateVal = currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.15;
+  const dieManualRateVal = currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.40;
   document.getElementById('rateDieManual').value = dieManualRateVal.toFixed(2);
 
   const clecheRateVal = currentPricing.fixedRates.clecheRatePerSqcm !== undefined ? currentPricing.fixedRates.clecheRatePerSqcm : 0.81;
@@ -2069,6 +2178,9 @@ function populateSettingsDrawer() {
   if (document.getElementById('rateFoilGold')) document.getElementById('rateFoilGold').value = foilGoldRateVal.toFixed(4);
   const foilRainbowRateVal = currentPricing.fixedRates.rainbowFoilColorRate !== undefined ? currentPricing.fixedRates.rainbowFoilColorRate : 0.0038;
   if (document.getElementById('rateFoilRainbow')) document.getElementById('rateFoilRainbow').value = foilRainbowRateVal.toFixed(4);
+  const foilImpressionRateVal = currentPricing.fixedRates.foilImpressionRate !== undefined ? currentPricing.fixedRates.foilImpressionRate : 0.25;
+  if (document.getElementById('rateFoilImpression')) document.getElementById('rateFoilImpression').value = foilImpressionRateVal.toFixed(2);
+  if (document.getElementById('foilImpressionRateInput')) document.getElementById('foilImpressionRateInput').value = foilImpressionRateVal.toFixed(2);
 
   // 6.5. T-Shirt & Cup Rates
   document.getElementById('rateTshirtLaserA3').value = currentPricing.tshirtLaserRates.A3.toFixed(2);
@@ -2197,15 +2309,17 @@ function saveSettingsFromDrawer() {
   const valInputs = document.querySelectorAll('.disc-val');
   
   const newTiers = [];
-  minInputs.forEach((input, index) => {
-    const minVal = parseInt(input.value) || 0;
-    const maxText = maxInputs[index].value.trim();
-    const maxVal = maxText === '' ? Infinity : parseInt(maxText);
-    const discVal = parseFloat(valInputs[index].value) || 0;
-    newTiers.push({ min: minVal, max: maxVal, discount: discVal });
-  });
-  // Sort tiers by min quantity
-  newTiers.sort((a, b) => a.min - b.min);
+  if (minInputs.length > 0) {
+    minInputs.forEach((input, index) => {
+      const minVal = parseInt(input.value) || 0;
+      const maxText = maxInputs[index].value.trim();
+      const maxVal = maxText === '' ? Infinity : parseInt(maxText);
+      const discVal = parseFloat(valInputs[index].value) || 0;
+      newTiers.push({ min: minVal, max: maxVal, discount: discVal });
+    });
+    // Sort tiers by min quantity
+    newTiers.sort((a, b) => a.min - b.min);
+  }
   currentPricing.discountTiers = newTiers;
 
   // 3.5. Profit Margin Tiers save
@@ -2282,6 +2396,7 @@ function saveSettingsFromDrawer() {
   if (document.getElementById('rateCleche')) currentPricing.fixedRates.clecheRatePerSqcm = parseFloat(document.getElementById('rateCleche').value) || 0.81;
   if (document.getElementById('rateFoilGold')) currentPricing.fixedRates.goldFoilColorRate = parseFloat(document.getElementById('rateFoilGold').value) || 0.0015;
   if (document.getElementById('rateFoilRainbow')) currentPricing.fixedRates.rainbowFoilColorRate = parseFloat(document.getElementById('rateFoilRainbow').value) || 0.0038;
+  if (document.getElementById('rateFoilImpression')) currentPricing.fixedRates.foilImpressionRate = parseFloat(document.getElementById('rateFoilImpression').value) || 0.25;
 
   // 6.5. T-Shirt & Cup rates save
   currentPricing.tshirtLaserRates.A3 = parseFloat(document.getElementById('rateTshirtLaserA3').value) || 0;
@@ -2374,6 +2489,30 @@ function saveSettingsFromDrawer() {
   // Save to storage
   savePricingToStorage();
   return true;
+}
+
+function syncMainScreenRateInputs() {
+  const polarCutRateInput = document.getElementById('polarCuttingRateInput');
+  if (polarCutRateInput && currentPricing.fixedRates) {
+    polarCutRateInput.value = (currentPricing.fixedRates.businessCardPolarCutPrice !== undefined ? currentPricing.fixedRates.businessCardPolarCutPrice : 0.50).toFixed(2);
+  }
+  const dieCylinderRateInput = document.getElementById('dieCylinderRateInput');
+  if (dieCylinderRateInput && currentPricing.fixedRates) {
+    dieCylinderRateInput.value = (currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.30).toFixed(2);
+  }
+  const dieManualRateInput = document.getElementById('dieManualRateInput');
+  if (dieManualRateInput && currentPricing.fixedRates) {
+    dieManualRateInput.value = (currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.15).toFixed(2);
+  }
+  const dieBoardRateInput = document.getElementById('dieBoardRateInput');
+  if (dieBoardRateInput && currentPricing.fixedRates) {
+    dieBoardRateInput.value = (currentPricing.fixedRates.dieBoard !== undefined ? currentPricing.fixedRates.dieBoard : 150.00).toFixed(2);
+  }
+  const foilImpressionRateInput = document.getElementById('foilImpressionRateInput');
+  if (foilImpressionRateInput && currentPricing.fixedRates) {
+    const val = currentPricing.fixedRates.foilImpressionRate !== undefined ? currentPricing.fixedRates.foilImpressionRate : 0.25;
+    foilImpressionRateInput.value = val.toFixed(2);
+  }
 }
 
 // Set quick dimensions
@@ -2784,11 +2923,11 @@ function calculateAndUpdate() {
   function getPlotterRate(quantity) {
     const pTier = (currentPricing && currentPricing.plotterTierRates) ? currentPricing.plotterTierRates : DEFAULT_PRICING.plotterTierRates;
     if (quantity >= 150) {
-      return pTier.tier3 !== undefined ? pTier.tier3 : 1.50;
+      return pTier.tier3 !== undefined ? pTier.tier3 : 2.50;
     } else if (quantity >= 25) {
-      return pTier.tier2 !== undefined ? pTier.tier2 : 1.75;
+      return pTier.tier2 !== undefined ? pTier.tier2 : 3.00;
     } else {
-      return pTier.tier1 !== undefined ? pTier.tier1 : 2.00;
+      return pTier.tier1 !== undefined ? pTier.tier1 : 3.50;
     }
   }
 
@@ -3057,15 +3196,19 @@ function calculateAndUpdate() {
   let foilColorRate = selectedFoilColor === 'rainbow' ? 
     ((currentPricing.fixedRates && currentPricing.fixedRates.rainbowFoilColorRate !== undefined) ? currentPricing.fixedRates.rainbowFoilColorRate : 0.0038) : 
     ((currentPricing.fixedRates && currentPricing.fixedRates.goldFoilColorRate !== undefined) ? currentPricing.fixedRates.goldFoilColorRate : 0.0015);
+  let foilImpressionRate = (currentPricing.fixedRates && currentPricing.fixedRates.foilImpressionRate !== undefined) ? currentPricing.fixedRates.foilImpressionRate : 0.25;
   let foilUnitMatCost = 0;
   let foilTotalMatCost = 0;
+  let foilImpressionCost = 0;
   let goldFoilTotalCost = 0;
 
   if (optGoldFoil) {
     const rawL = parseFloat(document.getElementById('foilLength')?.value);
     const rawH = parseFloat(document.getElementById('foilHeight')?.value);
+    const rawImp = parseFloat(document.getElementById('foilImpressionRateInput')?.value);
     foilL = (!isNaN(rawL) && rawL > 0) ? rawL : 10;
     foilH = (!isNaN(rawH) && rawH > 0) ? rawH : 10;
+    if (!isNaN(rawImp) && rawImp >= 0) foilImpressionRate = rawImp;
 
     clecheArea = foilL * foilH;
     clecheCost = clecheArea * clecheRate;
@@ -3077,7 +3220,8 @@ function calculateAndUpdate() {
 
     foilUnitMatCost = filmArea * foilColorRate;
     foilTotalMatCost = qty * foilUnitMatCost;
-    goldFoilTotalCost = clecheCost + foilTotalMatCost;
+    foilImpressionCost = sheetsNeeded * foilImpressionRate;
+    goldFoilTotalCost = clecheCost + foilTotalMatCost + foilImpressionCost;
 
     const foilClecheResultCol = document.getElementById('foilClecheResultCol');
     if (foilClecheResultCol) {
@@ -3095,15 +3239,16 @@ function calculateAndUpdate() {
         <strong>2. Foil Film Area (+${extraMargin} cm margin):</strong> (${foilL} + ${extraMargin}) × (${foilH} + ${extraMargin}) = ${filmL.toFixed(2)} × ${filmH.toFixed(2)} cm = <strong>${filmArea.toFixed(2)} SQCM</strong><br>
         <strong>3. Unit Material Cost (${colorLabelUpper}):</strong> ${foilColorRate} SR × ${filmArea.toFixed(2)} SQCM = <strong>${foilUnitMatCost.toFixed(6)} SR / pc</strong><br>
         <strong>4. Total Material Cost (${qty} pcs):</strong> ${qty} × ${foilUnitMatCost.toFixed(6)} SR = <strong>${foilTotalMatCost.toFixed(2)} SR</strong><br>
+        <strong>5. Stamping Impression Cost (${sheetsNeeded} sheets):</strong> ${sheetsNeeded} × ${foilImpressionRate.toFixed(2)} SR/sheet = <strong>${foilImpressionCost.toFixed(2)} SR</strong><br>
         <div style="margin-top: 6px; padding-top: 4px; border-top: 1px dashed rgba(212, 175, 55, 0.4); font-weight: 700; color: var(--accent-emerald);">
-          Total Gold Foil Cost: ${clecheCost.toFixed(2)} SR (Cleche) + ${foilTotalMatCost.toFixed(2)} SR (Film Material) = ${goldFoilTotalCost.toFixed(2)} SR
+          Total Gold Foil Cost: ${clecheCost.toFixed(2)} SR (Cleche) + ${foilTotalMatCost.toFixed(2)} SR (Film Material) + ${foilImpressionCost.toFixed(2)} SR (Impression) = ${goldFoilTotalCost.toFixed(2)} SR
         </div>
       `;
     }
 
     const goldFoilSummaryText = document.getElementById('goldFoilSummaryText');
     if (goldFoilSummaryText) {
-      goldFoilSummaryText.innerText = `${goldFoilTotalCost.toFixed(2)} SR (${colorLabelUpper} - Cleche: ${clecheCost.toFixed(2)} SR + Film: ${foilTotalMatCost.toFixed(2)} SR)`;
+      goldFoilSummaryText.innerText = `${goldFoilTotalCost.toFixed(2)} SR (${colorLabelUpper} - Cleche: ${clecheCost.toFixed(2)} SR + Film: ${foilTotalMatCost.toFixed(2)} SR + Impression: ${foilImpressionCost.toFixed(2)} SR)`;
     }
   }
 
@@ -3210,11 +3355,11 @@ function calculateAndUpdate() {
   function getProfitPercent(quantity) {
     const pTiers = (currentPricing && currentPricing.profitTiers) ? currentPricing.profitTiers : DEFAULT_PRICING.profitTiers;
     if (quantity >= 3500) {
-      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 26;
+      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 25;
     } else if (quantity >= 1250) {
-      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 32;
+      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 27;
     } else if (quantity >= 450) {
-      return pTiers.tier450 !== undefined ? pTiers.tier450 : 34;
+      return pTiers.tier450 !== undefined ? pTiers.tier450 : 30;
     } else if (quantity >= 325) {
       return pTiers.tier325 !== undefined ? pTiers.tier325 : 36;
     } else if (quantity >= 100) {
@@ -3361,7 +3506,7 @@ function calculateAndUpdate() {
   toggleInvoiceRow('invRowGoldFoil', optGoldFoil && goldFoilTotalCost > 0, 'invGoldFoilCost', goldFoilTotalCost);
   if (optGoldFoil && goldFoilTotalCost > 0) {
     const colorName = selectedFoilColor === 'rainbow' ? 'RAINBOW' : 'GOLD';
-    document.getElementById('invGoldFoilCost').innerText = `${goldFoilTotalCost.toFixed(2)} SR (${colorName} - Cleche: ${clecheCost.toFixed(2)} SR + Film: ${foilTotalMatCost.toFixed(2)} SR)`;
+    document.getElementById('invGoldFoilCost').innerText = `${goldFoilTotalCost.toFixed(2)} SR (${colorName} - Cleche: ${clecheCost.toFixed(2)} SR + Film: ${foilTotalMatCost.toFixed(2)} SR + Impression: ${foilImpressionCost.toFixed(2)} SR)`;
   }
 
   // UV Cost Invoice Row
@@ -4356,11 +4501,11 @@ function calculateTshirtCupAndUpdate() {
   function getProfitPercent(quantity) {
     const pTiers = (currentPricing && currentPricing.profitTiers) ? currentPricing.profitTiers : DEFAULT_PRICING.profitTiers;
     if (quantity >= 3500) {
-      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 26;
+      return pTiers.tier3500 !== undefined ? pTiers.tier3500 : 25;
     } else if (quantity >= 1250) {
-      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 32;
+      return pTiers.tier1250 !== undefined ? pTiers.tier1250 : 27;
     } else if (quantity >= 450) {
-      return pTiers.tier450 !== undefined ? pTiers.tier450 : 34;
+      return pTiers.tier450 !== undefined ? pTiers.tier450 : 30;
     } else if (quantity >= 325) {
       return pTiers.tier325 !== undefined ? pTiers.tier325 : 36;
     } else if (quantity >= 100) {
@@ -4442,41 +4587,7 @@ function calculateTshirtCupAndUpdate() {
 
 // --- Quantity Tiered Surcharge & Volume Discount Pricing Logic ---
 function getQuantityPriceMultiplier(qty) {
-  if (typeof currentPricing !== 'undefined' && currentPricing.quantityTiers && currentPricing.quantityTiers.length > 0) {
-    for (let i = 0; i < currentPricing.quantityTiers.length; i++) {
-      const tier = currentPricing.quantityTiers[i];
-      const maxVal = (tier.max === Infinity || tier.max === null || tier.max === undefined || tier.max === '') ? Infinity : tier.max;
-      if (qty >= tier.min && qty <= maxVal) {
-        return tier.multiplier;
-      }
-    }
-  }
-
-  if (qty >= 1 && qty <= 3) {
-    return 2.5; // 1 to 3 Pcs: 2.5x multiplier (+150% markup based on 100 Pcs unit cost)
-  } else if (qty >= 4 && qty <= 10) {
-    return 2.0; // 4 to 10 Pcs: 2.0x multiplier (+100% markup)
-  } else if (qty >= 11 && qty <= 25) {
-    return 1.8; // 11 to 25 Pcs: 1.8x multiplier (+80% markup)
-  } else if (qty >= 26 && qty <= 50) {
-    return 1.5; // 26 to 50 Pcs: 1.5x multiplier (+50% markup)
-  } else if (qty >= 51 && qty <= 75) {
-    return 1.3; // 51 to 75 Pcs: 1.3x multiplier (+30% markup)
-  } else if (qty >= 76 && qty <= 99) {
-    return 1.1; // 76 to 99 Pcs: 1.1x multiplier (+10% markup)
-  } else if (qty >= 100 && qty <= 249) {
-    return 1.0; // 100 to 249 Pcs: Standard 100 Pcs Base Rate (1.0x)
-  } else if (qty >= 250 && qty <= 500) {
-    return 0.95; // 250 to 500 Pcs: Minus 0.05 (0.95x / -5% discount)
-  } else if (qty >= 501 && qty <= 1000) {
-    return 0.90; // 501 to 1000 Pcs: Minus 0.10 (0.90x / -10% discount)
-  } else if (qty >= 1001 && qty <= 5000) {
-    return 0.85; // 1001 to 5000 Pcs: Minus 0.15 (0.85x / -15% discount)
-  } else if (qty >= 5001) {
-    return 0.80; // 5001+ Pcs: Minus 0.20 (0.80x / -20% discount)
-  } else {
-    return 1.0;
-  }
+  return 1.0;
 }
 
 

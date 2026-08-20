@@ -149,11 +149,11 @@
                   <input type="checkbox" id="extraDieCylinder">
                   <div class="extra-info">
                     <span class="extra-title">Cylinder Cut / قص قالب سلندر</span>
-                    <span class="extra-desc" id="dieCylinderPriceText">0.30 SR / sheet</span>
+                    <span class="extra-desc" id="dieCylinderPriceText">0.35 SR / sheet</span>
                   </div>
                 </label>
                 <div class="extra-rate-input-wrapper">
-                  <input type="number" id="dieCylinderRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.30">
+                  <input type="number" id="dieCylinderRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.35">
                   <span class="rate-unit">SR</span>
                 </div>
               </div>
@@ -164,11 +164,11 @@
                   <input type="checkbox" id="extraDieManual">
                   <div class="extra-info">
                     <span class="extra-title">Manual Cut / قص قالب يدوي</span>
-                    <span class="extra-desc" id="dieManualPriceText">0.35 SR / sheet</span>
+                    <span class="extra-desc" id="dieManualPriceText">0.40 SR / sheet</span>
                   </div>
                 </label>
                 <div class="extra-rate-input-wrapper">
-                  <input type="number" id="dieManualRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.35">
+                  <input type="number" id="dieManualRateInput" min="0" step="0.05" class="form-input rate-adj-input" placeholder="0.40">
                   <span class="rate-unit">SR</span>
                 </div>
               </div>
@@ -648,13 +648,13 @@
                   <input type="checkbox" id="extraGoldFoil">
                   <div class="extra-info">
                     <span class="extra-title" style="color: #f59e0b; font-weight: 700;">★ GOLD FOIL / البصمة الحرارية</span>
-                    <span class="extra-desc" id="goldFoilSummaryText">Hot Foil Stamping Cleche & Film Material Cost</span>
+                    <span class="extra-desc" id="goldFoilSummaryText">Hot Foil Stamping Cleche, Film & Impression Cost</span>
                   </div>
                 </label>
               </div>
               <div id="goldFoilDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
                 <div style="font-weight: 700; font-size: 0.9rem; color: var(--primary-gold-light); margin-bottom: 8px;">
-                  FOIL CLECHE SIZE / مقاس وتكلفة كليشة البصمة
+                  FOIL CLECHE SIZE & IMPRESSION COST / مقاس كليشة وتكلفة تكبيس البصمة
                 </div>
                 <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 10px;">
                   <div class="form-group min-w-120" style="flex: 1;">
@@ -664,6 +664,13 @@
                   <div class="form-group min-w-120" style="flex: 1;">
                     <label for="foilHeight">Height (H) / الارتفاع (سم)</label>
                     <input type="number" id="foilHeight" value="10" min="0.1" step="0.1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-150" style="flex: 1.2;">
+                    <label for="foilImpressionRateInput">Impression Cost / تكلفة التكبيس (لكل فرخ)</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="foilImpressionRateInput" value="0.25" min="0" step="0.05" class="form-input">
+                      <span class="unit">SR/sheet</span>
+                    </div>
                   </div>
                   <div class="form-group min-w-150" style="flex: 1.5;">
                     <label>Cleche Size & Cost / المساحة والتكلفة (0.81 SR/cm²)</label>
@@ -1028,21 +1035,30 @@
     <div class="settings-drawer" id="settingsDrawer">
       <div class="drawer-content">
         <div class="drawer-header">
-          <h2>Pricing Configuration Manager</h2>
+          <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <h2>Pricing Configuration Manager</h2>
+            <span id="autoSaveBadge" class="auto-save-badge hidden">✓ Saved</span>
+          </div>
           <button class="close-btn" id="closeSettingsBtn">&times;</button>
         </div>
         
         <div class="drawer-body">
-          <p class="settings-note">Modify the default rates. Changes persist in local browser storage and take effect instantly.</p>
+          <p class="settings-note">Modify default rates below. Changes persist in local browser storage and take effect instantly.</p>
           
-          <div class="settings-tabs">
-            <button class="setting-tab-btn active" data-target="setTabPaper">Paper Rates</button>
-            <button class="setting-tab-btn" data-target="setTabSticker">Sticker Rates</button>
-            <button class="setting-tab-btn" data-target="setTabDiscounts">Discounts</button>
-            <button class="setting-tab-btn" data-target="setTabFinishing">Finishing & Extras</button>
-            <button class="setting-tab-btn" data-target="setTabTshirt">T-Shirt & Cup Rates</button>
-            <button class="setting-tab-btn" data-target="setTabTheme">Theme & Appearance</button>
-            <button class="setting-tab-btn" data-target="setTabSecurity">Security Settings</button>
+          <div class="settings-top-sticky">
+            <div class="settings-search-wrapper">
+              <input type="text" id="settingsSearchInput" class="form-input settings-search-input" placeholder="🔍 Search any price rate (e.g. Lamination, UV, A3, 350 GSM, Plotter, Foil)...">
+            </div>
+
+            <div class="settings-tabs">
+              <button class="setting-tab-btn active" data-target="setTabPaper">Paper Rates</button>
+              <button class="setting-tab-btn" data-target="setTabSticker">Sticker Rates</button>
+              <button class="setting-tab-btn" data-target="setTabDiscounts">Discounts</button>
+              <button class="setting-tab-btn" data-target="setTabFinishing">Finishing & Extras</button>
+              <button class="setting-tab-btn" data-target="setTabTshirt">T-Shirt & Cup Rates</button>
+              <button class="setting-tab-btn" data-target="setTabTheme">Theme & Appearance</button>
+              <button class="setting-tab-btn" data-target="setTabSecurity">Security Settings</button>
+            </div>
           </div>
 
           <!-- Settings Tab: Paper GSM Rates -->
@@ -1099,24 +1115,7 @@
 
           <!-- Settings Tab: Discounts & Quantity Tiers -->
           <div class="setting-section hidden" id="setTabDiscounts">
-            <h3>Quantity-Based Price Multipliers & Volume Discounts / مضاعفات وخصومات الكميات</h3>
-            <p class="sub-label">Configure cost multipliers for low quantities (markup) and volume discounts for high quantities relative to 100 Pcs base rate.</p>
-            <div class="table-responsive" style="margin-bottom: 24px;">
-              <table class="settings-edit-table">
-                <thead>
-                  <tr>
-                    <th>Min Qty</th>
-                    <th>Max Qty</th>
-                    <th>Price Multiplier (1.0 = Base Rate)</th>
-                  </tr>
-                </thead>
-                <tbody id="settingsQtyTierBody">
-                  <!-- Dynamically populated edit fields -->
-                </tbody>
-              </table>
-            </div>
-
-            <h3 style="margin-top: 16px;">Sheet-Based Discount Tiers / خصومات الفروع</h3>
+            <h3>Sheet-Based Discount Tiers / خصومات الفروع</h3>
             <p class="sub-label">Define the discount percentage given based on total printed sheets. Set discount to 0% to disable for a tier.</p>
             <div class="table-responsive" style="margin-bottom: 24px;">
               <table class="settings-edit-table">
@@ -1227,6 +1226,10 @@
               <div class="form-group min-w-150">
                 <label for="rateFoilRainbow">Rainbow Foil Rate (per SQCM)</label>
                 <input type="number" id="rateFoilRainbow" step="0.0001" class="form-input" value="0.0038">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateFoilImpression">Foil Impression Rate (per sheet)</label>
+                <input type="number" id="rateFoilImpression" step="0.01" class="form-input" value="0.25">
               </div>
             </div>
           </div>

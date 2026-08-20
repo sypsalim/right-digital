@@ -1122,6 +1122,60 @@ input:checked + .slider:before {
   color: var(--text-main);
 }
 
+.auto-save-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 4px 10px;
+  border-radius: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.settings-top-sticky {
+  position: sticky;
+  top: -24px;
+  z-index: 30;
+  background: #0c153b !important;
+  padding: 12px 16px 8px 16px;
+  margin-top: -24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  border-bottom: 3px solid #ffc800 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.settings-search-wrapper {
+  margin-bottom: 10px;
+}
+
+.settings-search-input {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 0.88rem;
+  background: #ffffff !important;
+  border: 2px solid #ffc800 !important;
+  border-radius: var(--border-radius-sm);
+  color: #0c153b !important;
+  font-weight: 700 !important;
+  transition: var(--transition-smooth);
+}
+
+.settings-search-input::placeholder {
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.settings-search-input:focus {
+  border-color: #ffc800 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 200, 0, 0.4) !important;
+}
+
 .drawer-body {
   flex: 1;
   overflow-y: auto;
@@ -1189,12 +1243,20 @@ input:checked + .slider:before {
   border-color: var(--primary-gold);
 }
 
+.table-input.field-modified,
+.form-input.field-modified {
+  border-color: #ffc800 !important;
+  background: rgba(255, 200, 0, 0.15) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
 /* Drawer Tabs */
 .settings-tabs {
   display: flex;
   gap: 8px;
   overflow-x: auto;
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
   padding-bottom: 8px;
   scrollbar-width: thin;
 }
@@ -1202,24 +1264,29 @@ input:checked + .slider:before {
 .setting-tab-btn {
   background: transparent;
   border: none;
-  color: var(--text-muted);
-  padding: 8px 16px;
+  color: #ffffff !important;
+  padding: 10px 18px;
   font-family: var(--font-family);
-  font-weight: 600;
-  font-size: 0.85rem;
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
   cursor: pointer;
   white-space: nowrap;
-  border-bottom: 2px solid transparent;
+  border-bottom: 3px solid transparent;
   transition: var(--transition-smooth);
+  opacity: 0.9;
 }
 
 .setting-tab-btn:hover {
-  color: var(--text-main);
+  color: #ffea79 !important;
+  opacity: 1;
 }
 
 .setting-tab-btn.active {
-  color: var(--primary-gold);
-  border-bottom-color: var(--primary-gold);
+  color: #ffc800 !important;
+  border-bottom-color: #ffc800 !important;
+  font-weight: 800 !important;
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 200, 0, 0.5);
 }
 
 .setting-section {
@@ -2032,6 +2099,44 @@ body[data-theme="light"],
 [data-theme="light"] .card-header h3 {
   color: #1A1510 !important;
   border-left-color: #5c4527 !important;
+}
+
+/* Settings Drawer Light Mode Overrides */
+[data-theme="light"] .drawer-header {
+  background: #0c153b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="light"] .drawer-header h2 {
+  color: #ffc800 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .drawer-header .close-btn {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .setting-section h3 {
+  color: #1A1510 !important;
+  border-left-color: #ffc800 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .finish-group-title {
+  color: #78350f !important;
+  font-weight: 800 !important;
+  border-bottom-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] .settings-edit-table th {
+  color: #1A1510 !important;
+  font-weight: 800 !important;
+  border-bottom-color: rgba(26, 21, 16, 0.25) !important;
+}
+
+[data-theme="light"] .settings-edit-table td {
+  color: #1A1510 !important;
+  font-weight: 600 !important;
 }
 
 [data-theme="light"] .form-group label,
