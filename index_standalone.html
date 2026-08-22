@@ -2291,7 +2291,11 @@ body[data-theme="light"],
 [data-theme="light"] .size-btn.active .size-name,
 [data-theme="light"] .gsm-btn.active .gsm-val,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-title,
-[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc {
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .form-group label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) div:not(#plasticCalcNotice):not(#goldFoilCalcNotice):not(#uvCostCalcNotice):not(#colorChargeNotice):not(#dieBoardNotice):not(#offsetPrintNotice),
+[data-theme="light"] .extra-checkbox-card:has(input:checked) span:not(.unit):not(.rate-unit) {
   color: #ffffff !important;
   font-weight: 700 !important;
 }
@@ -3013,20 +3017,33 @@ body[data-theme="light"],
                 <span class="rate-unit">SR</span>
               </div>
             </div>
-            <label class="extra-checkbox-card">
-              <input type="checkbox" id="extraFolding">
-              <div class="extra-info">
-                <span class="extra-title">Folding / طوي</span>
-                <span class="extra-desc">0.30 SR / piece</span>
+            <div class="extra-checkbox-card custom-extra-card" id="foldingCardEl">
+              <label class="extra-checkbox-label" for="extraFolding">
+                <input type="checkbox" id="extraFolding">
+                <div class="extra-info">
+                  <span class="extra-title">Folding / طوي</span>
+                  <span class="extra-desc" id="foldingPriceText">0.30 SR / piece</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="foldingRateInput" min="0" step="0.05" class="form-input rate-adj-input" value="0.30" placeholder="0.30">
+                <span class="rate-unit">SR</span>
               </div>
-            </label>
-            <label class="extra-checkbox-card">
-              <input type="checkbox" id="extraPasting">
-              <div class="extra-info">
-                <span class="extra-title">Pasting / غراء أو لصق</span>
-                <span class="extra-desc">0.25 SR / piece</span>
+            </div>
+
+            <div class="extra-checkbox-card custom-extra-card" id="pastingCardEl">
+              <label class="extra-checkbox-label" for="extraPasting">
+                <input type="checkbox" id="extraPasting">
+                <div class="extra-info">
+                  <span class="extra-title">Pasting / غراء أو لصق</span>
+                  <span class="extra-desc" id="pastingPriceText">0.25 SR / piece</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="pastingRateInput" min="0" step="0.05" class="form-input rate-adj-input" value="0.25" placeholder="0.25">
+                <span class="rate-unit">SR</span>
               </div>
-            </label>
+            </div>
             <label class="extra-checkbox-card">
               <input type="checkbox" id="extraHandleRope">
               <div class="extra-info">
@@ -3072,21 +3089,62 @@ body[data-theme="light"],
                     </select>
                   </div>
                   <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="plasticQtyInput" style="color: var(--primary-gold-light); font-weight: 700;">Product Qty / كمية الشبابيك</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="plasticQtyInput" min="1" step="1" class="form-input" placeholder="Auto">
+                      <span class="unit">pcs</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-row" style="gap: 12px; margin-bottom: 10px;">
+                  <div class="form-group" style="flex: 1; min-width: 100px;">
                     <label for="plasticLength">Length (L) / الطول (سم)</label>
                     <input type="number" id="plasticLength" value="15" min="1" step="0.1" class="form-input">
                   </div>
-                  <div class="form-group min-w-120" style="flex: 1;">
+                  <div class="form-group" style="flex: 1; min-width: 100px;">
                     <label for="plasticWidth">Width (W) / العرض (سم)</label>
                     <input type="number" id="plasticWidth" value="10" min="1" step="0.1" class="form-input">
                   </div>
+                </div>
+
+                <!-- Plastic Cutting Method Selection -->
+                <div style="font-weight: 700; font-size: 0.88rem; color: var(--primary-gold-light); margin-bottom: 6px; margin-top: 4px;">
+                  PLASTIC CUTTING METHOD / طريقة قص البلاستيك
+                </div>
+                <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 8px;">
                   <div class="form-group min-w-150" style="flex: 1.2;">
-                    <label for="plasticDiecutRate">Diecut Rate / قص قالب (لكل 1,000 قطعة)</label>
+                    <label for="plasticCutType">Cutting Method / نوع القص</label>
+                    <select id="plasticCutType" class="form-select">
+                      <option value="die" selected>1. Die Cut / قص قالب (150 SR Setup + 250 SR/1000)</option>
+                      <option value="polar">2. Polar Cut / قص بولار (0.25 SR/cut per 25 sheets)</option>
+                    </select>
+                  </div>
+                  <!-- Die Cut inputs -->
+                  <div class="form-group min-w-140" id="plasticDieSetupGroup" style="flex: 1;">
+                    <label for="plasticDieSetupRate">Setup Fee / رسوم التجهيز</label>
                     <div class="input-with-unit">
-                      <input type="number" id="plasticDiecutRate" value="450.00" min="0" step="10" class="form-input">
+                      <input type="number" id="plasticDieSetupRate" value="150.00" min="0" step="10" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                  <div class="form-group min-w-140" id="plasticDieRunGroup" style="flex: 1;">
+                    <label for="plasticDiecutRate">Run Rate / قص قالب (لكل 1,000 قطعة)</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="plasticDiecutRate" value="250.00" min="0" step="10" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                  <!-- Polar Cut inputs -->
+                  <div class="form-group min-w-140 hidden" id="plasticPolarGroup" style="flex: 1;">
+                    <label for="plasticPolarCutRate">Cost per Cut / تكلفة القصّة (لكل 25 فرخ)</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="plasticPolarCutRate" value="0.25" min="0" step="0.05" class="form-input">
                       <span class="unit">SR</span>
                     </div>
                   </div>
                 </div>
+
                 <div id="plasticCalcNotice" style="margin-top: 8px; background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-green); padding: 8px 12px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light);">
                   <!-- Dynamic plastic yield and cost notice -->
                 </div>
@@ -5273,13 +5331,13 @@ function initUI() {
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'bagFlap', 'bagBottomFlap', 'designSpace', 'stickerType', 'stickerColors',
     'offsetCost100_70', 'offsetCost90_64', 'offsetCost50_70',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
-    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
+    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'foldingRateInput', 'extraPasting', 'pastingRateInput', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraBagRibbonOnly', 'extraBagRibbonPrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
     'extraOffsetPrint', 'offsetSetupRateInput', 'offsetBacksidePrint',
-    'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
+    'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate', 'plasticCutType', 'plasticDieSetupRate', 'plasticPolarCutRate', 'plasticQtyInput',
     'extraGoldFoil', 'foilLength', 'foilHeight', 'foilImpressionRateInput',
     'extraUvCost',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
@@ -6979,8 +7037,25 @@ function calculateAndUpdate() {
   const plotterCost = optPlotter && plotterRate > 0 ? sheetsNeeded * plotterRate : 0;
 
   // Folding & Pasting apply per piece
-  const foldingCost = optFolding ? qty * currentPricing.fixedRates.folding : 0;
-  const pastingCost = optPasting ? qty * currentPricing.fixedRates.pasting : 0;
+  const foldingRateInput = document.getElementById('foldingRateInput');
+  const defaultFoldingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.folding !== undefined) ? currentPricing.fixedRates.folding : 0.30;
+  const foldingRate = foldingRateInput && parseFloat(foldingRateInput.value) >= 0 ? parseFloat(foldingRateInput.value) : defaultFoldingRate;
+  const foldingCost = optFolding ? qty * foldingRate : 0;
+
+  const pastingRateInput = document.getElementById('pastingRateInput');
+  const defaultPastingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.pasting !== undefined) ? currentPricing.fixedRates.pasting : 0.25;
+  const pastingRate = pastingRateInput && parseFloat(pastingRateInput.value) >= 0 ? parseFloat(pastingRateInput.value) : defaultPastingRate;
+  const pastingCost = optPasting ? qty * pastingRate : 0;
+
+  // Update dynamic price text in UI cards
+  const foldingPriceText = document.getElementById('foldingPriceText');
+  if (foldingPriceText) {
+    foldingPriceText.innerText = `${foldingRate.toFixed(2)} SR / piece`;
+  }
+  const pastingPriceText = document.getElementById('pastingPriceText');
+  if (pastingPriceText) {
+    pastingPriceText.innerText = `${pastingRate.toFixed(2)} SR / piece`;
+  }
 
   // Handle Rope applies per piece (bag)
   const ropeCost = optHandleRope ? qty * currentPricing.fixedRates.rope : 0;
@@ -7163,6 +7238,7 @@ function calculateAndUpdate() {
   let plasticUps = 0;
   let plasticSheets = 0;
   let micronRate = 1.38;
+  let diecutSummaryDetail = '';
 
   if (optPlastic) {
     const p_l = parseFloat(document.getElementById('plasticLength').value) || 1;
@@ -7173,7 +7249,25 @@ function calculateAndUpdate() {
       micronRate = parseFloat(micronSelect.selectedOptions[0].getAttribute('data-rate')) || 1.38;
     }
 
-    const diecutRatePerThousand = parseFloat(document.getElementById('plasticDiecutRate').value) || 450.00;
+    // Toggle Die Cut vs Polar Cut UI input groups
+    const plasticCutType = document.getElementById('plasticCutType')?.value || 'die';
+    const dieSetupGroup = document.getElementById('plasticDieSetupGroup');
+    const dieRunGroup = document.getElementById('plasticDieRunGroup');
+    const polarGroup = document.getElementById('plasticPolarGroup');
+
+    if (plasticCutType === 'polar') {
+      if (dieSetupGroup) dieSetupGroup.classList.add('hidden');
+      if (dieRunGroup) dieRunGroup.classList.add('hidden');
+      if (polarGroup) polarGroup.classList.remove('hidden');
+    } else {
+      if (dieSetupGroup) dieSetupGroup.classList.remove('hidden');
+      if (dieRunGroup) dieRunGroup.classList.remove('hidden');
+      if (polarGroup) polarGroup.classList.add('hidden');
+    }
+
+    // Determine plastic window quantity (defaults to main item quantity if empty)
+    const userPlasticQty = parseFloat(document.getElementById('plasticQtyInput')?.value);
+    const plasticQty = (!isNaN(userPlasticQty) && userPlasticQty > 0) ? userPlasticQty : qty;
 
     // Calculate Plastic UPS on 100x70 cm Sheet (testing horizontal vs vertical rotation)
     const cols_A = Math.floor(100 / p_l);
@@ -7186,23 +7280,50 @@ function calculateAndUpdate() {
 
     plasticUps = Math.max(ups_A, ups_B, 1);
     const plasticBestDir = ups_A >= ups_B ? 'Horizontal (100x70)' : 'Vertical Rotated (100x70)';
+    const activeCols = ups_A >= ups_B ? cols_A : cols_B;
+    const activeRows = ups_A >= ups_B ? rows_A : rows_B;
 
-    plasticSheets = Math.ceil(qty / plasticUps);
+    plasticSheets = Math.ceil(plasticQty / plasticUps);
     plasticMatCost = plasticSheets * micronRate;
-    plasticDiecutCost = (qty / 1000) * diecutRatePerThousand;
+
+    let diecutDetailNotice = '';
+
+    if (plasticCutType === 'polar') {
+      // Polar Cut: per 25-sheet batches based on total (Vertical Cuts + Horizontal Cuts)
+      const vertCuts = Math.max(1, activeCols);
+      const horizCuts = Math.max(1, activeRows);
+      const totalCutsPerPack = vertCuts + horizCuts;
+      const packs25 = Math.ceil(plasticSheets / 25);
+      const polarCutRate = parseFloat(document.getElementById('plasticPolarCutRate')?.value) || 0.25;
+
+      plasticDiecutCost = packs25 * totalCutsPerPack * polarCutRate;
+      diecutDetailNotice = `<strong>Polar Cut Cost (${polarCutRate.toFixed(2)} SR/cut):</strong> ${packs25} packs (25 sheets/pack) × ${totalCutsPerPack} cuts (${vertCuts} Vert + ${horizCuts} Horiz) = <strong>${plasticDiecutCost.toFixed(2)} SR</strong>`;
+      diecutSummaryDetail = `Polar Cut ${plasticDiecutCost.toFixed(2)} SR (${packs25} packs × ${totalCutsPerPack} cuts)`;
+    } else {
+      // Die Cut: 150.00 SR Setup + 250.00 SR per 1000 Pcs
+      const plasticSetupCost = parseFloat(document.getElementById('plasticDieSetupRate')?.value) || 150.00;
+      const diecutRatePerThousand = parseFloat(document.getElementById('plasticDiecutRate')?.value) || 250.00;
+      const diecutRunCost = (plasticQty / 1000) * diecutRatePerThousand;
+
+      plasticDiecutCost = plasticSetupCost + diecutRunCost;
+      diecutDetailNotice = `<strong>Die Cut Cost:</strong> Setup (${plasticSetupCost.toFixed(2)} SR) + Run (${plasticQty} pcs / 1000 @ ${diecutRatePerThousand.toFixed(2)} SR = ${diecutRunCost.toFixed(2)} SR) = <strong>${plasticDiecutCost.toFixed(2)} SR</strong>`;
+      diecutSummaryDetail = `Die Cut ${plasticDiecutCost.toFixed(2)} SR (Setup ${plasticSetupCost.toFixed(2)} SR + Run ${diecutRunCost.toFixed(2)} SR)`;
+    }
+
     plasticTotalCost = plasticMatCost + plasticDiecutCost;
 
     const calcNotice = document.getElementById('plasticCalcNotice');
     if (calcNotice) {
       calcNotice.innerHTML = `
         <strong>Plastic Sheet Yield (100x70 cm):</strong> <span style="color: var(--accent-green); font-weight: 700;">${plasticUps} UPS</span> (${plasticBestDir})<br>
-        <strong>Sheets Needed:</strong> ${plasticSheets} sheets | <strong>Material (${micronRate.toFixed(2)} SR):</strong> ${plasticMatCost.toFixed(2)} SR | <strong>Diecut (${diecutRatePerThousand.toFixed(2)} SR/1000):</strong> ${plasticDiecutCost.toFixed(2)} SR
+        <strong>Window Qty:</strong> ${plasticQty} pcs | <strong>Sheets Needed:</strong> ${plasticSheets} sheets | <strong>Material (${micronRate.toFixed(2)} SR):</strong> ${plasticMatCost.toFixed(2)} SR<br>
+        ${diecutDetailNotice}
       `;
     }
 
     const plasticSummaryText = document.getElementById('plasticSummaryText');
     if (plasticSummaryText) {
-      plasticSummaryText.innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR)`;
+      plasticSummaryText.innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticQty} pcs - ${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + ${diecutSummaryDetail})`;
     }
   }
 
@@ -7515,7 +7636,13 @@ function calculateAndUpdate() {
   }
   toggleInvoiceRow('invRowPlotter', optPlotter && plotterRate > 0, 'invPlotterCost', plotterCost);
   toggleInvoiceRow('invRowFolding', optFolding, 'invFoldingCost', foldingCost);
+  if (optFolding) {
+    document.getElementById('invFoldingCost').innerText = `${foldingCost.toFixed(2)} SR (${qty} pcs @ ${foldingRate.toFixed(2)} SR)`;
+  }
   toggleInvoiceRow('invRowPasting', optPasting, 'invPastingCost', pastingCost);
+  if (optPasting) {
+    document.getElementById('invPastingCost').innerText = `${pastingCost.toFixed(2)} SR (${qty} pcs @ ${pastingRate.toFixed(2)} SR)`;
+  }
   toggleInvoiceRow('invRowRope', optHandleRope, 'invRopeCost', ropeCost);
   toggleInvoiceRow('invRowBagRibbonOnly', optBagRibbonOnly, 'invBagRibbonOnlyCost', ribbonOnlyCost);
   if (optBagRibbonOnly) {
@@ -7531,7 +7658,7 @@ function calculateAndUpdate() {
   // Plastic Window Invoice Row
   toggleInvoiceRow('invRowPlastic', optPlastic, 'invPlasticCost', plasticTotalCost);
   if (optPlastic) {
-    document.getElementById('invPlasticCost').innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR [${plasticUps} UPS])`;
+    document.getElementById('invPlasticCost').innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + ${diecutSummaryDetail} [${plasticUps} UPS])`;
   }
 
   // Gold Foil Invoice Row

@@ -2279,7 +2279,11 @@ body[data-theme="light"],
 [data-theme="light"] .size-btn.active .size-name,
 [data-theme="light"] .gsm-btn.active .gsm-val,
 [data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-title,
-[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc {
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .form-group label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) div:not(#plasticCalcNotice):not(#goldFoilCalcNotice):not(#uvCostCalcNotice):not(#colorChargeNotice):not(#dieBoardNotice):not(#offsetPrintNotice),
+[data-theme="light"] .extra-checkbox-card:has(input:checked) span:not(.unit):not(.rate-unit) {
   color: #ffffff !important;
   font-weight: 700 !important;
 }

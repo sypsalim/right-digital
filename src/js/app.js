@@ -1241,13 +1241,13 @@ function initUI() {
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'bagFlap', 'bagBottomFlap', 'designSpace', 'stickerType', 'stickerColors',
     'offsetCost100_70', 'offsetCost90_64', 'offsetCost50_70',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
-    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'extraPasting', 'extraHandleRope', 'extraPacking', 'backSidePrint',
+    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'foldingRateInput', 'extraPasting', 'pastingRateInput', 'extraHandleRope', 'extraPacking', 'backSidePrint',
     'extraBagRibbonOnly', 'extraBagRibbonPrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
     'extraDieBoard', 'dieBoardPartsInput', 'dieBoardRateInput',
     'extraOffsetPrint', 'offsetSetupRateInput', 'offsetBacksidePrint',
-    'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate',
+    'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate', 'plasticCutType', 'plasticDieSetupRate', 'plasticPolarCutRate', 'plasticQtyInput',
     'extraGoldFoil', 'foilLength', 'foilHeight', 'foilImpressionRateInput',
     'extraUvCost',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
@@ -2947,8 +2947,25 @@ function calculateAndUpdate() {
   const plotterCost = optPlotter && plotterRate > 0 ? sheetsNeeded * plotterRate : 0;
 
   // Folding & Pasting apply per piece
-  const foldingCost = optFolding ? qty * currentPricing.fixedRates.folding : 0;
-  const pastingCost = optPasting ? qty * currentPricing.fixedRates.pasting : 0;
+  const foldingRateInput = document.getElementById('foldingRateInput');
+  const defaultFoldingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.folding !== undefined) ? currentPricing.fixedRates.folding : 0.30;
+  const foldingRate = foldingRateInput && parseFloat(foldingRateInput.value) >= 0 ? parseFloat(foldingRateInput.value) : defaultFoldingRate;
+  const foldingCost = optFolding ? qty * foldingRate : 0;
+
+  const pastingRateInput = document.getElementById('pastingRateInput');
+  const defaultPastingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.pasting !== undefined) ? currentPricing.fixedRates.pasting : 0.25;
+  const pastingRate = pastingRateInput && parseFloat(pastingRateInput.value) >= 0 ? parseFloat(pastingRateInput.value) : defaultPastingRate;
+  const pastingCost = optPasting ? qty * pastingRate : 0;
+
+  // Update dynamic price text in UI cards
+  const foldingPriceText = document.getElementById('foldingPriceText');
+  if (foldingPriceText) {
+    foldingPriceText.innerText = `${foldingRate.toFixed(2)} SR / piece`;
+  }
+  const pastingPriceText = document.getElementById('pastingPriceText');
+  if (pastingPriceText) {
+    pastingPriceText.innerText = `${pastingRate.toFixed(2)} SR / piece`;
+  }
 
   // Handle Rope applies per piece (bag)
   const ropeCost = optHandleRope ? qty * currentPricing.fixedRates.rope : 0;
@@ -3131,6 +3148,7 @@ function calculateAndUpdate() {
   let plasticUps = 0;
   let plasticSheets = 0;
   let micronRate = 1.38;
+  let diecutSummaryDetail = '';
 
   if (optPlastic) {
     const p_l = parseFloat(document.getElementById('plasticLength').value) || 1;
@@ -3141,7 +3159,25 @@ function calculateAndUpdate() {
       micronRate = parseFloat(micronSelect.selectedOptions[0].getAttribute('data-rate')) || 1.38;
     }
 
-    const diecutRatePerThousand = parseFloat(document.getElementById('plasticDiecutRate').value) || 450.00;
+    // Toggle Die Cut vs Polar Cut UI input groups
+    const plasticCutType = document.getElementById('plasticCutType')?.value || 'die';
+    const dieSetupGroup = document.getElementById('plasticDieSetupGroup');
+    const dieRunGroup = document.getElementById('plasticDieRunGroup');
+    const polarGroup = document.getElementById('plasticPolarGroup');
+
+    if (plasticCutType === 'polar') {
+      if (dieSetupGroup) dieSetupGroup.classList.add('hidden');
+      if (dieRunGroup) dieRunGroup.classList.add('hidden');
+      if (polarGroup) polarGroup.classList.remove('hidden');
+    } else {
+      if (dieSetupGroup) dieSetupGroup.classList.remove('hidden');
+      if (dieRunGroup) dieRunGroup.classList.remove('hidden');
+      if (polarGroup) polarGroup.classList.add('hidden');
+    }
+
+    // Determine plastic window quantity (defaults to main item quantity if empty)
+    const userPlasticQty = parseFloat(document.getElementById('plasticQtyInput')?.value);
+    const plasticQty = (!isNaN(userPlasticQty) && userPlasticQty > 0) ? userPlasticQty : qty;
 
     // Calculate Plastic UPS on 100x70 cm Sheet (testing horizontal vs vertical rotation)
     const cols_A = Math.floor(100 / p_l);
@@ -3154,23 +3190,50 @@ function calculateAndUpdate() {
 
     plasticUps = Math.max(ups_A, ups_B, 1);
     const plasticBestDir = ups_A >= ups_B ? 'Horizontal (100x70)' : 'Vertical Rotated (100x70)';
+    const activeCols = ups_A >= ups_B ? cols_A : cols_B;
+    const activeRows = ups_A >= ups_B ? rows_A : rows_B;
 
-    plasticSheets = Math.ceil(qty / plasticUps);
+    plasticSheets = Math.ceil(plasticQty / plasticUps);
     plasticMatCost = plasticSheets * micronRate;
-    plasticDiecutCost = (qty / 1000) * diecutRatePerThousand;
+
+    let diecutDetailNotice = '';
+
+    if (plasticCutType === 'polar') {
+      // Polar Cut: per 25-sheet batches based on total (Vertical Cuts + Horizontal Cuts)
+      const vertCuts = Math.max(1, activeCols);
+      const horizCuts = Math.max(1, activeRows);
+      const totalCutsPerPack = vertCuts + horizCuts;
+      const packs25 = Math.ceil(plasticSheets / 25);
+      const polarCutRate = parseFloat(document.getElementById('plasticPolarCutRate')?.value) || 0.25;
+
+      plasticDiecutCost = packs25 * totalCutsPerPack * polarCutRate;
+      diecutDetailNotice = `<strong>Polar Cut Cost (${polarCutRate.toFixed(2)} SR/cut):</strong> ${packs25} packs (25 sheets/pack) × ${totalCutsPerPack} cuts (${vertCuts} Vert + ${horizCuts} Horiz) = <strong>${plasticDiecutCost.toFixed(2)} SR</strong>`;
+      diecutSummaryDetail = `Polar Cut ${plasticDiecutCost.toFixed(2)} SR (${packs25} packs × ${totalCutsPerPack} cuts)`;
+    } else {
+      // Die Cut: 150.00 SR Setup + 250.00 SR per 1000 Pcs
+      const plasticSetupCost = parseFloat(document.getElementById('plasticDieSetupRate')?.value) || 150.00;
+      const diecutRatePerThousand = parseFloat(document.getElementById('plasticDiecutRate')?.value) || 250.00;
+      const diecutRunCost = (plasticQty / 1000) * diecutRatePerThousand;
+
+      plasticDiecutCost = plasticSetupCost + diecutRunCost;
+      diecutDetailNotice = `<strong>Die Cut Cost:</strong> Setup (${plasticSetupCost.toFixed(2)} SR) + Run (${plasticQty} pcs / 1000 @ ${diecutRatePerThousand.toFixed(2)} SR = ${diecutRunCost.toFixed(2)} SR) = <strong>${plasticDiecutCost.toFixed(2)} SR</strong>`;
+      diecutSummaryDetail = `Die Cut ${plasticDiecutCost.toFixed(2)} SR (Setup ${plasticSetupCost.toFixed(2)} SR + Run ${diecutRunCost.toFixed(2)} SR)`;
+    }
+
     plasticTotalCost = plasticMatCost + plasticDiecutCost;
 
     const calcNotice = document.getElementById('plasticCalcNotice');
     if (calcNotice) {
       calcNotice.innerHTML = `
         <strong>Plastic Sheet Yield (100x70 cm):</strong> <span style="color: var(--accent-green); font-weight: 700;">${plasticUps} UPS</span> (${plasticBestDir})<br>
-        <strong>Sheets Needed:</strong> ${plasticSheets} sheets | <strong>Material (${micronRate.toFixed(2)} SR):</strong> ${plasticMatCost.toFixed(2)} SR | <strong>Diecut (${diecutRatePerThousand.toFixed(2)} SR/1000):</strong> ${plasticDiecutCost.toFixed(2)} SR
+        <strong>Window Qty:</strong> ${plasticQty} pcs | <strong>Sheets Needed:</strong> ${plasticSheets} sheets | <strong>Material (${micronRate.toFixed(2)} SR):</strong> ${plasticMatCost.toFixed(2)} SR<br>
+        ${diecutDetailNotice}
       `;
     }
 
     const plasticSummaryText = document.getElementById('plasticSummaryText');
     if (plasticSummaryText) {
-      plasticSummaryText.innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR)`;
+      plasticSummaryText.innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticQty} pcs - ${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + ${diecutSummaryDetail})`;
     }
   }
 
@@ -3483,7 +3546,13 @@ function calculateAndUpdate() {
   }
   toggleInvoiceRow('invRowPlotter', optPlotter && plotterRate > 0, 'invPlotterCost', plotterCost);
   toggleInvoiceRow('invRowFolding', optFolding, 'invFoldingCost', foldingCost);
+  if (optFolding) {
+    document.getElementById('invFoldingCost').innerText = `${foldingCost.toFixed(2)} SR (${qty} pcs @ ${foldingRate.toFixed(2)} SR)`;
+  }
   toggleInvoiceRow('invRowPasting', optPasting, 'invPastingCost', pastingCost);
+  if (optPasting) {
+    document.getElementById('invPastingCost').innerText = `${pastingCost.toFixed(2)} SR (${qty} pcs @ ${pastingRate.toFixed(2)} SR)`;
+  }
   toggleInvoiceRow('invRowRope', optHandleRope, 'invRopeCost', ropeCost);
   toggleInvoiceRow('invRowBagRibbonOnly', optBagRibbonOnly, 'invBagRibbonOnlyCost', ribbonOnlyCost);
   if (optBagRibbonOnly) {
@@ -3499,7 +3568,7 @@ function calculateAndUpdate() {
   // Plastic Window Invoice Row
   toggleInvoiceRow('invRowPlastic', optPlastic, 'invPlasticCost', plasticTotalCost);
   if (optPlastic) {
-    document.getElementById('invPlasticCost').innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + Diecut ${plasticDiecutCost.toFixed(2)} SR [${plasticUps} UPS])`;
+    document.getElementById('invPlasticCost').innerText = `${plasticTotalCost.toFixed(2)} SR (${plasticSheets} sheets @ ${micronRate.toFixed(2)} SR + ${diecutSummaryDetail} [${plasticUps} UPS])`;
   }
 
   // Gold Foil Invoice Row
