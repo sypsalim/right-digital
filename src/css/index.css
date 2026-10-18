@@ -777,6 +777,155 @@ input:checked + .slider:before {
   background: #0c153b !important;
 }
 
+/* Total Pieces Banner */
+.total-pieces-banner {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #0c153b 0%, #172554 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.45) !important;
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.total-pieces-banner:hover {
+  border-color: var(--primary-gold) !important;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.22);
+}
+
+.total-pieces-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.total-pieces-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.total-pieces-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.total-pieces-val {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  letter-spacing: -0.3px;
+  flex-wrap: wrap;
+}
+
+.total-pieces-val .unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fbbf24 !important;
+  text-transform: uppercase;
+}
+
+.total-pieces-val .badge-extra {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.total-pieces-formula {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fbbf24 !important;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .total-pieces-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .total-pieces-formula {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+/* Quantity Mode Toggle (Sheets vs Pieces) */
+.qty-mode-toggle {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.qty-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.qty-toggle-btn:hover {
+  color: #ffffff;
+}
+
+.qty-toggle-btn.active {
+  background: linear-gradient(135deg, #d4af37, #b89324);
+  color: #000000 !important;
+  box-shadow: 0 1px 4px rgba(212, 175, 55, 0.4);
+}
+
+[data-theme="light"] .qty-mode-toggle {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] .qty-toggle-btn {
+  color: #475569;
+}
+
+[data-theme="light"] .qty-toggle-btn.active {
+  background: linear-gradient(135deg, #d4af37, #b89324);
+  color: #000000 !important;
+}
+
 /* Comparison Table */
 .table-responsive {
   width: 100%;
@@ -1078,8 +1227,8 @@ input:checked + .slider:before {
 }
 
 .drawer-content {
-  width: 100%;
-  max-width: 650px;
+  width: 90vw;
+  max-width: 1100px;
   height: 100%;
   background: #111827;
   border-left: 1px solid var(--border-light);
@@ -1217,6 +1366,7 @@ input:checked + .slider:before {
   text-transform: uppercase;
   color: var(--text-muted);
   border-bottom: 1px solid var(--border-light);
+  white-space: nowrap;
 }
 
 .settings-edit-table td {
@@ -1226,7 +1376,7 @@ input:checked + .slider:before {
 }
 
 .table-input {
-  width: 80px;
+  width: 90px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-light);
   border-radius: 4px;

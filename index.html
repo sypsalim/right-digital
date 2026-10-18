@@ -435,12 +435,19 @@
                 <span class="unit">cm</span>
               </div>
             </div>
-            <div class="form-group" style="flex: 1;">
-              <label for="itemQty">Quantity / الكمية المطلوبة</label>
-              <div class="input-with-unit">
-                <input type="number" id="itemQty" value="100" min="1" step="1" class="form-input">
-                <span class="unit">pcs</span>
+            <div class="form-group" style="flex: 1.35;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label for="itemQty" id="qtyInputLabel" style="margin-bottom: 0;">Quantity / الكمية</label>
+                <div class="qty-mode-toggle" id="qtyModeToggle">
+                  <button type="button" class="qty-toggle-btn active" data-mode="sheets" id="btnQtyModeSheets">Sheets / فروخ</button>
+                  <button type="button" class="qty-toggle-btn" data-mode="pcs" id="btnQtyModePcs">Pieces / قطع</button>
+                </div>
               </div>
+              <div class="input-with-unit">
+                <input type="number" id="itemQty" value="50" min="1" step="1" class="form-input">
+                <span class="unit" id="qtyUnitLabel">sheets</span>
+              </div>
+              <div id="qtyPiecesNotice" style="font-size: 0.74rem; color: #fbbf24; margin-top: 3px; font-weight: 600; min-height: 16px;"></div>
             </div>
           </div>
 
@@ -829,6 +836,16 @@
                 <span class="stat-val" id="valWastageArea">- <small>cm²</small></span>
                 <span class="stat-lbl">Wastage Area / مساحة الهدر</span>
               </div>
+            </div>
+
+            <!-- Total Pieces Banner -->
+            <div class="total-pieces-banner" id="totalPiecesBanner">
+              <div class="total-pieces-icon">🖨️</div>
+              <div class="total-pieces-content">
+                <span class="total-pieces-label">Total Piece in Quantity Gets / إجمالي القطع المنتجة من الفروخ</span>
+                <span class="total-pieces-val" id="valTotalPieces">-</span>
+              </div>
+              <div class="total-pieces-formula" id="valTotalPiecesFormula">—</div>
             </div>
           </div>
         </div>

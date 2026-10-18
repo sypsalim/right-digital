@@ -233,6 +233,7 @@ let selectedGsm = '350';
 let isPortraitOrientation = false;
 let userForcedOrientation = null; // 'horizontal' or 'vertical' (if null, auto-select best)
 let selectedFoilColor = 'gold'; // 'gold' or 'rainbow'
+let currentQtyMode = 'sheets'; // 'sheets' (default) or 'pcs'
 
 // OTP Verification state variables
 let pendingUserRole = null;
@@ -1264,6 +1265,43 @@ function initUI() {
       calculateAndUpdate();
     });
   });
+
+  // Quantity Mode Toggle (Sheets vs Pieces)
+  const btnQtyModeSheets = document.getElementById('btnQtyModeSheets');
+  const btnQtyModePcs = document.getElementById('btnQtyModePcs');
+  const qtyUnitLabel = document.getElementById('qtyUnitLabel');
+  const itemQtyInput = document.getElementById('itemQty');
+
+  function setQtyMode(mode) {
+    if (currentQtyMode === mode) return;
+    currentQtyMode = mode;
+    const currentUps = window.lastCalculatedUps || 1;
+    if (mode === 'sheets') {
+      if (btnQtyModeSheets) btnQtyModeSheets.classList.add('active');
+      if (btnQtyModePcs) btnQtyModePcs.classList.remove('active');
+      if (qtyUnitLabel) qtyUnitLabel.innerText = 'sheets';
+      const curPcs = parseInt(itemQtyInput ? itemQtyInput.value : 0) || 0;
+      if (curPcs > 0 && currentUps > 0 && itemQtyInput) {
+        itemQtyInput.value = Math.max(1, Math.round(curPcs / currentUps));
+      }
+    } else {
+      if (btnQtyModePcs) btnQtyModePcs.classList.add('active');
+      if (btnQtyModeSheets) btnQtyModeSheets.classList.remove('active');
+      if (qtyUnitLabel) qtyUnitLabel.innerText = 'pcs';
+      const curSheets = parseInt(itemQtyInput ? itemQtyInput.value : 0) || 0;
+      if (curSheets > 0 && currentUps > 0 && itemQtyInput) {
+        itemQtyInput.value = curSheets * currentUps;
+      }
+    }
+    calculateAndUpdate();
+  }
+
+  if (btnQtyModeSheets) {
+    btnQtyModeSheets.addEventListener('click', () => setQtyMode('sheets'));
+  }
+  if (btnQtyModePcs) {
+    btnQtyModePcs.addEventListener('click', () => setQtyMode('pcs'));
+  }
 
   inputIds.forEach(id => {
     const el = document.getElementById(id);
@@ -2618,7 +2656,8 @@ function calculateAndUpdate() {
   
   const i_w = parseFloat(document.getElementById('itemWidth').value) || 1;
   const i_h = parseFloat(document.getElementById('itemHeight').value) || 1;
-  const qty = parseInt(document.getElementById('itemQty').value) || 1;
+  const inputQty = parseInt(document.getElementById('itemQty').value) || 1;
+  let qty = inputQty;
 
   // Box Wall-Fold & Design Space Calculation:
   const boxHInput = document.getElementById('boxDepthH');
@@ -2783,11 +2822,51 @@ function calculateAndUpdate() {
   const activeDirection = userForcedOrientation || bestDirection;
   const activeLayout = layout[activeDirection];
 
-  // 2. Compute Sheets Needed
+  // 2. Compute Sheets Needed & Total Pieces
   const ups = activeLayout.ups;
-  const itemsToCalculate = (isBagsMode && isTwoPartBag) ? (qty * 2) : qty;
-  const baseSheetsNeeded = ups > 0 ? Math.ceil(itemsToCalculate / ups) : 0;
-  
+  window.lastCalculatedUps = ups;
+
+  let baseSheetsNeeded = 0;
+  let totalPieces = 0;
+  let totalBags = 0;
+
+  if (currentQtyMode === 'sheets') {
+    // User directly inputs how many sheets of this size they are printing
+    baseSheetsNeeded = inputQty > 0 ? inputQty : 1;
+    if (isBagsMode && isTwoPartBag) {
+      const totalParts = baseSheetsNeeded * ups;
+      totalBags = Math.floor(totalParts / 2);
+      totalPieces = totalBags;
+    } else {
+      totalPieces = baseSheetsNeeded * ups;
+    }
+  } else {
+    // User specifies desired finished pieces/bags
+    const itemsToCalculate = (isBagsMode && isTwoPartBag) ? (inputQty * 2) : inputQty;
+    baseSheetsNeeded = ups > 0 ? Math.ceil(itemsToCalculate / ups) : 0;
+    if (isBagsMode && isTwoPartBag) {
+      totalBags = inputQty;
+      totalPieces = inputQty;
+    } else {
+      totalPieces = baseSheetsNeeded * ups;
+    }
+  }
+
+  // Update qty to effective finished pieces count for all post-press operations
+  qty = (isBagsMode && isTwoPartBag) ? totalBags : totalPieces;
+
+  // Live notice under Quantity input in Section 3
+  const qtyPiecesNotice = document.getElementById('qtyPiecesNotice');
+  if (qtyPiecesNotice) {
+    if (currentQtyMode === 'sheets') {
+      const bagNote = (isBagsMode && isTwoPartBag) ? ` (${totalBags.toLocaleString()} bags [2 parts/bag])` : '';
+      qtyPiecesNotice.innerHTML = `Yield: <strong>${totalPieces.toLocaleString()} pcs</strong>${bagNote} <span style="font-weight:400;opacity:0.85;">(${ups} Ups × ${baseSheetsNeeded} sheets)</span>`;
+    } else {
+      const bagNote = (isBagsMode && isTwoPartBag) ? ` (${inputQty * 2} parts)` : '';
+      qtyPiecesNotice.innerHTML = `Requires: <strong>${baseSheetsNeeded} sheets</strong> <span style="font-weight:400;opacity:0.85;">(${inputQty.toLocaleString()} pcs${bagNote} ÷ ${ups} Ups)</span>`;
+    }
+  }
+
   // Rule for Offset Print & Bags: Add extra setup sheets per job
   // 100x70, 90x64, 50x70 cm => +120 extra sheets
   // 50x35 cm => +50 extra sheets
@@ -2829,6 +2908,48 @@ function calculateAndUpdate() {
   document.getElementById('valWastageArea').innerHTML = wasteArea.toFixed(1) + ' <small>cm²</small>';
   document.getElementById('layoutDirectionLabel').innerText = 
     activeDirection === 'horizontal' ? 'Horizontal Setup (Original)' : 'Vertical Setup (Rotated)';
+
+  // Total Pieces Produced Calculation & Display
+  const totalPiecesElem = document.getElementById('valTotalPieces');
+  const totalPiecesFormulaElem = document.getElementById('valTotalPiecesFormula');
+  if (totalPiecesElem && totalPiecesFormulaElem) {
+    if (ups <= 0 || baseSheetsNeeded <= 0) {
+      totalPiecesElem.innerHTML = `0 <span class="unit">pcs</span>`;
+      totalPiecesFormulaElem.innerText = `0 sheets × 0 ups = 0 pcs`;
+    } else if (isBagsMode && isTwoPartBag) {
+      const netParts = baseSheetsNeeded * ups;
+      const netBags = totalBags;
+      const grossParts = sheetsNeeded * ups;
+      const grossBags = Math.floor(grossParts / 2);
+
+      let extraBadge = '';
+      if (extraSheets > 0) {
+        extraBadge = ` <span class="badge-extra">+${(extraSheets * ups).toLocaleString()} setup parts</span>`;
+      }
+      totalPiecesElem.innerHTML = `${netBags.toLocaleString()} <span class="unit">Bags</span> <small style="font-size:0.8rem;color:#cbd5e1;font-weight:400;">(${netParts.toLocaleString()} parts)</small>${extraBadge}`;
+
+      if (extraSheets > 0) {
+        totalPiecesFormulaElem.innerText = `${ups} Ups × ${baseSheetsNeeded.toLocaleString()} sheets = ${netParts.toLocaleString()} parts (2 parts/bag = ${netBags.toLocaleString()} bags) | Total run: ${grossBags.toLocaleString()} bags`;
+      } else {
+        totalPiecesFormulaElem.innerText = `${ups} Ups × ${baseSheetsNeeded.toLocaleString()} sheets = ${netParts.toLocaleString()} parts ÷ 2 = ${netBags.toLocaleString()} bags`;
+      }
+    } else {
+      const netPieces = totalPieces;
+      const grossPieces = sheetsNeeded * ups;
+
+      let extraBadge = '';
+      if (extraSheets > 0) {
+        extraBadge = ` <span class="badge-extra">+${(extraSheets * ups).toLocaleString()} in ${extraSheets} setup sheets</span>`;
+      }
+      totalPiecesElem.innerHTML = `${netPieces.toLocaleString()} <span class="unit">pcs</span>${extraBadge}`;
+
+      if (extraSheets > 0) {
+        totalPiecesFormulaElem.innerText = `${ups} Ups × ${baseSheetsNeeded.toLocaleString()} sheets = ${netPieces.toLocaleString()} pcs (Total run: ${sheetsNeeded.toLocaleString()} sheets = ${grossPieces.toLocaleString()} pcs)`;
+      } else {
+        totalPiecesFormulaElem.innerText = `${ups} Ups × ${baseSheetsNeeded.toLocaleString()} sheets = ${netPieces.toLocaleString()} pcs`;
+      }
+    }
+  }
 
   // 5. Render Comparison Table
 
@@ -3456,10 +3577,14 @@ function calculateAndUpdate() {
   if (isBagsMode) {
     if (isTwoPartBag) {
       document.getElementById('invCutSize').innerText = `${partBagW.toFixed(1)} x ${partBagH.toFixed(1)} cm (2 Parts / Bag)`;
-      document.getElementById('invQty').innerText = `${qty} bags (${qty * 2} parts)`;
+      document.getElementById('invQty').innerText = currentQtyMode === 'sheets' 
+        ? `${baseSheetsNeeded} sheets (${qty} bags: ${qty * 2} parts)`
+        : `${qty} bags (${qty * 2} parts)`;
     } else {
       document.getElementById('invCutSize').innerText = `${fullBagW.toFixed(1)} x ${fullBagH.toFixed(1)} cm (Bag Open Size)`;
-      document.getElementById('invQty').innerText = `${qty} bags`;
+      document.getElementById('invQty').innerText = currentQtyMode === 'sheets'
+        ? `${baseSheetsNeeded} sheets (${qty} bags)`
+        : `${qty} bags`;
     }
   } else if (sideFold > 0 || designSpace > 0) {
     const flat_w = i_w + (2 * sideFold);
@@ -3471,10 +3596,14 @@ function calculateAndUpdate() {
     } else {
       document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm (${designSpace}cm space between items)`;
     }
-    document.getElementById('invQty').innerText = `${qty} pcs`;
+    document.getElementById('invQty').innerText = currentQtyMode === 'sheets'
+      ? `${baseSheetsNeeded} sheets (${qty.toLocaleString()} pcs)`
+      : `${qty.toLocaleString()} pcs`;
   } else {
     document.getElementById('invCutSize').innerText = `${i_w} x ${i_h} cm`;
-    document.getElementById('invQty').innerText = `${qty} pcs`;
+    document.getElementById('invQty').innerText = currentQtyMode === 'sheets'
+      ? `${baseSheetsNeeded} sheets (${qty.toLocaleString()} pcs)`
+      : `${qty.toLocaleString()} pcs`;
   }
   document.getElementById('invLayoutType').innerText = activeDirection === 'horizontal' ? 'Standard Layout (Horizontal)' : 'Rotated Layout (Vertical)';
 
@@ -4513,10 +4642,19 @@ function calculateTshirtCupAndUpdate() {
         bestDirection === 'horizontal' ? 'Horizontal Setup (Original)' : 'Vertical Setup (Rotated)';
       
       const sheetsNeeded = layout[bestDirection].ups > 0 ? Math.ceil(qty / layout[bestDirection].ups) : 0;
-      document.getElementById('valUps').innerText = layout[bestDirection].ups;
+      const ups = layout[bestDirection].ups;
+      document.getElementById('valUps').innerText = ups;
       document.getElementById('valSheetsNeeded').innerText = sheetsNeeded;
       document.getElementById('valWastagePercent').innerText = layout[bestDirection].wastagePercent.toFixed(1) + '%';
       document.getElementById('valWastageArea').innerHTML = layout[bestDirection].wastageArea.toFixed(1) + ' <small>cm²</small>';
+
+      const totalPiecesElem = document.getElementById('valTotalPieces');
+      const totalPiecesFormulaElem = document.getElementById('valTotalPiecesFormula');
+      if (totalPiecesElem && totalPiecesFormulaElem) {
+        const totalPieces = sheetsNeeded * ups;
+        totalPiecesElem.innerHTML = `${totalPieces.toLocaleString()} <span class="unit">pcs</span>`;
+        totalPiecesFormulaElem.innerText = `${sheetsNeeded.toLocaleString()} sheets × ${ups} ups = ${totalPieces.toLocaleString()} pcs`;
+      }
     } else {
       if (paperLayoutPreviewCard) paperLayoutPreviewCard.classList.add('hidden');
     }
