@@ -97,11 +97,11 @@ body {
 }
 
 .company-logo {
-  height: 96px;
+  height: 130px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 12px rgba(212, 175, 55, 0.45));
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
   transition: transform 0.3s ease;
 }
 
