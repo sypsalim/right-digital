@@ -97,10 +97,16 @@ body {
 }
 
 .company-logo {
-  height: 60px;
+  height: 88px;
   width: auto;
+  max-width: 100%;
   object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.company-logo:hover {
+  transform: scale(1.02);
 }
 
 .company-titles {
@@ -109,21 +115,35 @@ body {
   gap: 2px;
 }
 
-.company-name-en {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--text-main);
-  background: linear-gradient(135deg, #ffffff 0%, var(--primary-gold-light) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.dept-badge-group {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  padding: 6px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  width: max-content;
 }
 
-.company-name-ar {
-  font-family: 'Tajawal', sans-serif;
-  font-size: 1.3rem;
+.dept-badge-en {
+  font-size: 0.78rem;
   font-weight: 800;
+  letter-spacing: 1.4px;
+  color: #34d399;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.dept-badge-ar {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
   color: var(--primary-gold);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  direction: rtl;
 }
 
 .dept-badge {
@@ -2216,6 +2236,19 @@ body[data-theme="light"],
 [data-theme="light"] .dept-badge {
   background: #0c153b;
   color: #ffffff;
+}
+
+[data-theme="light"] .dept-badge-group {
+  background: rgba(12, 21, 59, 0.95) !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+}
+
+[data-theme="light"] .dept-badge-en {
+  color: #34d399 !important;
+}
+
+[data-theme="light"] .dept-badge-ar {
+  color: #fbbf24 !important;
 }
 
 [data-theme="light"] .theme-toggle-btn {
