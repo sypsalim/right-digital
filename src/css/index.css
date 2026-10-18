@@ -2630,6 +2630,59 @@ body[data-theme="light"],
   color: #4A3E31 !important;
 }
 
+/* ==========================================================================
+   BAG INNER BOARD (250 GSM) SECTION STYLES
+   ========================================================================== */
+#bagInnerBoardCard {
+  border-left: 4px solid var(--primary-gold);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.04) 0%, rgba(15, 23, 42, 0.6) 100%);
+  transition: all 0.25s ease;
+}
+
+.inner-board-toggle-label {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.inner-board-toggle-label:hover {
+  background: rgba(212, 175, 55, 0.22) !important;
+  border-color: var(--primary-gold) !important;
+}
+
+#bagInnerBoardResultBox {
+  transition: all 0.25s ease;
+}
+
+#bagInnerBoardSvgContainer svg {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] #bagInnerBoardCard {
+  background: #AE9882 !important;
+  border-left-color: #5c4527 !important;
+}
+
+[data-theme="light"] #bagInnerBoardResultBox {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] #bagInnerBoardSvgContainer {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] #bagInnerBoardSvgContainer svg {
+  background: #e2d8cb !important;
+  border-color: #5c4527 !important;
+}
+
+[data-theme="light"] .inner-board-toggle-label {
+  background: rgba(26, 21, 16, 0.12) !important;
+  border-color: rgba(26, 21, 16, 0.3) !important;
+  color: #1A1510 !important;
+}
+
 /* ABSOLUTE MASTER OVERRIDE FOR DEFAULT A4 PRINTING & CLEAN WHITE PDF */
 @media print {
   @page {

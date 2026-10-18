@@ -32,19 +32,18 @@ def build():
         logo_print_base64 = base64.b64encode(logo_print_data).decode("utf-8")
         logo_print_data_uri = f"data:image/png;base64,{logo_print_base64}"
 
-    # Replace CSS link
-    css_link = '<link rel="stylesheet" href="src/css/index.css">'
-    if css_link in html:
-        html = html.replace(css_link, f"<style>\n{css}\n</style>")
+    # Replace CSS link (supporting optional version query string)
+    import re
+    if re.search(r'<link rel="stylesheet" href="src/css/index\.css[^"]*">', html):
+        html = re.sub(r'<link rel="stylesheet" href="src/css/index\.css[^"]*">', f"<style>\n{css}\n</style>", html)
     else:
-        print("Warning: CSS link not found exactly as '<link rel=\"stylesheet\" href=\"src/css/index.css\">'")
+        print("Warning: CSS link not found")
 
-    # Replace JS link
-    js_link = '<script src="src/js/app.js"></script>'
-    if js_link in html:
-        html = html.replace(js_link, f"<script>\n{js}\n</script>")
+    # Replace JS link (supporting optional version query string)
+    if re.search(r'<script src="src/js/app\.js[^"]*"></script>', html):
+        html = re.sub(r'<script src="src/js/app\.js[^"]*"></script>', f"<script>\n{js}\n</script>", html)
     else:
-        print("Warning: JS link not found exactly as '<script src=\"src/js/app.js\"></script>'")
+        print("Warning: JS link not found")
 
     # Inline the logo images (replaces all occurrences with the base64 Data URIs)
     html = html.replace("src/assets/logo.png", logo_data_uri)

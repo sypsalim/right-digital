@@ -477,6 +477,125 @@
           </div>
         </div>
 
+        <!-- Section: Bag Inner Board (Only visible in BAGS Mode) -->
+        <div class="config-card hidden" id="bagInnerBoardCard">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 1.25rem;">🛍️</span>
+              <div>
+                <h3 style="margin-bottom: 2px;">Bag Inner Board / كرتون قاعدة الكيس</h3>
+                <span style="font-size: 0.78rem; color: var(--primary-gold-light); opacity: 0.9;">Inside Bottom Reinforcement Board (250 GSM)</span>
+              </div>
+            </div>
+            <label class="inner-board-toggle-label" style="display: flex; align-items: center; gap: 6px; cursor: pointer; background: rgba(212,175,55,0.12); padding: 5px 10px; border-radius: 6px; border: 1px solid rgba(212,175,55,0.3); font-size: 0.82rem; font-weight: 600; color: var(--text-light);">
+              <input type="checkbox" id="enableBagInnerBoard" checked style="accent-color: var(--primary-gold); width: 16px; height: 16px; cursor: pointer;">
+              <span>Include Inner Board / تضمين كرتون القاعدة</span>
+            </label>
+          </div>
+
+          <div id="bagInnerBoardBody" style="margin-top: 10px; display: flex; flex-direction: column; gap: 12px;">
+            <!-- Sheet Specs Row -->
+            <div class="form-row flex-wrap" style="gap: 12px;">
+              <div class="form-group min-w-150" style="flex: 1.3;">
+                <label for="bagInnerBoardSheetPreset">Raw Board Sheet / مقاس الفرخ الخام</label>
+                <select id="bagInnerBoardSheetPreset" class="form-select">
+                  <option value="100x70" selected>100 × 70 cm (Default Sheet / المقاس الافتراضي)</option>
+                  <option value="90x64">90 × 64 cm</option>
+                  <option value="70x50">70 × 50 cm</option>
+                  <option value="custom">Custom Dimensions / مقاس مخصص</option>
+                </select>
+              </div>
+
+              <div class="form-group min-w-140 hidden" id="bagInnerBoardCustomSheetGroup" style="flex: 1.2; display: flex; gap: 8px;">
+                <div style="flex: 1;">
+                  <label for="bagInnerBoardSheetL">Sheet L (cm)</label>
+                  <input type="number" id="bagInnerBoardSheetL" value="100" min="10" step="1" class="form-input">
+                </div>
+                <div style="flex: 1;">
+                  <label for="bagInnerBoardSheetW">Sheet W (cm)</label>
+                  <input type="number" id="bagInnerBoardSheetW" value="70" min="10" step="1" class="form-input">
+                </div>
+              </div>
+
+              <div class="form-group min-w-140" style="flex: 1;">
+                <label for="bagInnerBoardSheetCost">Paper Board Cost / سعر الفرخ (250 جم)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="bagInnerBoardSheetCost" value="1.00" min="0" step="0.05" class="form-input" placeholder="1.00">
+                  <span class="unit">SR</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Board Item Dimensions Row -->
+            <div class="form-row flex-wrap" style="gap: 12px; align-items: flex-end;">
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="bagInnerBoardLength">Board Length (L) / الطول (سم)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="bagInnerBoardLength" value="25" min="1" step="0.5" class="form-input">
+                  <span class="unit">cm</span>
+                </div>
+              </div>
+
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="bagInnerBoardWidth">Board Width (W) / العرض (سم)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="bagInnerBoardWidth" value="15" min="1" step="0.5" class="form-input">
+                  <span class="unit">cm</span>
+                </div>
+              </div>
+
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="bagInnerBoardQty">Quantity / الكمية</label>
+                <div class="input-with-unit">
+                  <input type="number" id="bagInnerBoardQty" min="1" step="1" class="form-input" placeholder="Auto">
+                  <span class="unit">pcs</span>
+                </div>
+              </div>
+
+              <button type="button" class="btn-subtle" id="btnSyncBagInnerBoard" style="height: 38px; padding: 0 12px; white-space: nowrap; font-size: 0.8rem; border-color: rgba(212,175,55,0.4);" title="Auto-fill dimensions from Bag Length & Gusset">
+                🔄 Sync with Bag
+              </button>
+            </div>
+
+            <!-- Calculation & Metrics Result Box -->
+            <div id="bagInnerBoardResultBox" style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(212, 175, 55, 0.25); border-radius: 8px; padding: 12px 14px; margin-top: 2px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="badge" id="bagInnerBoardUpsBadge" style="background: var(--primary-gold); color: #000; font-weight: 700; font-size: 0.85rem; padding: 4px 8px; border-radius: 4px;">16 UPS (4 × 4)</span>
+                  <span style="font-size: 0.85rem; color: var(--text-light);" id="bagInnerBoardFormulaText">100 ÷ 25 = 4 cols | 70 ÷ 15 = 4 rows</span>
+                </div>
+                <div style="font-size: 1.15rem; font-weight: 700; color: var(--accent-green);" id="bagInnerBoardUnitCostText">
+                  0.0625 SR <span style="font-size: 0.78rem; font-weight: 500; color: var(--text-muted);">/ bag</span>
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; font-size: 0.82rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 8px;">
+                <div>
+                  <span style="color: var(--text-muted); display: block;">Board Material:</span>
+                  <strong style="color: var(--primary-gold-light);">250 GSM Paper Board</strong>
+                </div>
+                <div>
+                  <span style="color: var(--text-muted); display: block;">Sheet Cost:</span>
+                  <strong id="bagInnerBoardSheetCostDisplay">1.00 SR / sheet (100×70)</strong>
+                </div>
+                <div>
+                  <span style="color: var(--text-muted); display: block;">Sheets Required:</span>
+                  <strong id="bagInnerBoardSheetsNeededDisplay">0 sheets</strong>
+                </div>
+                <div>
+                  <span style="color: var(--text-muted); display: block;">Total Board Cost:</span>
+                  <strong style="color: var(--accent-green);" id="bagInnerBoardTotalCostDisplay">0.00 SR</strong>
+                </div>
+              </div>
+
+              <!-- Mini SVG visualization of 100x70 sheet layout -->
+              <div id="bagInnerBoardSvgContainer" style="margin-top: 10px; background: rgba(0,0,0,0.25); border-radius: 6px; padding: 8px; text-align: center; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+                <!-- Dynamic SVG sheet preview -->
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Section 4: Pre-Press Setup -->
         <div class="config-card" id="prePressCard">
           <h3>04. Pre-Press Setup / التجهيز قبل الطباعة</h3>
@@ -1042,6 +1161,10 @@
               <span class="inv-label">Bag Ribbon with Print / شريط كيس مع طباعة:</span>
               <span class="inv-value" id="invBagRibbonPrintCost">-</span>
             </div>
+            <div class="invoice-row hidden" id="invRowBagInnerBoard">
+              <span class="inv-label">Bag Inner Board (250 Gsm) / كرتون قاعدة الكيس:</span>
+              <span class="inv-value" id="invBagInnerBoardCost">-</span>
+            </div>
             <div class="invoice-row" id="invRowPacking">
               <span class="inv-label">Packing Cost / تكلفة التعبئة والتغليف:</span>
               <span class="inv-value" id="invPackingCost">-</span>
@@ -1265,6 +1388,10 @@
               <div class="form-group min-w-150">
                 <label for="rateBagRibbonPrint">Bag Ribbons with Print (per bag)</label>
                 <input type="number" id="rateBagRibbonPrint" step="0.10" class="form-input">
+              </div>
+              <div class="form-group min-w-150">
+                <label for="rateBagInnerBoardSheet">Bag Inner Board Sheet (100x70 250 Gsm)</label>
+                <input type="number" id="rateBagInnerBoardSheet" step="0.05" class="form-input" placeholder="1.00">
               </div>
               <div class="form-group min-w-150">
                 <label for="ratePacking">Packing (per 100 pcs pack)</label>
@@ -1578,7 +1705,10 @@
       <div class="lock-card">
         <div class="lock-card-header">
           <img src="src/assets/logo.png" alt="Logo" class="company-logo" style="height: 70px; margin-bottom: 12px;">
-          <h2>DIGITAL PRINT DEPARTMENT</h2>
+          <div class="dept-badge-group" style="margin-bottom: 8px;">
+            <span class="dept-badge-ar">ديجيتال | أوفست | منتجات التغليف</span>
+            <span class="dept-badge-en">DIGITAL | OFFSET | PACKAGING PRODUCTS</span>
+          </div>
           <h3 id="lockCardTitle">Estimator Lock Screen / شاشة قفل الحاسبة</h3>
           <p id="lockCardSubtitle">Please enter credentials to unlock the Cost Estimator.</p>
         </div>

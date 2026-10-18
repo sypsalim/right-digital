@@ -116,6 +116,7 @@ const DEFAULT_PRICING = {
     rope: 0.12,      // per piece
     bagRibbonOnly: 1.00,  // per bag
     bagRibbonPrint: 2.00, // per bag (min 10 bags)
+    bagInnerBoardSheet: 1.00, // per 100x70 sheet (250 GSM)
     packing: 1.00,   // per 100 pieces packet
     businessCardPrint: 0.012, // per piece
     businessCardA3SheetPrice: 0.75, // A3 sheet price specifically for business card jobs
@@ -826,6 +827,15 @@ function updateJobTypeTabVisibility() {
     if (paperLayoutPreviewCard) paperLayoutPreviewCard.classList.remove('hidden');
     if (paperComparisonCard) paperComparisonCard.classList.remove('hidden');
     if (tshirtCupPreviewCard) tshirtCupPreviewCard.classList.add('hidden');
+
+    const bagInnerBoardCard = document.getElementById('bagInnerBoardCard');
+    if (bagInnerBoardCard) {
+      if (currentPaperMode === 'bags') {
+        bagInnerBoardCard.classList.remove('hidden');
+      } else {
+        bagInnerBoardCard.classList.add('hidden');
+      }
+    }
   } else if (currentJobType === 'sticker') {
     tabSticker.classList.add('active');
     
@@ -835,6 +845,9 @@ function updateJobTypeTabVisibility() {
     if (tshirtCupCard) tshirtCupCard.classList.add('hidden');
     if (cutSizeCard) cutSizeCard.classList.remove('hidden');
     if (finishingCard) finishingCard.classList.remove('hidden');
+
+    const bagInnerBoardCard = document.getElementById('bagInnerBoardCard');
+    if (bagInnerBoardCard) bagInnerBoardCard.classList.add('hidden');
 
     if (paperLayoutPreviewCard) paperLayoutPreviewCard.classList.remove('hidden');
     if (paperComparisonCard) paperComparisonCard.classList.remove('hidden');
@@ -848,6 +861,9 @@ function updateJobTypeTabVisibility() {
     if (tshirtCupCard) tshirtCupCard.classList.remove('hidden');
     if (cutSizeCard) cutSizeCard.classList.add('hidden');
     if (finishingCard) finishingCard.classList.add('hidden');
+
+    const bagInnerBoardCard = document.getElementById('bagInnerBoardCard');
+    if (bagInnerBoardCard) bagInnerBoardCard.classList.add('hidden');
 
     // Visibility of paperLayoutPreviewCard is managed dynamically in calculateTshirtCupAndUpdate()
     if (paperComparisonCard) paperComparisonCard.classList.add('hidden');
@@ -958,6 +974,9 @@ function loadPricingFromStorage() {
         }
         if (currentPricing.fixedRates.bagRibbonPrint === undefined) {
           currentPricing.fixedRates.bagRibbonPrint = 2.00;
+        }
+        if (currentPricing.fixedRates.bagInnerBoardSheet === undefined) {
+          currentPricing.fixedRates.bagInnerBoardSheet = 1.00;
         }
         if (currentPricing.fixedRates.offsetSetup === undefined) {
           currentPricing.fixedRates.offsetSetup = 250.00;
@@ -1148,8 +1167,10 @@ function initUI() {
     const insideFoldLockGroup = document.getElementById('insideFoldLockGroup');
     const bagFlapGroup = document.getElementById('bagFlapGroup');
     const bagBottomFlapGroup = document.getElementById('bagBottomFlapGroup');
+    const bagInnerBoardCard = document.getElementById('bagInnerBoardCard');
     
     if (currentPaperMode === 'bags') {
+      if (bagInnerBoardCard) bagInnerBoardCard.classList.remove('hidden');
       if (labelWidth) labelWidth.innerHTML = 'Bag Length (L) / طول الكيس (سم)';
       if (labelHeight) labelHeight.innerHTML = 'Bag Width/Gusset (W) / عرض/جانب الكيس (سم)';
       if (labelDepth) labelDepth.innerHTML = 'Bag Height (H) / ارتفاع الكيس (سم)';
@@ -1166,7 +1187,20 @@ function initUI() {
         const isSmallBag = (bagH <= 30 && bagL <= 30);
         bagFlapInput.value = isSmallBag ? '1.5' : '2.0';
       }
+
+      // Auto pre-fill Inner Board dimensions from bag bottom if empty
+      const innerBoardL = document.getElementById('bagInnerBoardLength');
+      const innerBoardW = document.getElementById('bagInnerBoardWidth');
+      const bagL = parseFloat(document.getElementById('itemWidth')?.value || 0);
+      const bagW = parseFloat(document.getElementById('itemHeight')?.value || 0);
+      if (innerBoardL && !innerBoardL.value) {
+        innerBoardL.value = bagL > 0 ? bagL : 25;
+      }
+      if (innerBoardW && !innerBoardW.value) {
+        innerBoardW.value = bagW > 0 ? bagW : 15;
+      }
     } else {
+      if (bagInnerBoardCard) bagInnerBoardCard.classList.add('hidden');
       if (labelWidth) labelWidth.innerHTML = 'Length (L) / الطول (سم)';
       if (labelHeight) labelHeight.innerHTML = 'Width (W) / العرض (سم)';
       if (labelDepth) labelDepth.innerHTML = 'Box Depth (H) / العمق (سم)';
@@ -1251,6 +1285,7 @@ function initUI() {
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate', 'plasticCutType', 'plasticDieSetupRate', 'plasticPolarCutRate', 'plasticQtyInput',
     'extraGoldFoil', 'foilLength', 'foilHeight', 'foilImpressionRateInput',
     'extraUvCost',
+    'enableBagInnerBoard', 'bagInnerBoardSheetPreset', 'bagInnerBoardSheetL', 'bagInnerBoardSheetW', 'bagInnerBoardLength', 'bagInnerBoardWidth', 'bagInnerBoardSheetCost', 'bagInnerBoardQty',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
 
@@ -1317,6 +1352,46 @@ function initUI() {
     }
   });
 
+  // Bag Inner Board sheet preset and sync listeners
+  const bagInnerBoardPresetEl = document.getElementById('bagInnerBoardSheetPreset');
+  const bagInnerBoardCustomGroup = document.getElementById('bagInnerBoardCustomSheetGroup');
+  const bagInnerBoardSheetLEl = document.getElementById('bagInnerBoardSheetL');
+  const bagInnerBoardSheetWEl = document.getElementById('bagInnerBoardSheetW');
+
+  if (bagInnerBoardPresetEl) {
+    bagInnerBoardPresetEl.addEventListener('change', () => {
+      const val = bagInnerBoardPresetEl.value;
+      if (val === 'custom') {
+        if (bagInnerBoardCustomGroup) bagInnerBoardCustomGroup.classList.remove('hidden');
+      } else {
+        if (bagInnerBoardCustomGroup) bagInnerBoardCustomGroup.classList.add('hidden');
+        if (val === '100x70') {
+          if (bagInnerBoardSheetLEl) bagInnerBoardSheetLEl.value = 100;
+          if (bagInnerBoardSheetWEl) bagInnerBoardSheetWEl.value = 70;
+        } else if (val === '90x64') {
+          if (bagInnerBoardSheetLEl) bagInnerBoardSheetLEl.value = 90;
+          if (bagInnerBoardSheetWEl) bagInnerBoardSheetWEl.value = 64;
+        } else if (val === '70x50') {
+          if (bagInnerBoardSheetLEl) bagInnerBoardSheetLEl.value = 70;
+          if (bagInnerBoardSheetWEl) bagInnerBoardSheetWEl.value = 50;
+        }
+      }
+      calculateAndUpdate();
+    });
+  }
+
+  const btnSyncBagInnerBoard = document.getElementById('btnSyncBagInnerBoard');
+  if (btnSyncBagInnerBoard) {
+    btnSyncBagInnerBoard.addEventListener('click', () => {
+      const bagL = parseFloat(document.getElementById('itemWidth')?.value) || 25;
+      const bagW = parseFloat(document.getElementById('itemHeight')?.value) || 15;
+      const innerBoardL = document.getElementById('bagInnerBoardLength');
+      const innerBoardW = document.getElementById('bagInnerBoardWidth');
+      if (innerBoardL) innerBoardL.value = bagL;
+      if (innerBoardW) innerBoardW.value = bagW;
+      calculateAndUpdate();
+    });
+  }
 
   // Dedicated Print Laser auto-ups listeners
   const laserWidthEl = document.getElementById('laserWidth');
@@ -2198,6 +2273,8 @@ function populateSettingsDrawer() {
   if (document.getElementById('rateBagRibbonOnly')) document.getElementById('rateBagRibbonOnly').value = ribbonOnlyVal.toFixed(2);
   const ribbonPrintVal = currentPricing.fixedRates.bagRibbonPrint !== undefined ? currentPricing.fixedRates.bagRibbonPrint : 2.00;
   if (document.getElementById('rateBagRibbonPrint')) document.getElementById('rateBagRibbonPrint').value = ribbonPrintVal.toFixed(2);
+  const innerBoardSheetVal = currentPricing.fixedRates.bagInnerBoardSheet !== undefined ? currentPricing.fixedRates.bagInnerBoardSheet : 1.00;
+  if (document.getElementById('rateBagInnerBoardSheet')) document.getElementById('rateBagInnerBoardSheet').value = innerBoardSheetVal.toFixed(2);
   document.getElementById('ratePacking').value = currentPricing.fixedRates.packing.toFixed(2);
   const bcRateVal = currentPricing.fixedRates.businessCardPrint !== undefined ? currentPricing.fixedRates.businessCardPrint : 0.012;
   document.getElementById('rateBcPrint').value = bcRateVal.toFixed(3);
@@ -2425,6 +2502,7 @@ function saveSettingsFromDrawer() {
   currentPricing.fixedRates.rope = parseFloat(document.getElementById('rateRope').value) || 0;
   if (document.getElementById('rateBagRibbonOnly')) currentPricing.fixedRates.bagRibbonOnly = parseFloat(document.getElementById('rateBagRibbonOnly').value) || 1.00;
   if (document.getElementById('rateBagRibbonPrint')) currentPricing.fixedRates.bagRibbonPrint = parseFloat(document.getElementById('rateBagRibbonPrint').value) || 2.00;
+  if (document.getElementById('rateBagInnerBoardSheet')) currentPricing.fixedRates.bagInnerBoardSheet = parseFloat(document.getElementById('rateBagInnerBoardSheet').value) || 1.00;
   currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 0;
   currentPricing.fixedRates.businessCardPrint = parseFloat(document.getElementById('rateBcPrint').value) || 0;
   currentPricing.fixedRates.businessCardA3SheetPrice = parseFloat(document.getElementById('rateBcA3Sheet').value) || 0;
@@ -3532,8 +3610,121 @@ function calculateAndUpdate() {
   }
 
 
+  // Bag Inner Board (250 GSM) Calculation (Only for Bags Mode)
+  let bagInnerBoardTotalCost = 0;
+  let bagInnerBoardUps = 0;
+  let bagInnerBoardSheets = 0;
+  let bagInnerBoardUnitCost = 0;
+  let bagInnerBoardCols = 0;
+  let bagInnerBoardRows = 0;
+  let bagInnerBoardSheetL = 100;
+  let bagInnerBoardSheetW = 70;
+  let bagInnerBoardPieceL = 25;
+  let bagInnerBoardPieceW = 15;
+  let bagInnerBoardRotated = false;
+
+  const optBagInnerBoard = isBagsMode && document.getElementById('enableBagInnerBoard') && document.getElementById('enableBagInnerBoard').checked;
+  const bagInnerBoardBody = document.getElementById('bagInnerBoardBody');
+  if (bagInnerBoardBody) {
+    bagInnerBoardBody.style.opacity = (isBagsMode && document.getElementById('enableBagInnerBoard')?.checked) ? '1' : '0.45';
+    bagInnerBoardBody.style.pointerEvents = (isBagsMode && document.getElementById('enableBagInnerBoard')?.checked) ? 'auto' : 'none';
+  }
+
+  if (isBagsMode) {
+    // 1. Determine sheet dimensions
+    const presetVal = document.getElementById('bagInnerBoardSheetPreset')?.value || '100x70';
+    if (presetVal === '100x70') {
+      bagInnerBoardSheetL = 100;
+      bagInnerBoardSheetW = 70;
+    } else if (presetVal === '90x64') {
+      bagInnerBoardSheetL = 90;
+      bagInnerBoardSheetW = 64;
+    } else if (presetVal === '70x50') {
+      bagInnerBoardSheetL = 70;
+      bagInnerBoardSheetW = 50;
+    } else {
+      bagInnerBoardSheetL = parseFloat(document.getElementById('bagInnerBoardSheetL')?.value) || 100;
+      bagInnerBoardSheetW = parseFloat(document.getElementById('bagInnerBoardSheetW')?.value) || 70;
+    }
+
+    // 2. Determine piece dimensions
+    bagInnerBoardPieceL = parseFloat(document.getElementById('bagInnerBoardLength')?.value) || 25;
+    bagInnerBoardPieceW = parseFloat(document.getElementById('bagInnerBoardWidth')?.value) || 15;
+
+    // 3. Sheet cost (default 1.00 SR per 250 GSM sheet)
+    const sheetCostInput = document.getElementById('bagInnerBoardSheetCost');
+    const sheetCost = sheetCostInput && parseFloat(sheetCostInput.value) >= 0 
+      ? parseFloat(sheetCostInput.value) 
+      : (currentPricing.fixedRates.bagInnerBoardSheet || 1.00);
+
+    // 4. Quantity of inner boards (matches finished bags qty unless custom overridden)
+    const userInnerQty = parseFloat(document.getElementById('bagInnerBoardQty')?.value);
+    const innerBoardQty = (!isNaN(userInnerQty) && userInnerQty > 0) ? userInnerQty : qty;
+
+    // 5. Calculate UPS (Direction A vs Rotated Direction B)
+    const cols_A = Math.floor(bagInnerBoardSheetL / bagInnerBoardPieceL);
+    const rows_A = Math.floor(bagInnerBoardSheetW / bagInnerBoardPieceW);
+    const ups_A = cols_A * rows_A;
+
+    const cols_B = Math.floor(bagInnerBoardSheetL / bagInnerBoardPieceW);
+    const rows_B = Math.floor(bagInnerBoardSheetW / bagInnerBoardPieceL);
+    const ups_B = cols_B * rows_B;
+
+    if (ups_A >= ups_B) {
+      bagInnerBoardUps = Math.max(1, ups_A);
+      bagInnerBoardCols = cols_A;
+      bagInnerBoardRows = rows_A;
+      bagInnerBoardRotated = false;
+    } else {
+      bagInnerBoardUps = Math.max(1, ups_B);
+      bagInnerBoardCols = cols_B;
+      bagInnerBoardRows = rows_B;
+      bagInnerBoardRotated = true;
+    }
+
+    // Cost per bag piece = Sheet Cost / UPS (e.g. 1.00 / 16 = 0.0625 SR)
+    bagInnerBoardUnitCost = bagInnerBoardUps > 0 ? (sheetCost / bagInnerBoardUps) : 0;
+    bagInnerBoardSheets = bagInnerBoardUps > 0 ? Math.ceil(innerBoardQty / bagInnerBoardUps) : 0;
+    bagInnerBoardTotalCost = optBagInnerBoard ? (innerBoardQty * bagInnerBoardUnitCost) : 0;
+
+    // Update UI elements in Section
+    const upsBadge = document.getElementById('bagInnerBoardUpsBadge');
+    if (upsBadge) {
+      upsBadge.innerText = `${bagInnerBoardUps} UPS (${bagInnerBoardCols} × ${bagInnerBoardRows})`;
+    }
+
+    const formulaText = document.getElementById('bagInnerBoardFormulaText');
+    if (formulaText) {
+      const activeColDim = bagInnerBoardRotated ? bagInnerBoardPieceW : bagInnerBoardPieceL;
+      const activeRowDim = bagInnerBoardRotated ? bagInnerBoardPieceL : bagInnerBoardPieceW;
+      formulaText.innerText = `${bagInnerBoardSheetL} ÷ ${activeColDim} = ${bagInnerBoardCols} cols | ${bagInnerBoardSheetW} ÷ ${activeRowDim} = ${bagInnerBoardRows} rows`;
+    }
+
+    const unitCostText = document.getElementById('bagInnerBoardUnitCostText');
+    if (unitCostText) {
+      unitCostText.innerHTML = `${bagInnerBoardUnitCost.toFixed(4)} SR <span style="font-size: 0.78rem; font-weight: 500; color: var(--text-muted);">/ bag</span>`;
+    }
+
+    const sheetCostDisp = document.getElementById('bagInnerBoardSheetCostDisplay');
+    if (sheetCostDisp) {
+      sheetCostDisp.innerText = `${sheetCost.toFixed(2)} SR / sheet (${bagInnerBoardSheetL}×${bagInnerBoardSheetW})`;
+    }
+
+    const sheetsNeededDisp = document.getElementById('bagInnerBoardSheetsNeededDisplay');
+    if (sheetsNeededDisp) {
+      sheetsNeededDisp.innerText = `${bagInnerBoardSheets} sheets (${innerBoardQty} pcs)`;
+    }
+
+    const totalCostDisp = document.getElementById('bagInnerBoardTotalCostDisplay');
+    if (totalCostDisp) {
+      totalCostDisp.innerText = `${bagInnerBoardTotalCost.toFixed(2)} SR`;
+    }
+
+    renderBagInnerBoardSvg(bagInnerBoardSheetL, bagInnerBoardSheetW, bagInnerBoardPieceL, bagInnerBoardPieceW, bagInnerBoardCols, bagInnerBoardRows, bagInnerBoardRotated);
+  }
+
   // Base total invoice cost before profit
-  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + offsetTotalCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + ribbonOnlyCost + ribbonPrintCost + packingCost + plasticTotalCost + goldFoilTotalCost + uvCost;
+  const rawTotalCost = discountedBaseCost + polarCuttingCost + dieCylinderCost + dieManualCost + dieBoardCost + offsetTotalCost + designCost + colorCost + lamCost + plotterCost + foldingCost + pastingCost + ropeCost + ribbonOnlyCost + ribbonPrintCost + packingCost + plasticTotalCost + goldFoilTotalCost + uvCost + bagInnerBoardTotalCost;
 
   // Add Quantity-Based Profit Margin
   function getProfitPercent(quantity) {
@@ -3692,6 +3883,14 @@ function calculateAndUpdate() {
     const minNote = qty < 10 ? ` (${qty} pcs - charged min 10 bags @ ${ribbonPrintRate.toFixed(2)} SR)` : ` (${qty} bags @ ${ribbonPrintRate.toFixed(2)} SR)`;
     document.getElementById('invBagRibbonPrintCost').innerText = `${ribbonPrintCost.toFixed(2)} SR${minNote}`;
   }
+
+  // Bag Inner Board Invoice Row
+  toggleInvoiceRow('invRowBagInnerBoard', optBagInnerBoard && bagInnerBoardTotalCost > 0, 'invBagInnerBoardCost', bagInnerBoardTotalCost);
+  if (optBagInnerBoard && bagInnerBoardTotalCost > 0) {
+    const userInnerQty = parseFloat(document.getElementById('bagInnerBoardQty')?.value);
+    const innerBoardQty = (!isNaN(userInnerQty) && userInnerQty > 0) ? userInnerQty : qty;
+    document.getElementById('invBagInnerBoardCost').innerText = `${bagInnerBoardTotalCost.toFixed(2)} SR (${innerBoardQty} bags @ ${bagInnerBoardUnitCost.toFixed(4)} SR [${bagInnerBoardUps} UPS: ${bagInnerBoardCols}×${bagInnerBoardRows} on ${bagInnerBoardSheetL}×${bagInnerBoardSheetW}])`;
+  }
   toggleInvoiceRow('invRowPacking', optPacking, 'invPackingCost', packingCost);
 
   // Plastic Window Invoice Row
@@ -3832,6 +4031,54 @@ function renderComparisonTable(layout, bestDirection, activeDirection) {
 
     tbody.appendChild(tr);
   });
+}
+
+// --- RENDER BAG INNER BOARD MINI SVG PREVIEW ---
+function renderBagInnerBoardSvg(sheetL, sheetW, pieceL, pieceW, cols, rows, rotated) {
+  const container = document.getElementById('bagInnerBoardSvgContainer');
+  if (!container) return;
+
+  const w = rotated ? pieceW : pieceL;
+  const h = rotated ? pieceL : pieceW;
+  const totalUps = cols * rows;
+
+  let rectsHtml = '';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = (c * w).toFixed(1);
+      const y = (r * h).toFixed(1);
+      rectsHtml += `
+        <rect x="${x}" y="${y}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" fill="rgba(212, 175, 55, 0.22)" stroke="#d4af37" stroke-width="0.5" stroke-dasharray="1.5,1.5" />
+        <text x="${(parseFloat(x) + w/2).toFixed(1)}" y="${(parseFloat(y) + h/2).toFixed(1)}" fill="#f8fafc" font-size="2.6" font-family="'Outfit', sans-serif" font-weight="600" text-anchor="middle" dominant-baseline="middle">${w}×${h}</text>
+      `;
+    }
+  }
+
+  // Draw wastage if any
+  let wasteHtml = '';
+  const usedW = cols * w;
+  const usedH = rows * h;
+  const wasteRight = sheetL - usedW;
+  const wasteBottom = sheetW - usedH;
+
+  if (wasteRight > 0) {
+    wasteHtml += `<rect x="${usedW.toFixed(1)}" y="0" width="${wasteRight.toFixed(1)}" height="${sheetW}" fill="rgba(239, 68, 68, 0.15)" stroke="rgba(239, 68, 68, 0.3)" stroke-width="0.3"/>`;
+  }
+  if (wasteBottom > 0) {
+    wasteHtml += `<rect x="0" y="${usedH.toFixed(1)}" width="${usedW.toFixed(1)}" height="${wasteBottom.toFixed(1)}" fill="rgba(239, 68, 68, 0.15)" stroke="rgba(239, 68, 68, 0.3)" stroke-width="0.3"/>`;
+  }
+
+  container.innerHTML = `
+    <div style="font-size: 0.76rem; color: var(--primary-gold-light); font-weight: 600; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center;">
+      <span>📐 Sheet Layout (${sheetL} × ${sheetW} cm)</span>
+      <span style="background: rgba(212, 175, 55, 0.15); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(212, 175, 55, 0.3);">${cols} cols × ${rows} rows = ${totalUps} UPS (${w}×${h} cm)</span>
+    </div>
+    <svg viewBox="0 0 ${sheetL} ${sheetW}" style="max-height: 140px; width: 100%; border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 4px; background: #0f172a;" preserveAspectRatio="xMidYMid meet">
+      <rect x="0" y="0" width="${sheetL}" height="${sheetW}" fill="#1e293b" />
+      ${rectsHtml}
+      ${wasteHtml}
+    </svg>
+  `;
 }
 
 // --- RENDER VISUAL SVG PREVIEW ---
@@ -4554,7 +4801,7 @@ function calculateTshirtCupAndUpdate() {
     'invRowDieCylinder', 'invRowDieManual', 'invRowDieBoard', 'invRowOffsetPrint',
     'invRowBackSide', 'invRowDesign', 'invRowColor', 'invRowLamination',
     'invRowPlotter', 'invRowFolding', 'invRowPasting', 'invRowRope',
-    'invRowBagRibbonOnly', 'invRowBagRibbonPrint', 'invRowPacking', 'invRowPlastic', 'invRowGoldFoil', 'invRowUvCost',
+    'invRowBagRibbonOnly', 'invRowBagRibbonPrint', 'invRowBagInnerBoard', 'invRowPacking', 'invRowPlastic', 'invRowGoldFoil', 'invRowUvCost',
     'invRowDiscount'
   ];
   paperStickerRows.forEach(rowId => {
