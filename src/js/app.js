@@ -954,7 +954,7 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.businessCardPolarCutPrice === undefined || currentPricing.fixedRates.businessCardPolarCutPrice === 0.75) {
           currentPricing.fixedRates.businessCardPolarCutPrice = 0.50;
         }
-        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
+        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing <= 0 || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
           currentPricing.fixedRates.packing = 1.00;
         }
         if (currentPricing.fixedRates.folding === undefined || currentPricing.fixedRates.folding === 0.25) {
@@ -1276,7 +1276,7 @@ function initUI() {
     'itemWidth', 'itemHeight', 'itemQty', 'boxDepthH', 'wallThickness', 'insideFoldLock', 'bagFlap', 'bagBottomFlap', 'designSpace', 'stickerType', 'stickerColors',
     'offsetCost100_70', 'offsetCost90_64', 'offsetCost50_70',
     'extraDesignCharge', 'designChargeInput', 'extraColorCharge', 'colorCountInput', 'colorRateInput',
-    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'foldingRateInput', 'extraPasting', 'pastingRateInput', 'extraHandleRope', 'extraPacking', 'backSidePrint',
+    'extraLamination', 'laminationBothSides', 'extraPlotter', 'extraFolding', 'foldingRateInput', 'extraPasting', 'pastingRateInput', 'extraHandleRope', 'extraPacking', 'packingRateInput', 'backSidePrint',
     'extraBagRibbonOnly', 'extraBagRibbonPrint',
     'extraPolarCutting', 'polarCuttingRateInput',
     'extraDieCylinder', 'dieCylinderRateInput', 'extraDieManual', 'dieManualRateInput',
@@ -2275,7 +2275,8 @@ function populateSettingsDrawer() {
   if (document.getElementById('rateBagRibbonPrint')) document.getElementById('rateBagRibbonPrint').value = ribbonPrintVal.toFixed(2);
   const innerBoardSheetVal = currentPricing.fixedRates.bagInnerBoardSheet !== undefined ? currentPricing.fixedRates.bagInnerBoardSheet : 1.00;
   if (document.getElementById('rateBagInnerBoardSheet')) document.getElementById('rateBagInnerBoardSheet').value = innerBoardSheetVal.toFixed(2);
-  document.getElementById('ratePacking').value = currentPricing.fixedRates.packing.toFixed(2);
+  const packingVal = (currentPricing.fixedRates && currentPricing.fixedRates.packing > 0) ? currentPricing.fixedRates.packing : 1.00;
+  document.getElementById('ratePacking').value = packingVal.toFixed(2);
   const bcRateVal = currentPricing.fixedRates.businessCardPrint !== undefined ? currentPricing.fixedRates.businessCardPrint : 0.012;
   document.getElementById('rateBcPrint').value = bcRateVal.toFixed(3);
   const bcSheetRateVal = currentPricing.fixedRates.businessCardA3SheetPrice !== undefined ? currentPricing.fixedRates.businessCardA3SheetPrice : 0.75;
@@ -2503,7 +2504,10 @@ function saveSettingsFromDrawer() {
   if (document.getElementById('rateBagRibbonOnly')) currentPricing.fixedRates.bagRibbonOnly = parseFloat(document.getElementById('rateBagRibbonOnly').value) || 1.00;
   if (document.getElementById('rateBagRibbonPrint')) currentPricing.fixedRates.bagRibbonPrint = parseFloat(document.getElementById('rateBagRibbonPrint').value) || 2.00;
   if (document.getElementById('rateBagInnerBoardSheet')) currentPricing.fixedRates.bagInnerBoardSheet = parseFloat(document.getElementById('rateBagInnerBoardSheet').value) || 1.00;
-  currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 0;
+  currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 1.00;
+  if (document.getElementById('packingRateInput')) {
+    document.getElementById('packingRateInput').value = currentPricing.fixedRates.packing.toFixed(2);
+  }
   currentPricing.fixedRates.businessCardPrint = parseFloat(document.getElementById('rateBcPrint').value) || 0;
   currentPricing.fixedRates.businessCardA3SheetPrice = parseFloat(document.getElementById('rateBcA3Sheet').value) || 0;
   currentPricing.fixedRates.businessCardPolarCutPrice = parseFloat(document.getElementById('rateBcPolarCut').value) || 0;
@@ -3180,10 +3184,18 @@ function calculateAndUpdate() {
   const effectivePrintQty = Math.max(10, qty);
   const ribbonPrintCost = optBagRibbonPrint ? effectivePrintQty * ribbonPrintRate : 0;
 
-  // Packing cost: 5.00 SR per 100 pieces (or packet)
+  // Packing cost: 1.00 SR per 100 pieces (or packet)
   const packets = Math.ceil(qty / 100);
-  const packingRate = currentPricing.fixedRates.packing !== undefined ? currentPricing.fixedRates.packing : 5.00;
+  const packingRateInput = document.getElementById('packingRateInput');
+  const defaultPackingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.packing > 0) ? currentPricing.fixedRates.packing : 1.00;
+  const packingRate = (packingRateInput && parseFloat(packingRateInput.value) >= 0 && packingRateInput.value !== '') ? parseFloat(packingRateInput.value) : defaultPackingRate;
   const packingCost = optPacking ? packets * packingRate : 0;
+
+  // Update dynamic price text in UI cards
+  const packingPriceText = document.getElementById('packingPriceText');
+  if (packingPriceText) {
+    packingPriceText.innerText = `${packingRate.toFixed(2)} SR / 100 pcs pack`;
+  }
 
   // 8. Discount Tier Matching (based on sheetsNeeded instead of pieces qty, or qty > 1700 for business cards)
   let discountPercent = 0;
@@ -3892,6 +3904,9 @@ function calculateAndUpdate() {
     document.getElementById('invBagInnerBoardCost').innerText = `${bagInnerBoardTotalCost.toFixed(2)} SR (${innerBoardQty} bags @ ${bagInnerBoardUnitCost.toFixed(4)} SR [${bagInnerBoardUps} UPS: ${bagInnerBoardCols}×${bagInnerBoardRows} on ${bagInnerBoardSheetL}×${bagInnerBoardSheetW}])`;
   }
   toggleInvoiceRow('invRowPacking', optPacking, 'invPackingCost', packingCost);
+  if (optPacking) {
+    document.getElementById('invPackingCost').innerText = `${packingCost.toFixed(2)} SR (${packets} pkt${packets > 1 ? 's' : ''} [${qty} pcs] @ ${packingRate.toFixed(2)} SR / 100 pcs)`;
+  }
 
   // Plastic Window Invoice Row
   toggleInvoiceRow('invRowPlastic', optPlastic, 'invPlasticCost', plasticTotalCost);
@@ -4171,9 +4186,20 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
   }
   const startXPx = startXCm * scale;
 
+  const bottomGripperMarginCm = 1.0;
   let startYCm = 0;
-  if (S_H >= totalLayoutHCm) {
-    startYCm = (S_H - totalLayoutHCm) / 2;
+  if (currentPaperMode === 'bags') {
+    if (S_H >= (totalLayoutHCm + bottomGripperMarginCm)) {
+      startYCm = S_H - totalLayoutHCm - bottomGripperMarginCm;
+    } else if (S_H >= totalLayoutHCm) {
+      startYCm = S_H - totalLayoutHCm;
+    } else {
+      startYCm = 0;
+    }
+  } else {
+    if (S_H >= totalLayoutHCm) {
+      startYCm = (S_H - totalLayoutHCm) / 2;
+    }
   }
   const startYPx = startYCm * scale;
 
@@ -4641,6 +4667,99 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
     }
   }
 
+  // 3.5. For Bags Mode: Draw Gripper Mark at bottom and Top Free Space (Wastage) Dimension Indicator
+  if (currentPaperMode === 'bags') {
+    const topFreeSpaceCm = startYCm;
+    const actualBottomMarginCm = S_H - (startYCm + totalLayoutHCm);
+
+    // Bottom Gripper Line & Label
+    if (actualBottomMarginCm >= 0.5) {
+      const gripperLineY = offsetY + (S_H - actualBottomMarginCm) * scale;
+      
+      // Gripper separator line
+      const gripLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      gripLine.setAttribute("x1", offsetX);
+      gripLine.setAttribute("y1", gripperLineY);
+      gripLine.setAttribute("x2", offsetX + drawSheetW);
+      gripLine.setAttribute("y2", gripperLineY);
+      gripLine.setAttribute("stroke", "#38bdf8");
+      gripLine.setAttribute("stroke-width", "1.2");
+      gripLine.setAttribute("stroke-dasharray", "4 3");
+      svg.appendChild(gripLine);
+
+      // Gripper label
+      const gripText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      gripText.setAttribute("x", offsetX + 10);
+      gripText.setAttribute("y", gripperLineY + (actualBottomMarginCm * scale) / 2 + 3);
+      gripText.setAttribute("fill", "#38bdf8");
+      gripText.setAttribute("font-size", "9px");
+      gripText.setAttribute("font-weight", "600");
+      gripText.textContent = `▲ Gripper Mark: ${actualBottomMarginCm.toFixed(1)} cm / ملقط الماكينة`;
+      svg.appendChild(gripText);
+    }
+
+    // Top Free Space Wastage Indicator
+    if (topFreeSpaceCm >= 0.5) {
+      const topFreePx = topFreeSpaceCm * scale;
+      const midY = offsetY + (topFreePx / 2);
+      const centerX = offsetX + (drawSheetW / 2);
+
+      const arrowGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
+
+      // Vertical yellow dimension arrow on left
+      const arrowX = offsetX + 25;
+      const vLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      vLine.setAttribute("x1", arrowX);
+      vLine.setAttribute("y1", offsetY + 2);
+      vLine.setAttribute("x2", arrowX);
+      vLine.setAttribute("y2", offsetY + topFreePx - 2);
+      vLine.setAttribute("stroke", "#fde047");
+      vLine.setAttribute("stroke-width", "1.5");
+      arrowGroup.appendChild(vLine);
+
+      // Arrow heads (Top & Bottom)
+      const topHead = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      topHead.setAttribute("points", `${arrowX},${offsetY + 2} ${arrowX - 3},${offsetY + 7} ${arrowX + 3},${offsetY + 7}`);
+      topHead.setAttribute("fill", "#fde047");
+      arrowGroup.appendChild(topHead);
+
+      const botHead = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+      botHead.setAttribute("points", `${arrowX},${offsetY + topFreePx - 2} ${arrowX - 3},${offsetY + topFreePx - 7} ${arrowX + 3},${offsetY + topFreePx - 7}`);
+      botHead.setAttribute("fill", "#fde047");
+      arrowGroup.appendChild(botHead);
+
+      // Top free space badge/pill in center
+      const badgeW = 280;
+      const badgeH = Math.min(24, Math.max(16, topFreePx - 8));
+      const badgeX = centerX - (badgeW / 2);
+      const badgeY = midY - (badgeH / 2);
+
+      const badgeRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+      badgeRect.setAttribute("x", badgeX);
+      badgeRect.setAttribute("y", badgeY);
+      badgeRect.setAttribute("width", badgeW);
+      badgeRect.setAttribute("height", badgeH);
+      badgeRect.setAttribute("rx", "4");
+      badgeRect.setAttribute("ry", "4");
+      badgeRect.setAttribute("fill", "rgba(15, 23, 42, 0.88)");
+      badgeRect.setAttribute("stroke", "#fde047");
+      badgeRect.setAttribute("stroke-width", "1.2");
+      arrowGroup.appendChild(badgeRect);
+
+      const badgeText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+      badgeText.setAttribute("x", centerX);
+      badgeText.setAttribute("y", midY + 4);
+      badgeText.setAttribute("fill", "#fde047");
+      badgeText.setAttribute("font-size", "10px");
+      badgeText.setAttribute("font-weight", "bold");
+      badgeText.setAttribute("text-anchor", "middle");
+      badgeText.textContent = `✂ Top Free Space / مساحة فارغة: ${topFreeSpaceCm.toFixed(1)} cm (${S_W}×${topFreeSpaceCm.toFixed(1)} cm)`;
+      arrowGroup.appendChild(badgeText);
+
+      svg.appendChild(arrowGroup);
+    }
+  }
+
   // 4. Draw Ruler/Dimensions text around the sheet
   // Width dimension (Top)
   const textWidth = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -4665,7 +4784,11 @@ function renderLayoutSvg(S_W, S_H, activeLayout, activeDirection, origW = 0, ori
   if (cols > 0 && rows > 0) {
     const textItemDim = document.createElementNS("http://www.w3.org/2000/svg", "text");
     textItemDim.setAttribute("x", offsetX + startXPx + (drawItemFlatW / 2));
-    textItemDim.setAttribute("y", offsetY + startYPx + drawItemFlatH + 15);
+    let textDimY = offsetY + startYPx + drawItemFlatH + 15;
+    if (currentPaperMode === 'bags') {
+      textDimY = offsetY + drawSheetH + 15;
+    }
+    textItemDim.setAttribute("y", textDimY);
     textItemDim.setAttribute("fill", "#10b981");
     textItemDim.setAttribute("font-size", "9px");
     textItemDim.setAttribute("font-weight", "normal");

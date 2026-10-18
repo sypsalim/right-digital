@@ -724,13 +724,19 @@
                 <span class="extra-desc">0.12 SR / bag</span>
               </div>
             </label>
-            <label class="extra-checkbox-card">
-              <input type="checkbox" id="extraPacking" checked>
-              <div class="extra-info">
-                <span class="extra-title">Packing / تغليف مغلفات</span>
-                <span class="extra-desc" id="packingPriceText">1.00 SR / 100 pcs pack</span>
+            <div class="extra-checkbox-card custom-extra-card" id="packingCardEl">
+              <label class="extra-checkbox-label" for="extraPacking">
+                <input type="checkbox" id="extraPacking" checked>
+                <div class="extra-info">
+                  <span class="extra-title">Packing / تغليف مغلفات</span>
+                  <span class="extra-desc" id="packingPriceText">1.00 SR / 100 pcs pack</span>
+                </div>
+              </label>
+              <div class="extra-rate-input-wrapper">
+                <input type="number" id="packingRateInput" min="0" step="0.25" class="form-input rate-adj-input" value="1.00" placeholder="1.00">
+                <span class="rate-unit">SR</span>
               </div>
-            </label>
+            </div>
             <label class="extra-checkbox-card" id="bagRibbonOnlyCardEl">
               <input type="checkbox" id="extraBagRibbonOnly">
               <div class="extra-info">
