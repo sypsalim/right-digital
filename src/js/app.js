@@ -3033,6 +3033,35 @@ function calculateAndUpdate() {
     }
   }
 
+  // Update Bag Top Free Space Banner at the bottom of the layout preview
+  const bagFreeSpaceBanner = document.getElementById('bagFreeSpaceBanner');
+  if (bagFreeSpaceBanner) {
+    if (currentPaperMode === 'bags' && activeLayout && activeLayout.rows > 0) {
+      const itemFlatH = activeLayout.itemH;
+      const totalLayoutHCm = activeLayout.rows * itemFlatH + (activeLayout.rows - 1) * designSpace;
+      const bottomGripperMarginCm = 1.0;
+      let topFreeSpaceCm = 0;
+      if (S_H >= (totalLayoutHCm + bottomGripperMarginCm)) {
+        topFreeSpaceCm = S_H - totalLayoutHCm - bottomGripperMarginCm;
+      } else if (S_H >= totalLayoutHCm) {
+        topFreeSpaceCm = S_H - totalLayoutHCm;
+      }
+      
+      if (topFreeSpaceCm > 0.1) {
+        bagFreeSpaceBanner.style.display = 'flex';
+        const freeArea = S_W * topFreeSpaceCm;
+        const valFreeElem = document.getElementById('valBagTopFreeSpace');
+        const dimFreeElem = document.getElementById('valBagTopFreeSpaceDim');
+        if (valFreeElem) valFreeElem.innerText = `${topFreeSpaceCm.toFixed(1)} cm`;
+        if (dimFreeElem) dimFreeElem.innerText = `(Sheet Wastage: ${S_W} × ${topFreeSpaceCm.toFixed(1)} cm = ${freeArea.toFixed(1)} cm²)`;
+      } else {
+        bagFreeSpaceBanner.style.display = 'none';
+      }
+    } else {
+      bagFreeSpaceBanner.style.display = 'none';
+    }
+  }
+
   // 5. Render Comparison Table
 
   renderComparisonTable(layout, bestDirection, activeDirection);

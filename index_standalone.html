@@ -928,8 +928,98 @@ input:checked + .slider:before {
   flex-shrink: 0;
 }
 
+}
+
+/* Bag Top Free Space Banner at bottom of layout preview */
+.bag-free-space-banner {
+  margin-top: 10px;
+  background: linear-gradient(135deg, rgba(12, 21, 59, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  border: 1.5px solid #fde047 !important;
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(253, 224, 71, 0.2);
+  transition: var(--transition-smooth);
+}
+
+.bag-free-space-banner:hover {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.25);
+}
+
+.bag-free-space-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(253, 224, 71, 0.15);
+  border: 1px solid rgba(253, 224, 71, 0.45);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.bag-free-space-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.bag-free-space-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fde047 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bag-free-space-values {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bag-free-space-val {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  letter-spacing: -0.3px;
+}
+
+.bag-free-space-sheet {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.bag-gripper-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  white-space: nowrap;
+}
+
+.bag-gripper-pill .gripper-icon {
+  font-size: 0.7rem;
+}
+
 @media (max-width: 768px) {
-  .total-pieces-banner {
+  .total-pieces-banner,
+  .bag-free-space-banner {
     flex-direction: column;
     align-items: flex-start;
   }
@@ -939,6 +1029,7 @@ input:checked + .slider:before {
     white-space: normal;
   }
 }
+
 
 /* Quantity Mode Toggle (Sheets vs Pieces) */
 .qty-mode-toggle {
@@ -3696,6 +3787,22 @@ body[data-theme="light"],
                 <span class="total-pieces-val" id="valTotalPieces">-</span>
               </div>
               <div class="total-pieces-formula" id="valTotalPiecesFormula">—</div>
+            </div>
+
+            <!-- Bag Top Free Space / Wastage Banner (Bags Mode) -->
+            <div class="bag-free-space-banner" id="bagFreeSpaceBanner" style="display: none;">
+              <div class="bag-free-space-icon">✂️</div>
+              <div class="bag-free-space-content">
+                <span class="bag-free-space-label">Top Free Space / المساحة الفارغة العلوية (هدر الفرخ)</span>
+                <div class="bag-free-space-values">
+                  <span class="bag-free-space-val" id="valBagTopFreeSpace">0.0 cm</span>
+                  <span class="bag-free-space-sheet" id="valBagTopFreeSpaceDim">(100 × 0.0 cm)</span>
+                </div>
+              </div>
+              <div class="bag-gripper-pill" id="valBagGripperBottom">
+                <span class="gripper-icon">▲</span>
+                <span>Gripper: 1.0 cm (Bottom) / ملقط الماكينة</span>
+              </div>
             </div>
           </div>
         </div>
@@ -7550,6 +7657,35 @@ function calculateAndUpdate() {
       } else {
         totalPiecesFormulaElem.innerText = `${ups} Ups × ${baseSheetsNeeded.toLocaleString()} sheets = ${netPieces.toLocaleString()} pcs`;
       }
+    }
+  }
+
+  // Update Bag Top Free Space Banner at the bottom of the layout preview
+  const bagFreeSpaceBanner = document.getElementById('bagFreeSpaceBanner');
+  if (bagFreeSpaceBanner) {
+    if (currentPaperMode === 'bags' && activeLayout && activeLayout.rows > 0) {
+      const itemFlatH = activeLayout.itemH;
+      const totalLayoutHCm = activeLayout.rows * itemFlatH + (activeLayout.rows - 1) * designSpace;
+      const bottomGripperMarginCm = 1.0;
+      let topFreeSpaceCm = 0;
+      if (S_H >= (totalLayoutHCm + bottomGripperMarginCm)) {
+        topFreeSpaceCm = S_H - totalLayoutHCm - bottomGripperMarginCm;
+      } else if (S_H >= totalLayoutHCm) {
+        topFreeSpaceCm = S_H - totalLayoutHCm;
+      }
+      
+      if (topFreeSpaceCm > 0.1) {
+        bagFreeSpaceBanner.style.display = 'flex';
+        const freeArea = S_W * topFreeSpaceCm;
+        const valFreeElem = document.getElementById('valBagTopFreeSpace');
+        const dimFreeElem = document.getElementById('valBagTopFreeSpaceDim');
+        if (valFreeElem) valFreeElem.innerText = `${topFreeSpaceCm.toFixed(1)} cm`;
+        if (dimFreeElem) dimFreeElem.innerText = `(Sheet Wastage: ${S_W} × ${topFreeSpaceCm.toFixed(1)} cm = ${freeArea.toFixed(1)} cm²)`;
+      } else {
+        bagFreeSpaceBanner.style.display = 'none';
+      }
+    } else {
+      bagFreeSpaceBanner.style.display = 'none';
     }
   }
 
