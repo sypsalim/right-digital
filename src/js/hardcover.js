@@ -249,7 +249,7 @@ function calculateHardcover() {
       <strong>💡 Method Cost Comparison / مقارنة التكاليف:</strong> 
       Manual: <strong>${totalManualMakingCost.toFixed(2)} SR</strong> (${(totalManualMakingCost / boxQty).toFixed(2)} SR/box) | 
       Machine: <strong>${totalMachineMakingCost.toFixed(2)} SR</strong> (${(totalMachineMakingCost / boxQty).toFixed(2)} SR/box)<br>
-      <span style="color: var(--accent-emerald); font-weight: 700;">
+      <span class="cheaper-msg" style="font-weight: 800;">
         ✓ ${cheaper} Making is more cost-effective by ${diff.toFixed(2)} SR (${(diff / boxQty).toFixed(2)} SR/box) for ${boxQty} boxes.
       </span>
     `;
@@ -356,6 +356,8 @@ function renderVisualSheetPreview(layout, itemW, itemH, title) {
   const container = document.getElementById('hardcoverLayoutContainer');
   if (!container) return;
 
+  const isLight = document.body.getAttribute('data-theme') === 'light' || document.documentElement.getAttribute('data-theme') === 'light';
+
   const sheetW = 100;
   const sheetH = 70;
   const svgW = 460;
@@ -369,6 +371,16 @@ function renderVisualSheetPreview(layout, itemW, itemH, title) {
   const fitH = layout.fitH;
   const ups = layout.ups;
 
+  const rectFill = isLight ? 'rgba(92, 69, 39, 0.12)' : 'rgba(212, 175, 55, 0.22)';
+  const rectStroke = isLight ? '#5c4527' : '#d4af37';
+  const textFill = isLight ? '#1A1510' : '#fbbf24';
+  const sheetFill = isLight ? '#ffffff' : 'rgba(255, 255, 255, 0.03)';
+  const sheetStroke = isLight ? '#5c4527' : 'rgba(255, 255, 255, 0.25)';
+  const boxBorder = isLight ? '2px solid #5c4527' : '2px dashed rgba(212, 175, 55, 0.4)';
+  const boxBg = isLight ? '#ffffff' : 'rgba(0,0,0,0.2)';
+  const titleColor = isLight ? '#78350f' : 'var(--primary-gold)';
+  const statColor = isLight ? '#1A1510' : 'var(--text-muted)';
+
   let rectsSvg = '';
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
@@ -378,8 +390,8 @@ function renderVisualSheetPreview(layout, itemW, itemH, title) {
       const h = fitH * scale;
       rectsSvg += `
         <rect x="${x + 1}" y="${y + 1}" width="${w - 2}" height="${h - 2}" rx="3" 
-              fill="rgba(212, 175, 55, 0.22)" stroke="#d4af37" stroke-width="1.2" />
-        <text x="${x + w / 2}" y="${y + h / 2 + 4}" font-size="10" font-weight="700" fill="#f59e0b" text-anchor="middle">
+              fill="${rectFill}" stroke="${rectStroke}" stroke-width="${isLight ? 1.5 : 1.2}" />
+        <text x="${x + w / 2}" y="${y + h / 2 + 4}" font-size="11" font-weight="800" fill="${textFill}" text-anchor="middle">
           ${itemW}×${itemH}
         </text>
       `;
@@ -388,13 +400,13 @@ function renderVisualSheetPreview(layout, itemW, itemH, title) {
 
   container.innerHTML = `
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-      <span style="font-weight: 700; color: var(--primary-gold); font-size: 0.9rem;">${title}</span>
-      <span style="font-size: 0.8rem; color: var(--text-muted);">${ups} UPS • Wastage: ${layout.wastePercent.toFixed(1)}%</span>
+      <span style="font-weight: 800; color: ${titleColor}; font-size: 0.95rem;">${title}</span>
+      <span style="font-size: 0.85rem; color: ${statColor}; font-weight: 700;">${ups} UPS • Wastage: ${layout.wastePercent.toFixed(1)}%</span>
     </div>
-    <div style="border: 2px dashed rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 6px; background: rgba(0,0,0,0.2); display: flex; justify-content: center;">
+    <div class="layout-svg-wrap" style="border: ${boxBorder}; border-radius: 8px; padding: 6px; background: ${boxBg}; display: flex; justify-content: center; box-shadow: ${isLight ? '0 2px 8px rgba(0,0,0,0.06)' : 'none'};">
       <svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="max-width: 100%; height: auto;">
         <!-- Sheet outline -->
-        <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" rx="4"/>
+        <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="${sheetFill}" stroke="${sheetStroke}" stroke-width="2" rx="4"/>
         ${rectsSvg}
       </svg>
     </div>
@@ -514,13 +526,27 @@ function initHardcoverUI() {
   const themeBtn = document.getElementById('themeToggleBtn');
   if (themeBtn) {
     themeBtn.addEventListener('click', () => {
-      const cur = document.body.getAttribute('data-theme');
+      const cur = document.body.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
       const next = cur === 'light' ? 'dark' : 'light';
-      document.body.setAttribute('data-theme', next);
+      if (next === 'light') {
+        document.body.setAttribute('data-theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
+      } else {
+        document.body.removeAttribute('data-theme');
+        document.documentElement.removeAttribute('data-theme');
+      }
       localStorage.setItem('theme', next);
+      const textSpan = document.getElementById('themeToggleText');
+      if (textSpan) textSpan.innerText = next === 'light' ? 'Dark Theme' : 'Light Theme';
+      calculateHardcover();
     });
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+    if (savedTheme === 'light') {
+      document.body.setAttribute('data-theme', 'light');
+      document.documentElement.setAttribute('data-theme', 'light');
+      const textSpan = document.getElementById('themeToggleText');
+      if (textSpan) textSpan.innerText = 'Dark Theme';
+    }
   }
 
   // Initial Calculation

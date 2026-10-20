@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/index.css?v=20261020_1920">
+  <link rel="stylesheet" href="src/css/index.css?v=20261020_1945">
 
   <style>
     .hardcover-nav-banner {
@@ -227,7 +227,7 @@
         <div class="card config-card">
           <div class="card-header">
             <h3>1. Box Quantity & Job Setup / الكمية ومعلومات العلبة</h3>
-            <span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b;">Step 1</span>
+            <span class="badge step-badge">Step 1</span>
           </div>
           <div class="form-row flex-wrap" style="gap: 14px;">
             <div class="form-group min-w-150" style="flex: 1.5;">
@@ -245,10 +245,10 @@
         </div>
 
         <!-- Section 2: Rigid Board Configuration -->
-        <div class="card config-card" style="border-left: 4px solid #f59e0b;">
+        <div class="card config-card" style="border-left: 4px solid var(--primary-gold);">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <h3>2. Rigid Board (Greyboard) / الكرتون المقوى</h3>
-            <span class="badge" style="background: rgba(212, 175, 55, 0.15); color: #f59e0b;">100×70 cm Sheet Base</span>
+            <span class="badge step-badge">100×70 cm Sheet Base</span>
           </div>
           <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
             Choose board thickness (GSM). Sheet prices are based on default 100x70 cm full sheet:
@@ -296,26 +296,26 @@
 
           <!-- Dynamic Rigid Board Output Badges -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;">
-            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-board">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">UPS on 100x70 Sheet</span>
-              <span id="boardUpsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+              <span id="boardUpsBadge" class="stat-val-amber">-</span>
             </div>
-            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-board">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Sheets Needed</span>
-              <span id="boardSheetsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+              <span id="boardSheetsBadge" class="stat-val-amber">-</span>
             </div>
-            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-cost">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Board Total Cost</span>
-              <span id="boardCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+              <span id="boardCostBadge" class="stat-val-emerald">-</span>
             </div>
           </div>
         </div>
 
         <!-- Section 3: Wrapping Paper & Printing -->
-        <div class="card config-card" style="border-left: 4px solid #06b6d4;">
+        <div class="card config-card" style="border-left: 4px solid var(--accent-cyan, #06b6d4);">
           <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
             <h3>3. Wrapping 150 GSM Paper / ورق التغليف الخارجي</h3>
-            <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">100x70 = 0.75 SR</span>
+            <span class="badge step-badge">100x70 = 0.75 SR</span>
           </div>
           <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
             Input wrapping paper flat size (including flaps for wrapping over rigid board edges):
@@ -343,17 +343,17 @@
 
           <!-- Dynamic Wrapping Output Badges -->
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 14px;">
-            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-wrap">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping UPS on 100x70</span>
-              <span id="wrapUpsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+              <span id="wrapUpsBadge" class="stat-val-cyan">-</span>
             </div>
-            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-wrap">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping Sheets Needed</span>
-              <span id="wrapSheetsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+              <span id="wrapSheetsBadge" class="stat-val-cyan">-</span>
             </div>
-            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+            <div class="stat-card-cost">
               <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrap Material Cost</span>
-              <span id="wrapPaperCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+              <span id="wrapPaperCostBadge" class="stat-val-emerald">-</span>
             </div>
           </div>
 
@@ -362,24 +362,24 @@
             <label class="extra-checkbox-label" for="enableWrapPrint" style="cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
               <input type="checkbox" id="enableWrapPrint" checked>
               <div class="extra-info">
-                <span class="extra-title" style="color: #06b6d4; font-weight: 700;">🖨️ Offset Printing on Wrapping Paper / طباعة ورق التغليف</span>
+                <span class="extra-title extra-title-cyan">🖨️ Offset Printing on Wrapping Paper / طباعة ورق التغليف</span>
               </div>
             </label>
 
             <div id="wrapPrintDetailsRow" style="padding-left: 26px;">
               <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Select Printing Sheet Size:</div>
               <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                <button type="button" class="print-size-btn active" data-size="100x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
-                  <div style="font-weight: 700; color: #06b6d4;">100×70 cm Paper</div>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 250 SR + 200 SR / 1k sh</div>
+                <button type="button" class="print-size-btn active" data-size="100x70">
+                  <div class="btn-title">100×70 cm Paper</div>
+                  <div class="btn-sub">Setup 250 SR + 200 SR / 1k sh</div>
                 </button>
-                <button type="button" class="print-size-btn" data-size="50x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
-                  <div style="font-weight: 700; color: #06b6d4;">50×70 cm Paper</div>
-                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 150 SR + 100 SR / 1k sh</div>
+                <button type="button" class="print-size-btn" data-size="50x70">
+                  <div class="btn-title">50×70 cm Paper</div>
+                  <div class="btn-sub">Setup 150 SR + 100 SR / 1k sh</div>
                 </button>
               </div>
 
-              <div id="wrapPrintTotalBadge" style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; color: #06b6d4;">
+              <div id="wrapPrintTotalBadge" class="wrap-print-badge">
                 -
               </div>
             </div>
@@ -390,7 +390,7 @@
         <div class="card config-card" style="border-left: 4px solid var(--accent-emerald);">
           <div class="card-header">
             <h3>4. Box Making Cost (Labor + Glue) / طريقة التصنيع والتجميع</h3>
-            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald);">Assembly</span>
+            <span class="badge step-badge">Assembly</span>
           </div>
 
           <!-- Method Selector Buttons -->
@@ -409,7 +409,7 @@
 
           <!-- Manual Making Details Card -->
           <div id="manualMakingCardDetails" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-            <div style="font-weight: 700; color: #f59e0b; margin-bottom: 8px; font-size: 0.9rem;">
+            <div class="extra-title-amber" style="margin-bottom: 8px; font-size: 0.9rem;">
               🛠️ Manual Box Making Parameters / إعدادات التصنيع اليدوي
             </div>
             <div class="form-row flex-wrap" style="gap: 12px;">
@@ -426,14 +426,14 @@
                 <input type="number" id="manualHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
               </div>
             </div>
-            <div id="manualTotalBadge" style="margin-top: 8px; font-weight: 700; color: #f59e0b; font-size: 0.9rem;">
+            <div id="manualTotalBadge" class="stat-val-amber" style="margin-top: 8px; font-size: 0.9rem;">
               -
             </div>
           </div>
 
           <!-- Machine Making Details Card (Hidden by default) -->
           <div id="machineMakingCardDetails" class="hidden" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
-            <div style="font-weight: 700; color: #06b6d4; margin-bottom: 8px; font-size: 0.9rem;">
+            <div class="extra-title-cyan" style="margin-bottom: 8px; font-size: 0.9rem;">
               ⚙️ Machine Box Making Parameters / إعدادات التصنيع الآلي بالماكينة
             </div>
             <div class="form-row flex-wrap" style="gap: 12px;">
@@ -454,13 +454,13 @@
                 <input type="number" id="machineHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
               </div>
             </div>
-            <div id="machineTotalBadge" style="margin-top: 8px; font-weight: 700; color: #06b6d4; font-size: 0.9rem;">
+            <div id="machineTotalBadge" class="stat-val-cyan" style="margin-top: 8px; font-size: 0.9rem;">
               -
             </div>
           </div>
 
           <!-- Side-by-side comparison indicator -->
-          <div id="makingComparisonNotice" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed var(--accent-emerald); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
+          <div id="makingComparisonNotice" class="making-method-notice-box">
             <!-- Dynamic comparison details -->
           </div>
         </div>
@@ -469,14 +469,14 @@
         <div class="card config-card">
           <div class="card-header">
             <h3>5. Luxury Finishes & Extras / لمسات فاخرة اختيارية</h3>
-            <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">Extras</span>
+            <span class="badge step-badge">Extras</span>
           </div>
 
           <!-- Gold Foil Stamping -->
           <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
             <label class="extra-checkbox-label" for="hardcoverFoil" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
               <input type="checkbox" id="hardcoverFoil">
-              <span class="extra-title" style="color: #f59e0b; font-weight: 700;">★ Gold Foil Stamping / بصمة حرارية</span>
+              <span class="extra-title extra-title-amber">★ Gold Foil Stamping / بصمة حرارية</span>
             </label>
             <div id="hardcoverFoilDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
               <div class="form-row flex-wrap" style="gap: 10px;">
@@ -489,7 +489,7 @@
                   <input type="number" id="hcFoilH" value="10" min="1" step="0.5" class="form-input">
                 </div>
               </div>
-              <div id="hcFoilSummary" style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; margin-top: 4px;">-</div>
+              <div id="hcFoilSummary" class="stat-val-amber" style="font-size: 0.85rem; margin-top: 4px;">-</div>
             </div>
           </div>
 
@@ -497,7 +497,7 @@
           <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
             <label class="extra-checkbox-label" for="hardcoverUv" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
               <input type="checkbox" id="hardcoverUv">
-              <span class="extra-title" style="color: #06b6d4; font-weight: 700;">✨ Spot UV Varnish / ورنيش يو في موضعي</span>
+              <span class="extra-title extra-title-cyan">✨ Spot UV Varnish / ورنيش يو في موضعي</span>
             </label>
             <div id="hardcoverUvDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
               <div class="form-row flex-wrap" style="gap: 10px;">
@@ -510,7 +510,7 @@
                   <input type="number" id="hcUvH" value="25" min="1" step="1" class="form-input">
                 </div>
               </div>
-              <div id="hcUvSummary" style="font-size: 0.85rem; color: #06b6d4; font-weight: 700; margin-top: 4px;">-</div>
+              <div id="hcUvSummary" class="stat-val-cyan" style="font-size: 0.85rem; margin-top: 4px;">-</div>
             </div>
           </div>
 
@@ -518,10 +518,10 @@
           <div>
             <label class="extra-checkbox-label" for="hardcoverDieBoard" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
               <input type="checkbox" id="hardcoverDieBoard">
-              <span class="extra-title" style="color: var(--accent-emerald); font-weight: 700;">✂️ Die Cutting Board & Cylinder / قالب وسلندر تكسير</span>
+              <span class="extra-title extra-title-emerald">✂️ Die Cutting Board & Cylinder / قالب وسلندر تكسير</span>
             </label>
             <div id="hardcoverDieDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
-              <div id="hcDieSummary" style="font-size: 0.85rem; color: var(--accent-emerald); font-weight: 700;">-</div>
+              <div id="hcDieSummary" class="stat-val-emerald" style="font-size: 0.85rem; margin-top: 4px;">-</div>
             </div>
           </div>
         </div>
@@ -556,17 +556,17 @@
         <div class="results-card" style="border: 1px solid var(--primary-gold);">
           <div class="card-header" style="border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 10px;">
             <h3>Hardcover Luxury Box Cost / ملخص تسعير علب الهارد بوكس</h3>
-            <span class="badge" id="summaryBoxQty" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b; font-weight: 700;">500 Boxes</span>
+            <span class="badge step-badge" id="summaryBoxQty">500 Boxes</span>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 0; border-bottom: 1px dashed var(--border-light);">
             <div>
               <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Selling Price / الإجمالي النهائي:</div>
-              <div id="summaryTotalCost" style="font-size: 2.2rem; font-weight: 800; color: #f59e0b; line-height: 1.1;">0.00 SR</div>
+              <div id="summaryTotalCost" class="stat-val-amber" style="font-size: 2.2rem; font-weight: 900; line-height: 1.1;">0.00 SR</div>
             </div>
             <div style="text-align: right;">
               <div style="font-size: 0.8rem; color: var(--text-muted);">Unit Price / سعر الحبة:</div>
-              <div id="summaryUnitCost" style="font-size: 1.4rem; font-weight: 700; color: var(--accent-emerald);">0.00 SR / box</div>
+              <div id="summaryUnitCost" class="stat-val-emerald" style="font-size: 1.4rem; font-weight: 800;">0.00 SR / box</div>
             </div>
           </div>
 
@@ -597,9 +597,9 @@
               <span style="color: var(--text-muted);">Production Base Cost:</span>
               <strong id="sumBaseCost" style="color: var(--text-main);">-</strong>
             </div>
-            <div style="display: flex; justify-content: space-between; color: var(--accent-emerald);">
-              <span>Added Profit Margin:</span>
-              <strong id="sumProfitAmount">-</strong>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Added Profit Margin:</span>
+              <strong id="sumProfitAmount" class="stat-val-emerald">-</strong>
             </div>
           </div>
 
@@ -622,6 +622,6 @@
 
   </div>
 
-  <script src="src/js/hardcover.js?v=20261020_1835"></script>
+  <script src="src/js/hardcover.js?v=20261020_1945"></script>
 </body>
 </html>

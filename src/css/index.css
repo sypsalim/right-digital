@@ -2912,6 +2912,257 @@ body[data-theme="light"],
   color: #1A1510 !important;
 }
 
+/* ==========================================================================
+   HARDCOVER LUXURY BOXES STYLING (DARK & LIGHT THEMES)
+   ========================================================================== */
+
+/* Dark Mode Defaults */
+.stat-card-board {
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+.stat-card-wrap {
+  background: rgba(6, 182, 212, 0.08);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+.stat-card-cost {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+
+.stat-val-amber {
+  font-weight: 700;
+  color: #fbbf24;
+  font-size: 0.95rem;
+}
+.stat-val-cyan {
+  font-weight: 700;
+  color: #22d3ee;
+  font-size: 0.95rem;
+}
+.stat-val-emerald {
+  font-weight: 700;
+  color: #34d399;
+  font-size: 0.95rem;
+}
+
+.extra-title-amber {
+  color: #fbbf24;
+  font-weight: 700;
+}
+.extra-title-cyan {
+  color: #22d3ee;
+  font-weight: 700;
+}
+.extra-title-emerald {
+  color: #34d399;
+  font-weight: 700;
+}
+
+.step-badge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(212, 175, 55, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.print-size-btn {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border-light);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-main);
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-smooth);
+}
+.print-size-btn .btn-title {
+  font-weight: 700;
+  color: #22d3ee;
+  margin-bottom: 2px;
+}
+.print-size-btn .btn-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.print-size-btn:hover {
+  border-color: #06b6d4;
+  background: rgba(6, 182, 212, 0.08);
+}
+.print-size-btn.active {
+  border-color: #06b6d4;
+  background: rgba(6, 182, 212, 0.2);
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.25);
+}
+
+.wrap-print-badge {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #22d3ee;
+}
+
+.making-method-notice-box {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border-radius: 6px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   LIGHT THEME OVERRIDES FOR HARDCOVER
+   ========================================================================== */
+[data-theme="light"] .stat-card-board,
+[data-theme="light"] .stat-card-wrap,
+[data-theme="light"] .stat-card-cost {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(26, 21, 16, 0.22) !important;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="light"] .stat-val-amber,
+[data-theme="light"] #boardUpsBadge,
+[data-theme="light"] #boardSheetsBadge,
+[data-theme="light"] #manualTotalBadge,
+[data-theme="light"] #hcFoilSummary {
+  color: #78350f !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .stat-val-cyan,
+[data-theme="light"] #wrapUpsBadge,
+[data-theme="light"] #wrapSheetsBadge,
+[data-theme="light"] #wrapPrintTotalBadge,
+[data-theme="light"] #machineTotalBadge,
+[data-theme="light"] #hcUvSummary {
+  color: #0e7490 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .stat-val-emerald,
+[data-theme="light"] #boardCostBadge,
+[data-theme="light"] #wrapPaperCostBadge,
+[data-theme="light"] #hcDieSummary,
+[data-theme="light"] #summaryUnitCost,
+[data-theme="light"] #sumProfitAmount {
+  color: #046c4e !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .extra-title-amber {
+  color: #78350f !important;
+  font-weight: 800 !important;
+}
+[data-theme="light"] .extra-title-cyan {
+  color: #0e7490 !important;
+  font-weight: 800 !important;
+}
+[data-theme="light"] .extra-title-emerald {
+  color: #046c4e !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .step-badge,
+[data-theme="light"] #summaryBoxQty {
+  background: #5c4527 !important;
+  color: #ffffff !important;
+  border: 1px solid #3d2d18 !important;
+  box-shadow: 0 2px 6px rgba(92, 69, 39, 0.3) !important;
+}
+
+[data-theme="light"] .print-size-btn {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(26, 21, 16, 0.22) !important;
+  color: #1A1510 !important;
+}
+[data-theme="light"] .print-size-btn .btn-title {
+  color: #0e7490 !important;
+  font-weight: 800 !important;
+}
+[data-theme="light"] .print-size-btn .btn-sub {
+  color: #4A3E31 !important;
+  font-weight: 600 !important;
+}
+[data-theme="light"] .print-size-btn.active {
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+[data-theme="light"] .print-size-btn.active .btn-title,
+[data-theme="light"] .print-size-btn.active .btn-sub {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .wrap-print-badge {
+  background: #ffffff !important;
+  border: 1.5px solid #0e7490 !important;
+  color: #0e7490 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .making-method-btn {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(26, 21, 16, 0.22) !important;
+  color: #1A1510 !important;
+}
+[data-theme="light"] .making-method-btn.active {
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+[data-theme="light"] .rigid-gsm-btn {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(26, 21, 16, 0.22) !important;
+  color: #1A1510 !important;
+}
+[data-theme="light"] .rigid-gsm-btn.active {
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+[data-theme="light"] .making-method-notice-box {
+  background: #ffffff !important;
+  border: 1.5px solid #046c4e !important;
+  color: #1A1510 !important;
+}
+[data-theme="light"] .making-method-notice-box strong {
+  color: #1A1510 !important;
+}
+[data-theme="light"] .making-method-notice-box .cheaper-msg {
+  color: #046c4e !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] #summaryTotalCost {
+  color: #78350f !important;
+  font-weight: 900 !important;
+}
+
+[data-theme="light"] #hardcoverLayoutContainer .layout-svg-wrap {
+  background: #ffffff !important;
+  border: 2px solid #5c4527 !important;
+}
+
 /* ABSOLUTE MASTER OVERRIDE FOR DEFAULT A4 PRINTING & CLEAN WHITE PDF */
 @media print {
   @page {
