@@ -83,7 +83,7 @@ const DEFAULT_PRICING = {
     tier3: 2.50  // Qty 150+ sheets: 2.50 SR / sheet
   },
 
-  // UV Coating service rates per sheet size & tier in SR
+  // UV Coating service rates per sheet size & tier in SR (legacy)
   uvRates: {
     '100x70': { tier500: 275.00, tier1000: 400.00 },
     '90x64':  { tier500: 250.00, tier1000: 375.00 },
@@ -93,6 +93,16 @@ const DEFAULT_PRICING = {
     '50x35':  { tier500: 150.00, tier1000: 250.00 },
     'A3':     { tier500: 150.00, tier1000: 250.00 },
     'A4':     { tier500: 150.00, tier1000: 250.00 }
+  },
+
+  // UV Spot Varnish & Screen Print Process Pricing Config
+  uvConfig: {
+    fullSheetRate: 500.00,       // 100x70 Full Sheet Default Cost for 1000 sheets (SR)
+    screenSetup: 100.00,         // Setup Screen Print cost (SR)
+    screenFilm: 200.00,          // Screen Film (85 x 60 cm) (SR)
+    exposingChemical: 50.00,     // Exposing Chemical (SR)
+    defaultL: 40,                // Default length cm
+    defaultH: 25                 // Default height cm
   },
 
   // Quantity-Based Profit Margin Tiers (Percentage Added to Final Total)
@@ -1045,6 +1055,15 @@ function loadPricingFromStorage() {
           }
         });
       }
+      if (!currentPricing.uvConfig) {
+        currentPricing.uvConfig = JSON.parse(JSON.stringify(DEFAULT_PRICING.uvConfig));
+      } else {
+        Object.keys(DEFAULT_PRICING.uvConfig).forEach(k => {
+          if (currentPricing.uvConfig[k] === undefined) {
+            currentPricing.uvConfig[k] = DEFAULT_PRICING.uvConfig[k];
+          }
+        });
+      }
     } catch (e) {
       console.error("Error parsing stored pricing. Reverting to defaults.", e);
       currentPricing = JSON.parse(JSON.stringify(DEFAULT_PRICING));
@@ -1284,7 +1303,7 @@ function initUI() {
     'extraOffsetPrint', 'offsetSetupRateInput', 'offsetBacksidePrint',
     'extraPlastic', 'plasticMicron', 'plasticLength', 'plasticWidth', 'plasticDiecutRate', 'plasticCutType', 'plasticDieSetupRate', 'plasticPolarCutRate', 'plasticQtyInput',
     'extraGoldFoil', 'foilLength', 'foilHeight', 'foilImpressionRateInput',
-    'extraUvCost',
+    'extraUvCost', 'uvLength', 'uvHeight', 'uvFullSheetCostInput', 'uvSetupCostInput', 'uvFilmCostInput', 'uvChemicalCostInput',
     'enableBagInnerBoard', 'bagInnerBoardSheetPreset', 'bagInnerBoardSheetL', 'bagInnerBoardSheetW', 'bagInnerBoardLength', 'bagInnerBoardWidth', 'bagInnerBoardSheetCost', 'bagInnerBoardQty',
     'tshirtCloth', 'tshirtSize', 'laserUps', 'tshirtTransfer', 'cupTransfer', 'tshirtCupQty'
   ];
@@ -1349,6 +1368,15 @@ function initUI() {
           calculateAndUpdate();
         });
       }
+    }
+  });
+
+  // Explicit UV inputs listeners for immediate recalculation
+  ['extraUvCost', 'uvLength', 'uvHeight', 'uvFullSheetCostInput', 'uvSetupCostInput', 'uvFilmCostInput', 'uvChemicalCostInput'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', () => calculateAndUpdate());
+      el.addEventListener('change', () => calculateAndUpdate());
     }
   });
 
@@ -1905,6 +1933,7 @@ function initUI() {
   if (offsetSetupRateInput) {
     offsetSetupRateInput.value = getOffsetSetupCostForSize(selectedPaperSizeId).toFixed(2);
   }
+  syncMainScreenRateInputs();
 
   // Mutually exclusive toggle for Die Cutting
   const extraDieCylinder = document.getElementById('extraDieCylinder');
@@ -2232,36 +2261,46 @@ function populateSettingsDrawer() {
     });
   }
 
-  // 5.5. UV Rates
+  // 5.5. UV Rates & Process Settings
   const uvContainer = document.getElementById('settingsUvContainer');
   if (uvContainer) {
     uvContainer.innerHTML = '';
-    const uvSizes = [
-      { id: '100x70', label: '100x70 Cm Paper' },
-      { id: '90x64',  label: '90x64 Cm Paper' },
-      { id: '50x70',  label: '50x70 Cm Paper' },
-      { id: '70x33',  label: '70x33 / 50x33 Cm Paper' }
-    ];
-    uvSizes.forEach(sz => {
-      const rateObj = (currentPricing.uvRates && currentPricing.uvRates[sz.id])
-        ? currentPricing.uvRates[sz.id]
-        : (DEFAULT_PRICING.uvRates[sz.id] || { tier500: 150, tier1000: 250 });
-      uvContainer.innerHTML += `
-        <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
-          <label style="color: #06b6d4; font-weight: 700;">${sz.label}</label>
-          <div style="display: flex; gap: 8px; margin-top: 4px;">
-            <div style="flex: 1;">
-              <span style="font-size: 0.72rem; color: var(--text-muted);">500 Sheets (SR)</span>
-              <input type="number" step="1" class="form-input uv-rate-500" data-size="${sz.id}" value="${rateObj.tier500.toFixed(2)}">
-            </div>
-            <div style="flex: 1;">
-              <span style="font-size: 0.72rem; color: var(--text-muted);">1000 Sheets (SR)</span>
-              <input type="number" step="1" class="form-input uv-rate-1000" data-size="${sz.id}" value="${rateObj.tier1000.toFixed(2)}">
-            </div>
+    const uvCfg = (currentPricing && currentPricing.uvConfig) ? currentPricing.uvConfig : DEFAULT_PRICING.uvConfig;
+    uvContainer.innerHTML = `
+      <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
+        <label style="color: #06b6d4; font-weight: 700;">Full Sheet Rate (SR / 1k sh)</label>
+        <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">100x70 / 90x64 / 70x50 cm default</span>
+        <input type="number" step="10" id="settingsUvFullSheet" class="form-input" value="${(uvCfg.fullSheetRate !== undefined ? uvCfg.fullSheetRate : 500.00).toFixed(2)}">
+      </div>
+      <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
+        <label style="color: #06b6d4; font-weight: 700;">Screen Setup (SR)</label>
+        <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Setup Screen Print Cost</span>
+        <input type="number" step="5" id="settingsUvScreenSetup" class="form-input" value="${(uvCfg.screenSetup !== undefined ? uvCfg.screenSetup : 100.00).toFixed(2)}">
+      </div>
+      <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
+        <label style="color: #06b6d4; font-weight: 700;">Screen Film 85x60cm (SR)</label>
+        <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Film Positive Cost</span>
+        <input type="number" step="5" id="settingsUvScreenFilm" class="form-input" value="${(uvCfg.screenFilm !== undefined ? uvCfg.screenFilm : 200.00).toFixed(2)}">
+      </div>
+      <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
+        <label style="color: #06b6d4; font-weight: 700;">Chemical (SR)</label>
+        <span style="font-size: 0.72rem; color: var(--text-muted); display: block; margin-bottom: 4px;">Exposing Chemical Cost</span>
+        <input type="number" step="5" id="settingsUvChemical" class="form-input" value="${(uvCfg.exposingChemical !== undefined ? uvCfg.exposingChemical : 50.00).toFixed(2)}">
+      </div>
+      <div class="form-group min-w-150" style="flex: 1; border: 1px solid var(--border-light); padding: 10px; border-radius: var(--border-radius-sm);">
+        <label style="color: #06b6d4; font-weight: 700;">Default Area (cm)</label>
+        <div style="display: flex; gap: 8px; margin-top: 4px;">
+          <div style="flex: 1;">
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Def L</span>
+            <input type="number" step="0.5" id="settingsUvDefL" class="form-input" value="${uvCfg.defaultL || 40}">
+          </div>
+          <div style="flex: 1;">
+            <span style="font-size: 0.72rem; color: var(--text-muted);">Def H</span>
+            <input type="number" step="0.5" id="settingsUvDefH" class="form-input" value="${uvCfg.defaultH || 25}">
           </div>
         </div>
-      `;
-    });
+      </div>
+    `;
   }
 
 
@@ -2466,35 +2505,25 @@ function saveSettingsFromDrawer() {
     });
   }
 
-  // 5.5. UV Rates save
-  const uv500Inputs = document.querySelectorAll('.uv-rate-500');
-  const uv1000Inputs = document.querySelectorAll('.uv-rate-1000');
-  if (uv500Inputs.length > 0) {
-    if (!currentPricing.uvRates) currentPricing.uvRates = {};
-    uv500Inputs.forEach(input => {
-      const sz = input.getAttribute('data-size');
-      if (!currentPricing.uvRates[sz]) currentPricing.uvRates[sz] = {};
-      const val = parseFloat(input.value) || 0;
-      currentPricing.uvRates[sz].tier500 = val;
-      if (sz === '70x33') {
-        ['50x33', '50x35', 'A3', 'A4'].forEach(subSz => {
-          if (!currentPricing.uvRates[subSz]) currentPricing.uvRates[subSz] = {};
-          currentPricing.uvRates[subSz].tier500 = val;
-        });
-      }
-    });
-    uv1000Inputs.forEach(input => {
-      const sz = input.getAttribute('data-size');
-      if (!currentPricing.uvRates[sz]) currentPricing.uvRates[sz] = {};
-      const val = parseFloat(input.value) || 0;
-      currentPricing.uvRates[sz].tier1000 = val;
-      if (sz === '70x33') {
-        ['50x33', '50x35', 'A3', 'A4'].forEach(subSz => {
-          if (!currentPricing.uvRates[subSz]) currentPricing.uvRates[subSz] = {};
-          currentPricing.uvRates[subSz].tier1000 = val;
-        });
-      }
-    });
+  // 5.5. UV Rates & Process Settings save
+  if (!currentPricing.uvConfig) currentPricing.uvConfig = {};
+  if (document.getElementById('settingsUvFullSheet')) {
+    currentPricing.uvConfig.fullSheetRate = parseFloat(document.getElementById('settingsUvFullSheet').value) || 500.00;
+  }
+  if (document.getElementById('settingsUvScreenSetup')) {
+    currentPricing.uvConfig.screenSetup = parseFloat(document.getElementById('settingsUvScreenSetup').value) || 100.00;
+  }
+  if (document.getElementById('settingsUvScreenFilm')) {
+    currentPricing.uvConfig.screenFilm = parseFloat(document.getElementById('settingsUvScreenFilm').value) || 200.00;
+  }
+  if (document.getElementById('settingsUvChemical')) {
+    currentPricing.uvConfig.exposingChemical = parseFloat(document.getElementById('settingsUvChemical').value) || 50.00;
+  }
+  if (document.getElementById('settingsUvDefL')) {
+    currentPricing.uvConfig.defaultL = parseFloat(document.getElementById('settingsUvDefL').value) || 40;
+  }
+  if (document.getElementById('settingsUvDefH')) {
+    currentPricing.uvConfig.defaultH = parseFloat(document.getElementById('settingsUvDefH').value) || 25;
   }
 
   // 6. Fixed Services rates
@@ -2632,6 +2661,21 @@ function syncMainScreenRateInputs() {
   if (foilImpressionRateInput && currentPricing.fixedRates) {
     const val = currentPricing.fixedRates.foilImpressionRate !== undefined ? currentPricing.fixedRates.foilImpressionRate : 0.25;
     foilImpressionRateInput.value = val.toFixed(2);
+  }
+  if (currentPricing.uvConfig) {
+    const uvCfg = currentPricing.uvConfig;
+    const fullSheetInput = document.getElementById('uvFullSheetCostInput');
+    if (fullSheetInput) fullSheetInput.value = (uvCfg.fullSheetRate !== undefined ? uvCfg.fullSheetRate : 500.00).toFixed(2);
+    const setupInput = document.getElementById('uvSetupCostInput');
+    if (setupInput) setupInput.value = (uvCfg.screenSetup !== undefined ? uvCfg.screenSetup : 100.00).toFixed(2);
+    const filmInput = document.getElementById('uvFilmCostInput');
+    if (filmInput) filmInput.value = (uvCfg.screenFilm !== undefined ? uvCfg.screenFilm : 200.00).toFixed(2);
+    const chemInput = document.getElementById('uvChemicalCostInput');
+    if (chemInput) chemInput.value = (uvCfg.exposingChemical !== undefined ? uvCfg.exposingChemical : 50.00).toFixed(2);
+    const uvLInput = document.getElementById('uvLength');
+    if (uvLInput && !uvLInput.value) uvLInput.value = uvCfg.defaultL || 40;
+    const uvHInput = document.getElementById('uvHeight');
+    if (uvHInput && !uvHInput.value) uvHInput.value = uvCfg.defaultH || 25;
   }
 }
 
@@ -3567,55 +3611,89 @@ function calculateAndUpdate() {
   }
 
   let uvCost = 0;
-  if (optUvCost && sheetsNeeded > 0) {
-    const effectiveUvKey = (currentPricing && currentPricing.uvRates && currentPricing.uvRates[sizeLabel]) 
-      ? sizeLabel 
-      : (['50x33', '50x35', 'A3', 'A4'].includes(sizeLabel) ? '70x33' : sizeLabel);
+  let uvL = 40;
+  let uvH = 25;
+  let uvArea = 1000;
+  let uvFullSheetCost = 500.00;
+  let uvSetupCost = 100.00;
+  let uvFilmCost = 200.00;
+  let uvChemicalCost = 50.00;
+  let uvProcessCost = 350.00;
+  let uvPrintCost = 0;
+  let uvRatePer1000 = 71.43;
 
-    const uvRatesObj = (currentPricing && currentPricing.uvRates && currentPricing.uvRates[effectiveUvKey])
-      ? currentPricing.uvRates[effectiveUvKey]
-      : ((DEFAULT_PRICING.uvRates && DEFAULT_PRICING.uvRates[effectiveUvKey]) ? DEFAULT_PRICING.uvRates[effectiveUvKey] : { tier500: 150.00, tier1000: 250.00 });
+  if (optUvCost) {
+    const rawUvL = parseFloat(document.getElementById('uvLength')?.value);
+    const rawUvH = parseFloat(document.getElementById('uvHeight')?.value);
+    const rawFullSheet = parseFloat(document.getElementById('uvFullSheetCostInput')?.value);
+    const rawSetup = parseFloat(document.getElementById('uvSetupCostInput')?.value);
+    const rawFilm = parseFloat(document.getElementById('uvFilmCostInput')?.value);
+    const rawChemical = parseFloat(document.getElementById('uvChemicalCostInput')?.value);
 
-    const t500 = uvRatesObj.tier500 !== undefined ? uvRatesObj.tier500 : 150.00;
-    const t1000 = uvRatesObj.tier1000 !== undefined ? uvRatesObj.tier1000 : 250.00;
+    uvL = (!isNaN(rawUvL) && rawUvL > 0) ? rawUvL : ((currentPricing.uvConfig && currentPricing.uvConfig.defaultL) || 40);
+    uvH = (!isNaN(rawUvH) && rawUvH > 0) ? rawUvH : ((currentPricing.uvConfig && currentPricing.uvConfig.defaultH) || 25);
+    uvFullSheetCost = (!isNaN(rawFullSheet) && rawFullSheet >= 0) ? rawFullSheet : ((currentPricing.uvConfig && currentPricing.uvConfig.fullSheetRate !== undefined) ? currentPricing.uvConfig.fullSheetRate : 500.00);
+    uvSetupCost = (!isNaN(rawSetup) && rawSetup >= 0) ? rawSetup : ((currentPricing.uvConfig && currentPricing.uvConfig.screenSetup !== undefined) ? currentPricing.uvConfig.screenSetup : 100.00);
+    uvFilmCost = (!isNaN(rawFilm) && rawFilm >= 0) ? rawFilm : ((currentPricing.uvConfig && currentPricing.uvConfig.screenFilm !== undefined) ? currentPricing.uvConfig.screenFilm : 200.00);
+    uvChemicalCost = (!isNaN(rawChemical) && rawChemical >= 0) ? rawChemical : ((currentPricing.uvConfig && currentPricing.uvConfig.exposingChemical !== undefined) ? currentPricing.uvConfig.exposingChemical : 50.00);
 
-    let tierLabel = "";
-    if (sheetsNeeded <= 500) {
-      uvCost = t500;
-      tierLabel = `1-500 sheets tier (${t500.toFixed(2)} SR)`;
-    } else if (sheetsNeeded <= 1000) {
-      uvCost = t1000;
-      tierLabel = `501-1000 sheets tier (${t1000.toFixed(2)} SR)`;
+    uvProcessCost = uvSetupCost + uvFilmCost + uvChemicalCost;
+    uvArea = uvL * uvH;
+
+    // Used default paper 100x70 / 90x64 / 70x50 cm paper same: standard 100x70 full sheet area = 7,000 cm²
+    const fullSheetArea = 7000;
+    const areaRatio = Math.min(1, uvArea / fullSheetArea);
+    const sheetDivisions = uvArea > 0 ? (fullSheetArea / uvArea) : 1;
+    // 500.00 SR divided by how many parts area divides into full sheet (or multiplied by area ratio)
+    uvRatePer1000 = uvFullSheetCost * areaRatio;
+
+    const uvAreaResultCol = document.getElementById('uvAreaResultCol');
+    if (uvAreaResultCol) {
+      uvAreaResultCol.innerHTML = `<strong>${uvArea.toFixed(1)} cm²</strong> → <strong>${uvRatePer1000.toFixed(2)} SR</strong>/1k<br><span style="font-size:0.75rem; opacity:0.85;">(1/${sheetDivisions.toFixed(1)} sheet • ${(areaRatio * 100).toFixed(1)}%)</span>`;
+    }
+
+    const uvProcessResultCol = document.getElementById('uvProcessResultCol');
+    if (uvProcessResultCol) {
+      uvProcessResultCol.innerText = `${uvProcessCost.toFixed(2)} SR`;
+    }
+
+    if (sheetsNeeded > 0) {
+      // Proportional to sheets with a 1,000-sheet minimum run charge
+      const effectiveSheets = Math.max(1000, sheetsNeeded);
+      uvPrintCost = (effectiveSheets / 1000) * uvRatePer1000;
+      uvCost = uvProcessCost + uvPrintCost;
+
+      const isMinApplied = sheetsNeeded < 1000;
+      const uvNotice = document.getElementById('uvCostCalcNotice');
+      if (uvNotice) {
+        uvNotice.innerHTML = `
+          <div style="font-weight: 700; color: #06b6d4; margin-bottom: 6px;">
+            ✨ UV SPOT VARNISH BREAKDOWN / تفاصيل احتساب ورنيش يو في:
+          </div>
+          <strong>1. Fixed Process Costs / تكاليف التجهيز الثابتة:</strong> Setup Screen (${uvSetupCost.toFixed(2)} SR) + Screen Film (${uvFilmCost.toFixed(2)} SR) + Exposing Chemical (${uvChemicalCost.toFixed(2)} SR) = <strong>${uvProcessCost.toFixed(2)} SR</strong><br>
+          <strong>2. UV Used Area / مساحة ورنيش يو في:</strong> ${uvL} × ${uvH} cm = <strong>${uvArea.toFixed(2)} cm² (SQCM)</strong> (Default Full Sheet 100×70 = 7,000 cm² → <strong>${(areaRatio * 100).toFixed(1)}%</strong> of full sheet)<br>
+          <strong>3. UV Print Rate per 1,000 Sheets / تكلفة الطباعة لكل 1000 فرخ:</strong> ${uvFullSheetCost.toFixed(2)} SR ÷ ${sheetDivisions.toFixed(2)} parts = <strong>${uvRatePer1000.toFixed(2)} SR</strong> / 1,000 sheets (${(uvRatePer1000 / 1000).toFixed(4)} SR/sheet)<br>
+          <strong>4. Print Run Cost / تكلفة الطباعة للكمية:</strong> ${sheetsNeeded} sheets ${isMinApplied ? `(min 1,000 sheets charged: ${effectiveSheets} sh)` : `(${effectiveSheets} sheets)`} = <strong>${uvPrintCost.toFixed(2)} SR</strong><br>
+          <div style="margin-top: 6px; padding-top: 5px; border-top: 1px dashed rgba(6, 182, 212, 0.4); font-weight: 700; color: var(--accent-emerald);">
+            Total UV Cost: Fixed Process (${uvProcessCost.toFixed(2)} SR) + Print Run (${uvPrintCost.toFixed(2)} SR) = ${uvCost.toFixed(2)} SR
+          </div>
+        `;
+      }
+
+      const uvSummaryText = document.getElementById('uvCostSummaryText');
+      if (uvSummaryText) {
+        uvSummaryText.innerText = `${uvCost.toFixed(2)} SR (${uvL}×${uvH} cm - Process: ${uvProcessCost.toFixed(2)} SR + Run: ${uvPrintCost.toFixed(2)} SR [${sheetsNeeded} sh])`;
+      }
     } else {
-      const fullThousands = Math.floor(sheetsNeeded / 1000);
-      const rem = sheetsNeeded % 1000;
-      const remCost = rem === 0 ? 0 : (rem <= 500 ? t500 : t1000);
-      uvCost = (fullThousands * t1000) + remCost;
-      if (rem === 0) {
-        tierLabel = `${fullThousands} × 1000 sheets @ ${t1000.toFixed(2)} SR`;
-      } else {
-        tierLabel = `${fullThousands} × 1000 sheets (${(fullThousands * t1000).toFixed(2)} SR) + ${rem} extra sheets (${remCost.toFixed(2)} SR)`;
+      const uvSummaryText = document.getElementById('uvCostSummaryText');
+      if (uvSummaryText) {
+        uvSummaryText.innerText = `UV Spot Varnish (${uvL}×${uvH} cm - Process: ${uvProcessCost.toFixed(2)} SR + ${uvRatePer1000.toFixed(2)} SR/1k sh)`;
       }
     }
-
-    const uvNotice = document.getElementById('uvCostCalcNotice');
-    if (uvNotice) {
-      uvNotice.innerHTML = `
-        <div style="font-weight: 700; color: #06b6d4; margin-bottom: 4px;">
-          ✨ UV COATING COST BREAKDOWN / تفاصيل احتساب الورنيش UV:
-        </div>
-        <strong>Selected Sheet Size:</strong> ${sizeLabel} paper sheet<br>
-        <strong>Sheets Needed:</strong> ${sheetsNeeded} sheets<br>
-        <strong>Base Rates:</strong> 500 sheets = <strong>${t500.toFixed(2)} SR</strong> | 1000 sheets = <strong>${t1000.toFixed(2)} SR</strong><br>
-        <div style="margin-top: 6px; padding-top: 4px; border-top: 1px dashed rgba(6, 182, 212, 0.4); font-weight: 700; color: var(--accent-emerald);">
-          Applied Tier: ${tierLabel} → Total UV Cost: ${uvCost.toFixed(2)} SR
-        </div>
-      `;
-    }
-
+  } else {
     const uvSummaryText = document.getElementById('uvCostSummaryText');
     if (uvSummaryText) {
-      uvSummaryText.innerText = `${uvCost.toFixed(2)} SR (${sheetsNeeded} sheets - ${tierLabel})`;
+      uvSummaryText.innerText = 'UV Spot Varnish by Area (100x70 sheet @ 500 SR/1k + Process Setup 350 SR)';
     }
   }
 
@@ -3953,7 +4031,7 @@ function calculateAndUpdate() {
   // UV Cost Invoice Row
   toggleInvoiceRow('invRowUvCost', optUvCost && uvCost > 0, 'invUvCostCost', uvCost);
   if (optUvCost && uvCost > 0) {
-    document.getElementById('invUvCostCost').innerText = `${uvCost.toFixed(2)} SR (${sheetsNeeded} sheets [${sizeLabel}])`;
+    document.getElementById('invUvCostCost').innerText = `${uvCost.toFixed(2)} SR (UV ${uvL}×${uvH} cm - ${sheetsNeeded} sh [Process: ${uvProcessCost.toFixed(2)} SR + Run: ${uvPrintCost.toFixed(2)} SR])`;
   }
 
 

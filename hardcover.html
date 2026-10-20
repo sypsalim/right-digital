@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hardcover Luxury Boxes Cost Estimator - Right Printers. Precision rigid board, wrapping paper, printing, and manual/machine assembly calculator.">
+  <title>Hardcover Luxury Boxes Estimator | Right Printers</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/index.css?v=20261020_1835">
+
+  <style>
+    .hardcover-nav-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(35, 60, 103, 0.4) 100%);
+      border: 1px solid var(--primary-gold);
+      border-radius: var(--border-radius-md);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hardcover-nav-banner .banner-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f59e0b;
+    }
+    .hardcover-nav-banner .btn-switch-page {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--border-radius-sm);
+      background: #06b6d4;
+      color: #010101;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+    .hardcover-nav-banner .btn-switch-page:hover {
+      background: #22d3ee;
+      transform: translateY(-1px);
+    }
+    .making-method-toggle-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .making-method-btn {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid var(--border-light);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-smooth);
+    }
+    .making-method-btn:hover {
+      border-color: var(--primary-gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+    .making-method-btn.active {
+      border-color: #f59e0b;
+      background: rgba(212, 175, 55, 0.18);
+      color: #f59e0b;
+    }
+    .gsm-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .rigid-gsm-btn {
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-smooth);
+    }
+    .rigid-gsm-btn:hover {
+      border-color: var(--primary-gold);
+    }
+    .rigid-gsm-btn.active {
+      border-color: #f59e0b;
+      background: rgba(212, 175, 55, 0.15);
+      color: #f59e0b;
+      font-weight: 700;
+    }
+    .preview-tab-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .preview-tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+    }
+    .preview-tab-btn.active {
+      background: var(--primary-gold);
+      color: #010101;
+      border-color: var(--primary-gold);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-main">
+        <div class="logo-area">
+          <img src="src/assets/logo.png" alt="Logo" class="company-logo" id="companyLogo">
+          <div class="company-titles">
+            <div class="dept-badge-group">
+              <span class="dept-badge-ar">ديجيتال | أوفست | علب كرتون مقوى فاخرة (هارد بوكس)</span>
+              <span class="dept-badge-en">DIGITAL | OFFSET | HARDCOVER LUXURY BOXES</span>
+            </div>
+          </div>
+        </div>
+        <div class="header-info">
+          <p class="info-item address-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span>Al Baladiya District, Othman Ibn Afwan Street, Hafar Al Batin 39921, KSA</span>
+          </p>
+          <p class="info-item phone-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <span>+966 53 763 4784 / 055 744 4588</span>
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Switch back to Paper & Sticker Estimator -->
+        <a href="index.html" class="settings-toggle-btn" style="background: rgba(6, 182, 212, 0.15); border-color: #06b6d4; color: #06b6d4; text-decoration: none; font-weight: 700;" title="Digital & Offset Printing Estimator">
+          <span style="font-size: 1.1rem;">📄</span>
+          <span>Paper & Sticker Estimator</span>
+        </a>
+
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light / Dark Theme">
+          <svg class="icon sun-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+          <span id="themeToggleText">Light Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Banner -->
+    <div class="hardcover-nav-banner">
+      <div class="banner-title">
+        <span>📦</span>
+        <span>HARDCOVER LUXURY BOXES ESTIMATOR / حاسبة علب الكرتون المقوى الفاخرة</span>
+      </div>
+      <a href="index.html" class="btn-switch-page">
+        <span>⬅ Return to Paper & Sticker Page / العودة لحاسبة الأوراق والاستيكر</span>
+      </a>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="app-body">
+      
+      <!-- LEFT COLUMN: INPUTS -->
+      <section class="config-pane">
+        
+        <!-- Section 1: Box Job & Quantity Info -->
+        <div class="card config-card">
+          <div class="card-header">
+            <h3>1. Box Quantity & Job Setup / الكمية ومعلومات العلبة</h3>
+            <span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b;">Step 1</span>
+          </div>
+          <div class="form-row flex-wrap" style="gap: 14px;">
+            <div class="form-group min-w-150" style="flex: 1.5;">
+              <label for="boxQty">Total Box Quantity / كمية العلب المطلوبة (قطعة)</label>
+              <input type="number" id="boxQty" value="500" min="1" step="10" class="form-input" style="font-weight: 700; font-size: 1.05rem;">
+            </div>
+            <div class="form-group min-w-150" style="flex: 1;">
+              <label for="profitMarginInput">Profit Margin / هامش الربح (%)</label>
+              <div class="input-with-unit">
+                <input type="number" id="profitMarginInput" value="30" min="0" step="1" class="form-input">
+                <span class="unit">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Rigid Board Configuration -->
+        <div class="card config-card" style="border-left: 4px solid #f59e0b;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h3>2. Rigid Board (Greyboard) / الكرتون المقوى</h3>
+            <span class="badge" style="background: rgba(212, 175, 55, 0.15); color: #f59e0b;">100×70 cm Sheet Base</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+            Choose board thickness (GSM). Sheet prices are based on default 100x70 cm full sheet:
+          </p>
+
+          <!-- GSM Selection Buttons -->
+          <div class="gsm-btn-grid">
+            <button type="button" class="rigid-gsm-btn" data-gsm="800">
+              <span style="font-size: 1rem; font-weight: 700;">800 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">3.50 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn" data-gsm="1000">
+              <span style="font-size: 1rem; font-weight: 700;">1000 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">4.50 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn active" data-gsm="1200">
+              <span style="font-size: 1rem; font-weight: 700;">1200 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">5.00 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn" data-gsm="2000">
+              <span style="font-size: 1rem; font-weight: 700;">2000 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">6.00 SR / sheet</span>
+            </button>
+          </div>
+
+          <!-- Rigid Board Dimensions & Rate -->
+          <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 12px;">
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardLength">Flat Length (L) / الطول (سم)</label>
+              <input type="number" id="boardLength" value="35" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardHeight">Flat Height (H) / الارتفاع (سم)</label>
+              <input type="number" id="boardHeight" value="25" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardPcsPerBox">Pcs / Box (قطع بالعلبة)</label>
+              <input type="number" id="boardPcsPerBox" value="1" min="1" step="1" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1.1;">
+              <label for="rigidBoardRateInput">Sheet Rate (SR / 100x70)</label>
+              <input type="number" id="rigidBoardRateInput" value="5.00" min="0.1" step="0.25" class="form-input">
+            </div>
+          </div>
+
+          <!-- Dynamic Rigid Board Output Badges -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;">
+            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">UPS on 100x70 Sheet</span>
+              <span id="boardUpsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Sheets Needed</span>
+              <span id="boardSheetsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Board Total Cost</span>
+              <span id="boardCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Wrapping Paper & Printing -->
+        <div class="card config-card" style="border-left: 4px solid #06b6d4;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h3>3. Wrapping 150 GSM Paper / ورق التغليف الخارجي</h3>
+            <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">100x70 = 0.75 SR</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+            Input wrapping paper flat size (including flaps for wrapping over rigid board edges):
+          </p>
+
+          <!-- Wrapping Paper Dimensions & Rate -->
+          <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 12px;">
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapLength">Wrap Length (L) / الطول (سم)</label>
+              <input type="number" id="wrapLength" value="40" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapHeight">Wrap Height (H) / الارتفاع (سم)</label>
+              <input type="number" id="wrapHeight" value="30" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapPcsPerBox">Pcs / Box (قطع بالعلبة)</label>
+              <input type="number" id="wrapPcsPerBox" value="1" min="1" step="1" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1.1;">
+              <label for="wrapPaperRateInput">Sheet Rate (SR / 100x70)</label>
+              <input type="number" id="wrapPaperRateInput" value="0.75" min="0.1" step="0.05" class="form-input">
+            </div>
+          </div>
+
+          <!-- Dynamic Wrapping Output Badges -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 14px;">
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping UPS on 100x70</span>
+              <span id="wrapUpsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping Sheets Needed</span>
+              <span id="wrapSheetsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrap Material Cost</span>
+              <span id="wrapPaperCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+            </div>
+          </div>
+
+          <!-- Wrapping Paper Offset Printing Section -->
+          <div style="border-top: 1px dashed var(--border-light); padding-top: 10px;">
+            <label class="extra-checkbox-label" for="enableWrapPrint" style="cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <input type="checkbox" id="enableWrapPrint" checked>
+              <div class="extra-info">
+                <span class="extra-title" style="color: #06b6d4; font-weight: 700;">🖨️ Offset Printing on Wrapping Paper / طباعة ورق التغليف</span>
+              </div>
+            </label>
+
+            <div id="wrapPrintDetailsRow" style="padding-left: 26px;">
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Select Printing Sheet Size:</div>
+              <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <button type="button" class="print-size-btn active" data-size="100x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
+                  <div style="font-weight: 700; color: #06b6d4;">100×70 cm Paper</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 250 SR + 200 SR / 1k sh</div>
+                </button>
+                <button type="button" class="print-size-btn" data-size="50x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
+                  <div style="font-weight: 700; color: #06b6d4;">50×70 cm Paper</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 150 SR + 100 SR / 1k sh</div>
+                </button>
+              </div>
+
+              <div id="wrapPrintTotalBadge" style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; color: #06b6d4;">
+                -
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Box Making Method (Manual vs Machine) -->
+        <div class="card config-card" style="border-left: 4px solid var(--accent-emerald);">
+          <div class="card-header">
+            <h3>4. Box Making Cost (Labor + Glue) / طريقة التصنيع والتجميع</h3>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald);">Assembly</span>
+          </div>
+
+          <!-- Method Selector Buttons -->
+          <div class="making-method-toggle-group">
+            <button type="button" class="making-method-btn active" data-method="manual">
+              <span style="font-size: 1.2rem;">🛠️</span>
+              <span>Manual Making / تصنيع يدوي</span>
+              <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.85;">15.00 SR / Hour (Labor + Glue)</span>
+            </button>
+            <button type="button" class="making-method-btn" data-method="machine">
+              <span style="font-size: 1.2rem;">⚙️</span>
+              <span>Machine Making / تصنيع آلي</span>
+              <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.85;">Setup 250 SR + 100.00 SR / Hour</span>
+            </button>
+          </div>
+
+          <!-- Manual Making Details Card -->
+          <div id="manualMakingCardDetails" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #f59e0b; margin-bottom: 8px; font-size: 0.9rem;">
+              🛠️ Manual Box Making Parameters / إعدادات التصنيع اليدوي
+            </div>
+            <div class="form-row flex-wrap" style="gap: 12px;">
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="manualLaborHourlyInput">Hourly Rate (SR/hr)</label>
+                <input type="number" id="manualLaborHourlyInput" value="15.00" min="1" step="1" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="manualSpeedInput">Speed (Boxes/hr/worker)</label>
+                <input type="number" id="manualSpeedInput" value="20" min="1" step="5" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1.2;">
+                <label for="manualHoursOverrideInput">Manual Hours (Optional Override)</label>
+                <input type="number" id="manualHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
+              </div>
+            </div>
+            <div id="manualTotalBadge" style="margin-top: 8px; font-weight: 700; color: #f59e0b; font-size: 0.9rem;">
+              -
+            </div>
+          </div>
+
+          <!-- Machine Making Details Card (Hidden by default) -->
+          <div id="machineMakingCardDetails" class="hidden" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #06b6d4; margin-bottom: 8px; font-size: 0.9rem;">
+              ⚙️ Machine Box Making Parameters / إعدادات التصنيع الآلي بالماكينة
+            </div>
+            <div class="form-row flex-wrap" style="gap: 12px;">
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineSetupInput">Machine Setup (SR)</label>
+                <input type="number" id="machineSetupInput" value="250.00" min="0" step="25" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineHourlyInput">Hourly Rate (SR/hr)</label>
+                <input type="number" id="machineHourlyInput" value="100.00" min="10" step="10" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineSpeedInput">Speed (Boxes/hr)</label>
+                <input type="number" id="machineSpeedInput" value="300" min="10" step="50" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1.2;">
+                <label for="machineHoursOverrideInput">Machine Hours (Override)</label>
+                <input type="number" id="machineHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
+              </div>
+            </div>
+            <div id="machineTotalBadge" style="margin-top: 8px; font-weight: 700; color: #06b6d4; font-size: 0.9rem;">
+              -
+            </div>
+          </div>
+
+          <!-- Side-by-side comparison indicator -->
+          <div id="makingComparisonNotice" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed var(--accent-emerald); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
+            <!-- Dynamic comparison details -->
+          </div>
+        </div>
+
+        <!-- Section 5: Optional Luxury Embellishments -->
+        <div class="card config-card">
+          <div class="card-header">
+            <h3>5. Luxury Finishes & Extras / لمسات فاخرة اختيارية</h3>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">Extras</span>
+          </div>
+
+          <!-- Gold Foil Stamping -->
+          <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
+            <label class="extra-checkbox-label" for="hardcoverFoil" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverFoil">
+              <span class="extra-title" style="color: #f59e0b; font-weight: 700;">★ Gold Foil Stamping / بصمة حرارية</span>
+            </label>
+            <div id="hardcoverFoilDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div class="form-row flex-wrap" style="gap: 10px;">
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcFoilL">Foil L (cm)</label>
+                  <input type="number" id="hcFoilL" value="10" min="1" step="0.5" class="form-input">
+                </div>
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcFoilH">Foil H (cm)</label>
+                  <input type="number" id="hcFoilH" value="10" min="1" step="0.5" class="form-input">
+                </div>
+              </div>
+              <div id="hcFoilSummary" style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; margin-top: 4px;">-</div>
+            </div>
+          </div>
+
+          <!-- Spot UV -->
+          <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
+            <label class="extra-checkbox-label" for="hardcoverUv" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverUv">
+              <span class="extra-title" style="color: #06b6d4; font-weight: 700;">✨ Spot UV Varnish / ورنيش يو في موضعي</span>
+            </label>
+            <div id="hardcoverUvDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div class="form-row flex-wrap" style="gap: 10px;">
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcUvL">UV L (cm)</label>
+                  <input type="number" id="hcUvL" value="40" min="1" step="1" class="form-input">
+                </div>
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcUvH">UV H (cm)</label>
+                  <input type="number" id="hcUvH" value="25" min="1" step="1" class="form-input">
+                </div>
+              </div>
+              <div id="hcUvSummary" style="font-size: 0.85rem; color: #06b6d4; font-weight: 700; margin-top: 4px;">-</div>
+            </div>
+          </div>
+
+          <!-- Die Cutting Board -->
+          <div>
+            <label class="extra-checkbox-label" for="hardcoverDieBoard" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverDieBoard">
+              <span class="extra-title" style="color: var(--accent-emerald); font-weight: 700;">✂️ Die Cutting Board & Cylinder / قالب وسلندر تكسير</span>
+            </label>
+            <div id="hardcoverDieDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div id="hcDieSummary" style="font-size: 0.85rem; color: var(--accent-emerald); font-weight: 700;">-</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: RESULTS & PREVIEWS -->
+      <section class="results-pane">
+        
+        <!-- Interactive Visual Layout Preview Card -->
+        <div class="results-card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <h3>Visual Sheet Layout / التخطيط البصري على الفرخ</h3>
+          </div>
+
+          <!-- Preview Tabs: Rigid Board vs Wrapping Paper -->
+          <div class="preview-tab-group">
+            <button type="button" class="preview-tab-btn active" data-target="board">
+              Rigid Board (الكرتون المقوى)
+            </button>
+            <button type="button" class="preview-tab-btn" data-target="wrapping">
+              Wrapping Paper (ورق التغليف 150g)
+            </button>
+          </div>
+
+          <div id="hardcoverLayoutContainer" style="margin-top: 10px;">
+            <!-- Dynamic SVG Sheet Layout populated by JS -->
+          </div>
+        </div>
+
+        <!-- Cost Estimation Summary Card -->
+        <div class="results-card" style="border: 1px solid var(--primary-gold);">
+          <div class="card-header" style="border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 10px;">
+            <h3>Hardcover Luxury Box Cost / ملخص تسعير علب الهارد بوكس</h3>
+            <span class="badge" id="summaryBoxQty" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b; font-weight: 700;">500 Boxes</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 0; border-bottom: 1px dashed var(--border-light);">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Selling Price / الإجمالي النهائي:</div>
+              <div id="summaryTotalCost" style="font-size: 2.2rem; font-weight: 800; color: #f59e0b; line-height: 1.1;">0.00 SR</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Unit Price / سعر الحبة:</div>
+              <div id="summaryUnitCost" style="font-size: 1.4rem; font-weight: 700; color: var(--accent-emerald);">0.00 SR / box</div>
+            </div>
+          </div>
+
+          <!-- Itemized Breakdown -->
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">1. Rigid Board (Greyboard):</span>
+              <strong id="sumBoardCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">2. Wrapping Paper (150 GSM):</span>
+              <strong id="sumWrapPaperCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">3. Wrapping Offset Print:</span>
+              <strong id="sumWrapPrintCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">4. Box Making & Assembly:</span>
+              <strong id="sumMakingCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">5. Additional Finishes:</span>
+              <strong id="sumFinishesCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <hr style="border: none; border-top: 1px dashed var(--border-light); margin: 4px 0;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Production Base Cost:</span>
+              <strong id="sumBaseCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--accent-emerald);">
+              <span>Added Profit Margin:</span>
+              <strong id="sumProfitAmount">-</strong>
+            </div>
+          </div>
+
+          <!-- Quotation & Actions Row -->
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="button" id="copyQuoteBtn" class="btn-primary" style="flex: 1; padding: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>📋</span>
+              <span>Copy Quote / نسخ العرض</span>
+            </button>
+            <button type="button" id="printQuoteBtn" class="btn-secondary" style="padding: 12px 18px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+              <span>🖨️</span>
+              <span>Print / طباعة</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="src/js/hardcover.js?v=20261020_1835"></script>
+</body>
+</html>

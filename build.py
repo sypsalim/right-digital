@@ -54,5 +54,24 @@ def build():
 
     print("index_standalone.html built successfully with base64 logo inlined!")
 
+    # Build hardcover_standalone.html if hardcover.html exists
+    hc_html_path = os.path.join(cwd, "hardcover.html")
+    hc_js_path = os.path.join(cwd, "src/js/hardcover.js")
+    hc_standalone_path = os.path.join(cwd, "hardcover_standalone.html")
+    if os.path.exists(hc_html_path) and os.path.exists(hc_js_path):
+        with open(hc_html_path, "r", encoding="utf-8") as f:
+            hc_html = f.read()
+        with open(hc_js_path, "r", encoding="utf-8") as f:
+            hc_js = f.read()
+        if re.search(r'<link rel="stylesheet" href="src/css/index\.css[^"]*">', hc_html):
+            hc_html = re.sub(r'<link rel="stylesheet" href="src/css/index\.css[^"]*">', f"<style>\n{css}\n</style>", hc_html)
+        if re.search(r'<script src="src/js/hardcover\.js[^"]*"></script>', hc_html):
+            hc_html = re.sub(r'<script src="src/js/hardcover\.js[^"]*"></script>', f"<script>\n{hc_js}\n</script>", hc_html)
+        hc_html = hc_html.replace("src/assets/logo.png", logo_data_uri)
+        hc_html = hc_html.replace("src/assets/logo_print.png", logo_print_data_uri)
+        with open(hc_standalone_path, "w", encoding="utf-8") as f:
+            f.write(hc_html)
+        print("hardcover_standalone.html built successfully with base64 logo inlined!")
+
 if __name__ == "__main__":
     build()

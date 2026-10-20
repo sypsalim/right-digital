@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="src/css/index.css?v=20261019">
+  <link rel="stylesheet" href="src/css/index.css?v=20261020_1750">
 
   <!-- Firebase JS SDK (Compat version) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -52,7 +52,10 @@
         <button class="settings-toggle-btn" id="openSettingsBtn" title="Pricing & Discount Settings">
           <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
           <span>Settings</span>
-        </button>
+        <a href="hardcover.html" class="settings-toggle-btn" style="background: rgba(212, 175, 55, 0.15); border-color: var(--primary-gold); color: #f59e0b; text-decoration: none; font-weight: 700;" title="Hardcover Luxury Boxes / علب كرتون مقوى فاخرة">
+          <span style="font-size: 1.1rem;">📦</span>
+          <span>Hardcover Boxes / هارد بوكس</span>
+        </a>
         <button class="settings-toggle-btn" id="signOutBtn" title="Sign Out of Application" style="background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171;">
           <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
           <span>Sign Out</span>
@@ -81,6 +84,10 @@
             <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c1.1 0 2 .9 2 2v1.18c2.07.4 3.81 1.69 4.63 3.49L21.43 14c.32.73.18 1.58-.35 2.16l-1.94 2.12c-.52.57-1.34.78-2.07.51l-2.07-.75V20c0 1.1-.9 2-2 2h-4c-1.1 0-2-.9-2-2v-2.08l-2.07.75c-.73.27-1.55.06-2.07-.51L2.92 16.16c-.53-.58-.67-1.43-.35-2.16l2.8-6.33C6.19 5.87 7.93 4.58 10 4.18V4c0-1.1.9-2 2-2zm0 6c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4z"/></svg>
             T-Shirt & Cup
           </button>
+          <a href="hardcover.html" class="tab-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px; border-color: rgba(212, 175, 55, 0.5); color: #f59e0b;">
+            <span style="font-size: 1.1rem;">📦</span>
+            Hardcover Boxes / علب هارد بوكس
+          </a>
         </div>
 
         <!-- Section 1: Print Paper Sizes -->
@@ -894,11 +901,75 @@
                   <input type="checkbox" id="extraUvCost">
                   <div class="extra-info">
                     <span class="extra-title" style="color: #06b6d4; font-weight: 700;">✨ UV COST / ورنيش يو في</span>
-                    <span class="extra-desc" id="uvCostSummaryText">UV Coating service rate per 500 & 1000 sheets tier</span>
+                    <span class="extra-desc" id="uvCostSummaryText">UV Spot Varnish by Area (100x70 sheet @ 500 SR/1k + Process Setup 350 SR)</span>
                   </div>
                 </label>
               </div>
               <div id="uvCostDetailsRow" class="hidden" style="margin-top: 8px; width: 100%; border-top: 1px dashed var(--border-light); padding-top: 12px;">
+                <div style="font-weight: 700; font-size: 0.9rem; color: #06b6d4; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+                  <span>UV USED AREA & PROCESS RATES / مقاس ورنيش يو في وتكاليف التجهيز</span>
+                  <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 500;">Default Sheet: 100x70 / 90x64 / 70x50 cm</span>
+                </div>
+
+                <!-- UV Dimensions & Area Calculation Row -->
+                <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 10px;">
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="uvLength">Length (L) / الطول (سم)</label>
+                    <input type="number" id="uvLength" value="40" min="0.1" step="0.1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="uvHeight">Height (H) / الارتفاع (سم)</label>
+                    <input type="number" id="uvHeight" value="25" min="0.1" step="0.1" class="form-input">
+                  </div>
+                  <div class="form-group min-w-150" style="flex: 1.2;">
+                    <label for="uvFullSheetCostInput">100x70 Full Sheet (1k sh) / الفرخ الكامل</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="uvFullSheetCostInput" value="500.00" min="0" step="10" class="form-input">
+                      <span class="unit">SR/1k</span>
+                    </div>
+                  </div>
+                  <div class="form-group min-w-150" style="flex: 1.5;">
+                    <label>Used Area & Rate / المساحة وسعر الألف</label>
+                    <div id="uvAreaResultCol" style="background: rgba(6, 182, 212, 0.12); border: 1px solid #06b6d4; padding: 9px 12px; border-radius: var(--border-radius-sm); font-weight: 700; color: #06b6d4; font-size: 0.85rem; line-height: 1.3;">
+                      1000.0 SQCM → 71.43 SR/1k
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Process Setup Costs Row -->
+                <div style="font-weight: 700; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase;">
+                  Screen Process Setup Costs / تكاليف تجهيز شاشة السلك سكرين
+                </div>
+                <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 12px;">
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label for="uvSetupCostInput">Screen Setup / تجهيز الشاشة</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="uvSetupCostInput" value="100.00" min="0" step="5" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                  <div class="form-group min-w-120" style="flex: 1.2;">
+                    <label for="uvFilmCostInput">Screen Film (85x60cm) / الفيلم</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="uvFilmCostInput" value="200.00" min="0" step="5" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                  <div class="form-group min-w-120" style="flex: 1.2;">
+                    <label for="uvChemicalCostInput">Chemical / كيميائي التعريض</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="uvChemicalCostInput" value="50.00" min="0" step="5" class="form-input">
+                      <span class="unit">SR</span>
+                    </div>
+                  </div>
+                  <div class="form-group min-w-120" style="flex: 1;">
+                    <label>Total Process / إجمالي التجهيز</label>
+                    <div id="uvProcessResultCol" style="background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-emerald); padding: 9px 12px; border-radius: var(--border-radius-sm); font-weight: 700; color: var(--accent-emerald); font-size: 0.9rem;">
+                      350.00 SR
+                    </div>
+                  </div>
+                </div>
+
                 <div id="uvCostCalcNotice" style="background: rgba(6, 182, 212, 0.08); border: 1px solid #06b6d4; padding: 10px 14px; border-radius: var(--border-radius-sm); font-size: 0.85rem; color: var(--text-light); line-height: 1.5;">
                   <!-- Dynamic UV breakdown details populated by JS -->
                 </div>
@@ -1200,7 +1271,7 @@
               <span class="inv-value" id="invGoldFoilCost">-</span>
             </div>
             <div class="invoice-row hidden" id="invRowUvCost">
-              <span class="inv-label">UV Coating Cost / تكلفة الورنيش UV:</span>
+              <span class="inv-label">UV Spot Varnish Cost / تكلفة ورنيش يو في موضعي:</span>
               <span class="inv-value" id="invUvCostCost">-</span>
             </div>
             <hr class="inv-divider">
@@ -1384,7 +1455,7 @@
               <!-- Dynamically populated inputs -->
             </div>
 
-            <h4 class="finish-group-title">UV Coating Rates (per Sheet Size & Tier in SR)</h4>
+            <h4 class="finish-group-title">UV Spot Varnish Rates & Process Setup / أسعار ورنيش يو في وتكاليف التجهيز</h4>
             <div class="form-row flex-wrap" id="settingsUvContainer">
               <!-- Dynamically populated inputs -->
             </div>
@@ -1804,6 +1875,6 @@
 
   </div>
 
-  <script src="src/js/app.js?v=20261019"></script>
+  <script src="src/js/app.js?v=20261020_1750"></script>
 </body>
 </html>

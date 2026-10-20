@@ -1,0 +1,3947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hardcover Luxury Boxes Cost Estimator - Right Printers. Precision rigid board, wrapping paper, printing, and manual/machine assembly calculator.">
+  <title>Hardcover Luxury Boxes Estimator | Right Printers</title>
+  <!-- Google Fonts for premium typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+/* Modern Design System for Right Printers */
+:root {
+  /* Harmonious Color Palette (Dark Mode: #010101 Background & #233C67 Cards) */
+  --bg-app: #010101;
+  --bg-card: #233C67;
+  --bg-card-hover: #1c3053;
+  --border-light: rgba(255, 255, 255, 0.15);
+  --border-active: #d4af37; /* Luxury Gold color matching Right Printers Logo */
+  
+  --primary-gold: #d4af37;
+  --primary-gold-dark: #b89324;
+  --primary-gold-light: #ffffff;
+  --accent-emerald: #10b981;
+  --accent-emerald-dark: #065f46;
+  --accent-rose: #f43f5e;
+  --accent-rose-dark: #9f1239;
+  
+  --text-main: #ffffff;
+  --text-muted: #cbd5e1;
+  --text-dark: #111827;
+  --text-gold: #f59e0b;
+
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-glow: 0 0 15px rgba(212, 175, 55, 0.2);
+
+  --font-family: 'Outfit', 'Tajawal', sans-serif;
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 16px;
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-app);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(35, 60, 103, 0.25) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(212, 175, 55, 0.08) 0px, transparent 50%);
+  background-attachment: fixed;
+}
+
+.app-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* SVG icon utility */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Header Design */
+.app-header {
+  background: #0c153b !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--border-radius-lg);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.company-logo {
+  height: 100px;
+  width: auto;
+  max-width: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
+  transition: transform 0.3s ease;
+}
+
+.company-logo:hover {
+  transform: scale(1.02);
+}
+
+.company-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dept-badge-group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  text-align: center;
+  flex-shrink: 0;
+  width: max-content;
+}
+
+.dept-badge-ar {
+  display: block;
+  font-family: 'Tajawal', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--primary-gold);
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.dept-badge-divider {
+  display: none;
+}
+
+.dept-badge-en {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  color: #34d399;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.dept-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: var(--accent-emerald);
+  background: var(--accent-emerald-dark);
+  padding: 2px 8px;
+  border-radius: 4px;
+  width: max-content;
+  margin-top: 3px;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  border-left: 1px solid var(--border-light);
+  padding-left: 20px;
+  flex-shrink: 1;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+}
+
+.info-item span {
+  max-width: 420px;
+}
+
+.info-item svg {
+  color: var(--primary-gold);
+  flex-shrink: 0;
+}
+
+/* App Body Columns */
+.app-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 1280px) {
+  .company-logo {
+    height: 85px;
+  }
+  .header-main {
+    gap: 16px;
+  }
+  .header-info {
+    padding-left: 16px;
+    font-size: 0.78rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app-body {
+    grid-template-columns: 1fr;
+  }
+  .app-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .header-info {
+    border-left: none;
+    padding-left: 0;
+    border-top: 1px solid var(--border-light);
+    padding-top: 15px;
+  }
+  .settings-toggle-btn {
+    align-self: flex-start;
+  }
+}
+
+/* Configuration Column */
+.config-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Config Cards styling */
+.config-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: var(--transition-smooth);
+}
+
+.config-card:hover {
+  border-color: rgba(212, 175, 55, 0.2);
+  background: var(--bg-card-hover);
+}
+
+.config-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--primary-gold-light);
+  border-left: 4px solid var(--primary-gold);
+  padding-left: 10px;
+  font-family: 'Tajawal', 'Outfit', sans-serif;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.card-header h3 {
+  border-left: 4px solid var(--primary-gold);
+  padding-left: 10px;
+}
+
+/* Tab Switcher */
+.job-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  padding: 12px;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.tab-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.tab-btn.active {
+  background: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.tab-btn svg {
+  transition: var(--transition-smooth);
+}
+
+.tab-btn.active svg {
+  transform: scale(1.1);
+}
+
+/* Paper Mode Switcher (Digital vs Offset) */
+.paper-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 5px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-light);
+  margin-bottom: 4px;
+}
+
+.paper-mode-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 10px 14px;
+  font-family: 'Tajawal', var(--font-family);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.paper-mode-btn:hover {
+  color: var(--text-main);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.paper-mode-btn.active {
+  background: #008B8B !important;
+  border-color: #006666 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.offset-prices-wrapper {
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  margin-top: 6px;
+}
+
+/* Slider Toggle Switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #374151;
+  transition: .3s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .3s;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-gold);
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.orientation-switch-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.switch-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Size Presets Grid */
+.size-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.size-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-main);
+  transition: var(--transition-smooth);
+}
+
+.size-btn:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.4);
+}
+
+.size-btn.active {
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.size-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.size-dims {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.size-btn.active .size-dims {
+  color: #e2e8f0 !important;
+}
+
+/* GSM Presets Grid */
+.gsm-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 10px;
+}
+
+.gsm-btn {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  padding: 12px 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--text-main);
+  transition: var(--transition-smooth);
+}
+
+.gsm-btn:hover {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.3);
+}
+
+.gsm-btn.active {
+  background: #008B8B !important;
+  border-color: #008B8B !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 139, 139, 0.35) !important;
+}
+
+.gsm-val {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.gsm-price {
+  font-size: 0.75rem;
+  color: var(--accent-emerald);
+}
+
+/* Input Fields */
+.form-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.form-group {
+  flex: 1;
+  min-width: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.input-with-unit {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input, .form-select {
+  width: 100%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--border-light);
+  padding: 10px 14px;
+  border-radius: var(--border-radius-sm);
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  transition: var(--transition-smooth);
+}
+
+.form-input:focus, .form-select:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.input-with-unit .form-input {
+  padding-right: 40px;
+}
+
+.input-with-unit .unit {
+  position: absolute;
+  right: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+/* Quick Size utilities */
+.quick-size-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+
+.btn-subtle {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-family: var(--font-family);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.btn-subtle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+}
+
+/* Extras checkbox card grid */
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .extras-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
+
+.extra-checkbox-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transition: var(--transition-smooth);
+  user-select: none;
+}
+
+.extra-checkbox-card:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.extra-checkbox-card input[type="checkbox"] {
+  accent-color: var(--primary-gold);
+  width: 18px;
+  height: 18px;
+  margin-top: 3px;
+  cursor: pointer;
+}
+
+.extra-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.extra-title {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.extra-desc {
+  font-size: 0.72rem;
+  color: var(--accent-emerald);
+}
+
+.extra-checkbox-card:has(input:checked) {
+  border-color: var(--primary-gold);
+  background: rgba(212, 175, 55, 0.06);
+}
+
+.extra-checkbox-card.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* RIGHT COLUMN: RESULTS & PREVIEWS */
+.results-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.results-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-md);
+  padding: 20px 24px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.results-card h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--primary-gold-light);
+  font-family: 'Tajawal', 'Outfit', sans-serif;
+}
+
+.preview-mode-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  background: var(--primary-gold);
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+/* Layout Preview Window */
+.layout-preview-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #0c153b !important;
+  padding: 16px;
+  border-radius: var(--border-radius-sm);
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.svg-container {
+  width: 100%;
+  background: #0c153b !important;
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  border: 1px dashed rgba(255, 255, 255, 0.2) !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#layoutSvg {
+  width: 100%;
+  height: auto;
+  max-height: 350px;
+}
+
+/* SVG Drawing Classes */
+.svg-sheet {
+  fill: #1f2937;
+  stroke: #4b5563;
+  stroke-width: 2;
+}
+
+.svg-up-box {
+  fill: rgba(16, 185, 129, 0.15);
+  stroke: var(--accent-emerald);
+  stroke-width: 1.5;
+  transition: all 0.2s ease;
+}
+
+.svg-up-box:hover {
+  fill: rgba(16, 185, 129, 0.3);
+}
+
+.svg-up-label {
+  fill: var(--text-main);
+  font-size: 10px;
+  font-weight: 400;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+.svg-sheet-dim {
+  fill: var(--text-muted);
+  font-size: 11px;
+  font-weight: 400;
+}
+
+.svg-wastage-hatch {
+  fill: url(#wastageHatchPattern);
+}
+
+/* Statistics Grid */
+.wastage-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+}
+
+.stat-box {
+  background: #0c153b !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: var(--border-radius-sm);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.stat-val {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ffffff !important;
+}
+
+.stat-lbl {
+  font-size: 0.72rem;
+  color: #cbd5e1 !important;
+}
+
+.stat-box.highlight-waste .stat-val {
+  color: #ef4444 !important;
+}
+
+.stat-box.highlight-waste {
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  background: #0c153b !important;
+}
+
+/* Total Pieces Banner */
+.total-pieces-banner {
+  margin-top: 14px;
+  background: linear-gradient(135deg, #0c153b 0%, #172554 100%) !important;
+  border: 1px solid rgba(212, 175, 55, 0.45) !important;
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: var(--transition-smooth);
+}
+
+.total-pieces-banner:hover {
+  border-color: var(--primary-gold) !important;
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.22);
+}
+
+.total-pieces-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.total-pieces-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.total-pieces-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #cbd5e1 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.total-pieces-val {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  letter-spacing: -0.3px;
+  flex-wrap: wrap;
+}
+
+.total-pieces-val .unit {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fbbf24 !important;
+  text-transform: uppercase;
+}
+
+.total-pieces-val .badge-extra {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.total-pieces-formula {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fbbf24 !important;
+  background: rgba(0, 0, 0, 0.45);
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  white-space: nowrap;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+}
+
+/* Bag Top Free Space Banner at bottom of layout preview */
+.bag-free-space-banner {
+  margin-top: 10px;
+  background: linear-gradient(135deg, rgba(12, 21, 59, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
+  border: 1.5px solid #fde047 !important;
+  border-radius: var(--border-radius-sm);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(253, 224, 71, 0.2);
+  transition: var(--transition-smooth);
+}
+
+.bag-free-space-banner:hover {
+  border-color: #fbbf24 !important;
+  box-shadow: 0 6px 20px rgba(251, 191, 36, 0.25);
+}
+
+.bag-free-space-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: rgba(253, 224, 71, 0.15);
+  border: 1px solid rgba(253, 224, 71, 0.45);
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.bag-free-space-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.bag-free-space-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #fde047 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bag-free-space-values {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.bag-free-space-val {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff !important;
+  letter-spacing: -0.3px;
+}
+
+.bag-free-space-sheet {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.bag-gripper-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  white-space: nowrap;
+}
+
+.bag-gripper-pill .gripper-icon {
+  font-size: 0.7rem;
+}
+
+@media (max-width: 768px) {
+  .total-pieces-banner,
+  .bag-free-space-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .total-pieces-formula {
+    width: 100%;
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+
+/* Quantity Mode Toggle (Sheets vs Pieces) */
+.qty-mode-toggle {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.qty-toggle-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.qty-toggle-btn:hover {
+  color: #ffffff;
+}
+
+.qty-toggle-btn.active {
+  background: linear-gradient(135deg, #d4af37, #b89324);
+  color: #000000 !important;
+  box-shadow: 0 1px 4px rgba(212, 175, 55, 0.4);
+}
+
+[data-theme="light"] .qty-mode-toggle {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+[data-theme="light"] .qty-toggle-btn {
+  color: #475569;
+}
+
+[data-theme="light"] .qty-toggle-btn.active {
+  background: linear-gradient(135deg, #d4af37, #b89324);
+  color: #000000 !important;
+}
+
+/* Comparison Table */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.comparison-table th {
+  padding: 10px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-light);
+}
+
+.comparison-table td {
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: var(--text-main);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.comparison-table tbody tr.better-option {
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.comparison-table tbody tr.better-option td {
+  color: var(--accent-emerald);
+}
+
+.comparison-status-badge {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.comparison-status-badge.best {
+  background: var(--accent-emerald-dark);
+  color: #fff;
+}
+
+.comparison-status-badge.alt {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+}
+
+/* Invoice Card / Estimate Quote Summary */
+.invoice-card {
+  border-color: rgba(212, 175, 55, 0.3);
+  background: radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.06) 0%, transparent 40%), var(--bg-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.invoice-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-gold), var(--accent-emerald), var(--primary-gold));
+}
+
+.invoice-actions-print-only {
+  display: none;
+}
+
+.invoice-header-ui {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.invoice-badges {
+  display: flex;
+  gap: 8px;
+}
+
+.badge,
+.invoice-badges .badge,
+#jobTypeBadge,
+#gsmBadge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  background: #f59e0b !important;
+  background-color: #f59e0b !important;
+  border: 1px solid #b45309 !important;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: #0f172a !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.4) !important;
+}
+
+.invoice-table {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.invoice-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.inv-label {
+  color: var(--text-muted);
+}
+
+.inv-value {
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.inv-divider {
+  border: none;
+  border-top: 1px dashed var(--border-light);
+  margin: 6px 0;
+}
+
+.discount-row {
+  color: var(--text-gold);
+}
+
+.text-discount {
+  color: var(--text-gold) !important;
+}
+
+.subtotal-row {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+
+.vat-row {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.total-row {
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-top: 1px solid var(--border-light);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+
+.unit-cost-row {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: 4px;
+  padding-top: 4px;
+}
+
+.unit-cost-row .inv-label {
+  font-weight: 700;
+}
+
+.unit-cost-novat .inv-label {
+  color: var(--accent-emerald, #10b981);
+}
+
+.unit-cost-withvat .inv-label {
+  color: #ef4444;
+}
+
+/* VAT Buttons and Badges */
+.vat-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 14px;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 0.98rem;
+  letter-spacing: 0.3px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: all 0.2s ease;
+}
+
+.vat-green-btn {
+  background-color: #10b981 !important; /* GREEN COLOR BACKGROUND BUTTON FOR WITHOUT VAT */
+  color: #ffffff !important;
+  border: 1px solid #059669 !important;
+}
+
+.vat-red-btn {
+  background-color: #ef4444 !important; /* RED COLOR BACKGROUND BUTTON / BADGE FOR WITH VAT */
+  color: #ffffff !important;
+  border: 1px solid #dc2626 !important;
+}
+
+.vat-text-red {
+  color: #ef4444 !important; /* RED COLOR FOR VAT ADDED */
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+
+/* Buttons */
+.btn-primary,
+#printInvoiceBtn {
+  background: #0c153b !important;
+  color: #ffffff !important;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid #0c153b !important;
+  padding: 14px 28px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary svg,
+#printInvoiceBtn svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.btn-primary:hover,
+#printInvoiceBtn:hover {
+  background: #1a1a1a !important;
+  color: #ffffff !important;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-full {
+  width: 100%;
+}
+
+.settings-toggle-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  padding: 10px 16px;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.settings-toggle-btn:hover {
+  background: #737150 !important;
+  background-color: #737150 !important;
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+/* SETTINGS DRAWER OVERLAY */
+.settings-drawer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.settings-drawer.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.drawer-content {
+  width: 90vw;
+  max-width: 1100px;
+  height: 100%;
+  background: #111827;
+  border-left: 1px solid var(--border-light);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-drawer.open .drawer-content {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-header h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-gold);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.close-btn:hover {
+  color: var(--text-main);
+}
+
+.auto-save-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  padding: 4px 10px;
+  border-radius: 12px;
+  transition: opacity 0.3s ease;
+}
+
+.settings-top-sticky {
+  position: sticky;
+  top: -24px;
+  z-index: 30;
+  background: #0c153b !important;
+  padding: 12px 16px 8px 16px;
+  margin-top: -24px;
+  margin-left: -24px;
+  margin-right: -24px;
+  border-bottom: 3px solid #ffc800 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+.settings-search-wrapper {
+  margin-bottom: 10px;
+}
+
+.settings-search-input {
+  width: 100%;
+  padding: 8px 14px;
+  font-size: 0.88rem;
+  background: #ffffff !important;
+  border: 2px solid #ffc800 !important;
+  border-radius: var(--border-radius-sm);
+  color: #0c153b !important;
+  font-weight: 700 !important;
+  transition: var(--transition-smooth);
+}
+
+.settings-search-input::placeholder {
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.settings-search-input:focus {
+  border-color: #ffc800 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 200, 0, 0.4) !important;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.drawer-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.settings-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: rgba(212, 175, 55, 0.05);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  padding: 10px 14px;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Settings Edit Table */
+.settings-edit-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.settings-edit-table th {
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-light);
+  white-space: nowrap;
+}
+
+.settings-edit-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  vertical-align: middle;
+}
+
+.table-input {
+  width: 90px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 6px 10px;
+  color: var(--text-main);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.table-input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+}
+
+.table-input.field-modified,
+.form-input.field-modified {
+  border-color: #ffc800 !important;
+  background: rgba(255, 200, 0, 0.15) !important;
+  color: #ffffff !important;
+  font-weight: 700;
+}
+
+/* Drawer Tabs */
+.settings-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+
+.setting-tab-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff !important;
+  padding: 10px 18px;
+  font-family: var(--font-family);
+  font-weight: 700 !important;
+  font-size: 0.9rem !important;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: var(--transition-smooth);
+  opacity: 0.9;
+}
+
+.setting-tab-btn:hover {
+  color: #ffea79 !important;
+  opacity: 1;
+}
+
+.setting-tab-btn.active {
+  color: #ffc800 !important;
+  border-bottom-color: #ffc800 !important;
+  font-weight: 800 !important;
+  opacity: 1;
+  text-shadow: 0 0 8px rgba(255, 200, 0, 0.5);
+}
+
+.setting-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.setting-section h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  border-left: 3px solid var(--primary-gold);
+  padding-left: 8px;
+}
+
+.sub-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: -8px;
+}
+
+.finish-group-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--primary-gold-light);
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 4px;
+  margin-top: 10px;
+}
+
+.min-w-150 {
+  min-width: 150px !important;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* PRINT MEDIA DESIGN styles */
+@media print {
+  @page {
+    margin: 12mm;
+    size: auto;
+  }
+
+  *, *::before, *::after,
+  html, body, .app-container, .app-body, .results-pane, .invoice-card, .invoice-card *,
+  [data-theme="light"], [data-theme="light"] body, [data-theme="light"] .app-container,
+  [data-theme="light"] .app-body, [data-theme="light"] .results-pane, [data-theme="light"] .invoice-card,
+  [data-theme="light"] .invoice-card * {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body,
+  [data-theme="light"] body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .app-container,
+  [data-theme="light"] .app-container {
+    padding: 0 !important;
+    max-width: 100% !important;
+    gap: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+  }
+
+  /* Hide navigation, settings, configs, layouts */
+  header.app-header,
+  .config-pane,
+  .results-card:not(.invoice-card),
+  .settings-drawer,
+  .no-print,
+  .lock-screen-overlay,
+  .login-modal-overlay {
+    display: none !important;
+  }
+
+  /* Expand Invoice Card to Full Width */
+  .app-body,
+  [data-theme="light"] .app-body {
+    grid-template-columns: 1fr !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .results-pane,
+  [data-theme="light"] .results-pane {
+    width: 100% !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .invoice-card,
+  [data-theme="light"] .invoice-card {
+    border: none !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #000000 !important;
+  }
+
+  .invoice-card::before {
+    display: none !important;
+  }
+
+  .invoice-header-ui {
+    display: none !important;
+  }
+
+  .invoice-actions-print-only {
+    display: block !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .invoice-print-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .print-company-logo {
+    height: 50px;
+    width: auto;
+    margin-right: 15px;
+    object-fit: contain;
+    filter: none !important;
+  }
+
+  .invoice-print-header .logo-area {
+    display: flex;
+    align-items: center;
+  }
+
+  .invoice-print-header h2 {
+    font-size: 16pt;
+    font-weight: 700;
+    margin: 0;
+    color: #000000 !important;
+  }
+
+  .invoice-print-header h3 {
+    font-size: 10pt;
+    margin: 2px 0 0 0;
+    color: #4b5563 !important;
+  }
+
+  .print-contact {
+    text-align: right;
+    font-size: 9pt;
+    color: #374151 !important;
+  }
+
+  .print-contact p {
+    margin: 2px 0;
+    color: #374151 !important;
+  }
+
+  .invoice-table,
+  [data-theme="light"] .invoice-table {
+    gap: 8px !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .invoice-row,
+  [data-theme="light"] .invoice-row {
+    font-size: 10pt !important;
+    color: #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #e5e7eb !important;
+    padding: 6px 0 !important;
+  }
+
+  .inv-label,
+  [data-theme="light"] .inv-label {
+    color: #374151 !important;
+  }
+
+  .inv-value,
+  [data-theme="light"] .inv-value {
+    color: #000000 !important;
+  }
+
+  .inv-divider {
+    border-top: 1px solid #9ca3af !important;
+  }
+
+  .total-row,
+  [data-theme="light"] .total-row {
+    font-size: 11pt !important;
+    margin-top: 6px !important;
+    border-top: 1px solid #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+
+  .unit-cost-row,
+  [data-theme="light"] .unit-cost-row {
+    font-size: 11pt !important;
+    font-weight: 700 !important;
+    border-bottom: none !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    padding-top: 4px !important;
+    margin-top: 4px !important;
+  }
+
+  .vat-green-btn,
+  [data-theme="light"] .vat-green-btn {
+    background-color: #10b981 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .vat-red-btn,
+  [data-theme="light"] .vat-red-btn {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .vat-text-red,
+  [data-theme="light"] .vat-text-red {
+    color: #dc2626 !important;
+  }
+
+  .discount-row,
+  .text-discount,
+  [data-theme="light"] .discount-row,
+  [data-theme="light"] .text-discount {
+    color: #000000 !important;
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+  }
+}
+
+/* ADMIN SECURITY GATE & LOGIN MODAL */
+.login-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(11, 15, 25, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 1100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: var(--transition-smooth);
+}
+
+.login-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.login-modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--primary-gold);
+  border-radius: var(--border-radius-lg);
+  padding: 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  transform: translateY(30px) scale(0.95);
+  transition: var(--transition-smooth);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.login-modal-overlay.open .login-modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.login-modal-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.login-modal-header h2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--primary-gold-light);
+  font-family: 'Tajawal', 'Outfit', sans-serif;
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary-gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-modal-header p {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login-error-msg {
+  color: var(--accent-rose);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+  min-height: 20px;
+  transition: var(--transition-smooth);
+}
+
+.login-actions-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.login-actions-row button {
+  flex: 1;
+  padding: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.security-feedback-msg {
+  font-size: 0.85rem;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+.security-feedback-msg.success {
+  color: var(--accent-emerald);
+}
+
+.security-feedback-msg.error {
+  color: var(--accent-rose);
+}
+
+/* Shake animation for wrong credentials */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+/* FULL VIEWPORT LOCK SCREEN STYLES */
+.lock-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-app);
+  background-image: 
+    radial-gradient(at 20% 20%, rgba(212, 175, 55, 0.08) 0px, transparent 50%),
+    radial-gradient(at 80% 80%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.lock-screen-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lock-card {
+  background: var(--bg-card);
+  border: 1px solid var(--primary-gold);
+  border-radius: var(--border-radius-lg);
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  transform: translateY(40px);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.lock-screen-overlay.open .lock-card {
+  transform: translateY(0);
+}
+
+.lock-card-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lock-card-header h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--accent-emerald);
+  background: var(--accent-emerald-dark);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.lock-card-header h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-gold-light);
+  background: linear-gradient(135deg, #ffffff 0%, var(--primary-gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: 'Tajawal', 'Outfit', sans-serif;
+}
+
+.lock-card-header p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+}
+
+/* T-SHIRT & CUP MOCKUP SVGS */
+.svg-product-base {
+  fill: #1f2937;
+  stroke: #4b5563;
+  stroke-width: 2;
+  transition: var(--transition-smooth);
+}
+
+.svg-print-area {
+  fill: rgba(212, 175, 55, 0.12);
+  stroke: var(--primary-gold);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  transition: var(--transition-smooth);
+}
+
+.svg-print-label {
+  fill: var(--primary-gold-light);
+  font-size: 10px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* Die Cutting Options Grid - Full 2-Column alignment without free empty space */
+.die-cutting-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+
+@media (max-width: 580px) {
+  .die-cutting-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Polar Cutting Custom Card styling */
+.custom-extra-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: default !important;
+}
+
+.extra-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  flex: 1;
+}
+
+.extra-rate-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+  padding: 4px 8px;
+  width: 90px;
+  transition: var(--transition-smooth);
+}
+
+.extra-rate-input-wrapper:focus-within {
+  border-color: var(--primary-gold);
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.15);
+}
+
+.rate-adj-input {
+  width: 100% !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  color: var(--text-main) !important;
+  font-size: 0.85rem !important;
+  text-align: right !important;
+  height: auto !important;
+}
+
+.rate-adj-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.rate-unit {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* OTP SEGMENTED DIGIT INPUTS */
+.otp-inputs-container {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.otp-digit {
+  width: 54px !important;
+  height: 54px !important;
+  font-size: 1.6rem !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  border-radius: var(--border-radius-sm) !important;
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid var(--border-light) !important;
+  color: var(--text-main) !important;
+  transition: var(--transition-smooth);
+}
+
+.otp-digit:focus {
+  border-color: var(--primary-gold) !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2) !important;
+  outline: none;
+}
+
+.otp-digit:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* SMS TOAST SIMULATOR */
+.sms-toast {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  background: rgba(17, 24, 39, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--primary-gold);
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-shadow: var(--shadow-lg), var(--shadow-glow);
+  z-index: 2200;
+  max-width: 380px;
+  animation: slideInRight 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  direction: ltr;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.sms-toast-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.sms-toast-content {
+  flex: 1;
+}
+
+.sms-toast-title {
+  margin: 0 0 4px 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--primary-gold-light);
+}
+
+.sms-toast-body {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+.sms-toast-code {
+  display: inline-block;
+  background: rgba(212, 175, 55, 0.15);
+  color: var(--primary-gold-light);
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 1rem;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  margin-left: 4px;
+}
+
+.sms-toast-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0;
+  margin-top: -4px;
+  transition: var(--transition-smooth);
+}
+
+.sms-toast-close:hover {
+  color: var(--accent-rose);
+}
+
+.sms-fields-group,
+.email-fields-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   LIGHT THEME DESIGN SYSTEM (#F5F2D5 Canvas & #122560 Deep Royal Blue Cards)
+   ========================================================================== */
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  padding: 8px 16px;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-family);
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle-btn:hover {
+  background: rgba(255, 255, 255, 0.25) !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+[data-theme="light"],
+body[data-theme="light"] {
+  /* Core Colors */
+  --bg-app: #F5F5DC;                      /* Background: #F5F5DC Beige */
+  --bg-card: #AE9882;                     /* Main Frames / Cards: #AE9882 */
+  --bg-card-hover: #9E8873;
+  --border-light: rgba(26, 21, 16, 0.18); 
+  --border-active: #5c4527;               
+
+  --primary-gold: #5c4527;                
+  --primary-gold-dark: #3d2d18;           
+  --primary-gold-light: #f3e5ab;          
+  --accent-emerald: #059669;              
+  --accent-emerald-dark: #046c4e;
+  --accent-rose: #dc2626;
+  --accent-rose-dark: #991b1b;
+
+  --text-main: #1A1510;                   /* Dark Crisp Text on Beige Cards */
+  --text-muted: #4A3E31;                  
+  --text-dark: #1A1510;                   
+  --text-gold: #5c4527;
+
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.18);
+  --shadow-glow: 0 0 15px rgba(174, 152, 130, 0.4);
+}
+
+/* Light Theme Layout & Text Rules */
+body[data-theme="light"],
+[data-theme="light"] body {
+  background-color: #F5F5DC !important;
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(174, 152, 130, 0.2) 0px, transparent 50%),
+    radial-gradient(at 90% 80%, rgba(245, 245, 220, 0.4) 0px, transparent 50%) !important;
+  color: #1A1510;
+}
+
+[data-theme="light"] .app-header {
+  background: #0c153b !important;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .company-name-en {
+  color: #ffffff !important;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+[data-theme="light"] .company-name-ar {
+  color: #f3e5ab;
+}
+
+[data-theme="light"] .info-item {
+  color: #e2e8f0 !important;
+}
+
+[data-theme="light"] .dept-badge {
+  background: #0c153b;
+  color: #ffffff;
+}
+
+[data-theme="light"] .dept-badge-group {
+  background: rgba(12, 21, 59, 0.95) !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+}
+
+[data-theme="light"] .dept-badge-en {
+  color: #34d399 !important;
+}
+
+[data-theme="light"] .dept-badge-ar {
+  color: #fbbf24 !important;
+}
+
+[data-theme="light"] .theme-toggle-btn {
+  background: #E8DCC4 !important;
+  background-color: #E8DCC4 !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.3) !important;
+}
+
+[data-theme="light"] .theme-toggle-btn:hover {
+  background: #D8CCA4 !important;
+  background-color: #D8CCA4 !important;
+  color: #1A1510 !important;
+  border-color: #1A1510 !important;
+}
+
+/* Main Frames (Cards) inside Light Mode */
+[data-theme="light"] .config-card,
+[data-theme="light"] .results-card,
+[data-theme="light"] .modal-content,
+[data-theme="light"] .drawer-content {
+  background: #AE9882 !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.25) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .config-card h3,
+[data-theme="light"] .results-card h3,
+[data-theme="light"] .config-card h4,
+[data-theme="light"] .card-header h3 {
+  color: #1A1510 !important;
+  border-left-color: #5c4527 !important;
+}
+
+/* Settings Drawer Light Mode Overrides */
+[data-theme="light"] .drawer-header {
+  background: #0c153b !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="light"] .drawer-header h2 {
+  color: #ffc800 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .drawer-header .close-btn {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .setting-section h3 {
+  color: #1A1510 !important;
+  border-left-color: #ffc800 !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .finish-group-title {
+  color: #78350f !important;
+  font-weight: 800 !important;
+  border-bottom-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] .settings-edit-table th {
+  color: #1A1510 !important;
+  font-weight: 800 !important;
+  border-bottom-color: rgba(26, 21, 16, 0.25) !important;
+}
+
+[data-theme="light"] .settings-edit-table td {
+  color: #1A1510 !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .form-group label,
+[data-theme="light"] .switch-label,
+[data-theme="light"] .inv-label,
+[data-theme="light"] .inv-value,
+[data-theme="light"] .extra-title {
+  color: #1A1510 !important;
+  font-weight: 600;
+}
+
+[data-theme="light"] .extra-desc,
+[data-theme="light"] .size-dims {
+  color: #3E3326 !important;
+}
+
+/* Job Tabs in Light Theme */
+[data-theme="light"] .job-tabs {
+  background: rgba(245, 245, 220, 0.6) !important;
+  border-color: rgba(26, 21, 16, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .tab-btn {
+  color: #1A1510;
+  font-weight: 700;
+}
+
+[data-theme="light"] .tab-btn:hover {
+  background: rgba(26, 21, 16, 0.1);
+  color: #1A1510;
+}
+
+[data-theme="light"] .tab-btn.active {
+  background: #5c4527 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+/* Input elements in Light Theme */
+[data-theme="light"] .form-input,
+[data-theme="light"] .form-select,
+[data-theme="light"] input[type="number"],
+[data-theme="light"] input[type="text"],
+[data-theme="light"] input,
+[data-theme="light"] select {
+  background-color: #ffffff !important;
+  color: #1A1510 !important;
+  border-color: rgba(26, 21, 16, 0.25) !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .form-input:focus,
+[data-theme="light"] .form-select:focus,
+[data-theme="light"] input:focus {
+  background-color: #ffffff !important;
+  color: #1A1510 !important;
+  border-color: #5c4527 !important;
+  box-shadow: 0 0 0 3px rgba(92, 69, 39, 0.25) !important;
+}
+
+[data-theme="light"] .input-with-unit .unit,
+[data-theme="light"] .rate-unit,
+[data-theme="light"] .extra-rate-input-wrapper .unit {
+  color: #1A1510 !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .extra-rate-input-wrapper {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] .extra-rate-input-wrapper .form-input,
+[data-theme="light"] .extra-rate-input-wrapper input {
+  background-color: transparent !important;
+  color: #1A1510 !important;
+  font-weight: 700 !important;
+}
+
+/* Ensure inputs inside checked extra cards keep dark text on white background */
+[data-theme="light"] .extra-checkbox-card:has(input:checked) input,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) select,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .form-input,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .unit,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .rate-unit {
+  color: #1A1510 !important;
+  font-weight: 700 !important;
+}
+
+/* Light Notice & Alert Strips */
+[data-theme="light"] #boxFoldInfoNotice,
+[data-theme="light"] #plasticCalcNotice,
+[data-theme="light"] #colorChargeNotice,
+[data-theme="light"] #dieBoardNotice,
+[data-theme="light"] .quick-size-buttons .btn-subtle {
+  background: #ffffff !important;
+  color: #1A1510 !important;
+  border-color: #5c4527 !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] #boxFoldInfoNotice *,
+[data-theme="light"] #plasticCalcNotice *,
+[data-theme="light"] #colorChargeNotice *,
+[data-theme="light"] #dieBoardNotice * {
+  color: #1A1510 !important;
+}
+
+/* Buttons and Presets in Light Mode */
+[data-theme="light"] .size-btn,
+[data-theme="light"] .gsm-btn,
+[data-theme="light"] .paper-mode-btn,
+[data-theme="light"] .extra-checkbox-card {
+  background: rgba(245, 245, 220, 0.5);
+  border-color: rgba(26, 21, 16, 0.25);
+  color: #1A1510;
+}
+
+[data-theme="light"] .size-btn:hover,
+[data-theme="light"] .gsm-btn:hover,
+[data-theme="light"] .paper-mode-btn:hover,
+[data-theme="light"] .extra-checkbox-card:hover {
+  background: rgba(245, 245, 220, 0.85);
+  border-color: #5c4527;
+}
+
+[data-theme="light"] .paper-mode-btn.active,
+[data-theme="light"] .size-btn.active,
+[data-theme="light"] .gsm-btn.active,
+[data-theme="light"] .tab-btn.active,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) {
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+[data-theme="light"] .paper-mode-btn.active .paper-mode-btn-text,
+[data-theme="light"] .size-btn.active .size-name,
+[data-theme="light"] .gsm-btn.active .gsm-val,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-title,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .extra-desc,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) .form-group label,
+[data-theme="light"] .extra-checkbox-card:has(input:checked) div:not(#plasticCalcNotice):not(#goldFoilCalcNotice):not(#uvCostCalcNotice):not(#colorChargeNotice):not(#dieBoardNotice):not(#offsetPrintNotice),
+[data-theme="light"] .extra-checkbox-card:has(input:checked) span:not(.unit):not(.rate-unit) {
+  color: #ffffff !important;
+  font-weight: 700 !important;
+}
+
+[data-theme="light"] .size-dims,
+[data-theme="light"] .gsm-price {
+  color: #4A3E31;
+}
+
+[data-theme="light"] .extra-title {
+  color: #1A1510;
+}
+
+[data-theme="light"] .extra-desc {
+  color: #4A3E31;
+}
+
+[data-theme="light"] .preview-mode-badge {
+  background: #0c153b;
+  color: #ffffff;
+}
+
+/* Layout SVG & Statistics Grid */
+[data-theme="light"] .layout-preview-container,
+[data-theme="light"] .svg-container {
+  background: #0c153b !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .svg-sheet {
+  fill: #AE9882;
+  stroke: #ffffff;
+}
+
+[data-theme="light"] .stat-box {
+  background: #0c153b !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+[data-theme="light"] .stat-val {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .stat-lbl {
+  color: #cbd5e1 !important;
+}
+
+/* Comparison Table in Light Mode */
+[data-theme="light"] .comparison-table th {
+  color: #1A1510;
+  border-bottom-color: rgba(26, 21, 16, 0.2);
+}
+
+[data-theme="light"] .comparison-table td {
+  color: #1A1510;
+  border-bottom-color: rgba(26, 21, 16, 0.1);
+}
+
+[data-theme="light"] .comparison-table tbody tr.better-option {
+  background: rgba(92, 69, 39, 0.12);
+}
+
+[data-theme="light"] .comparison-table tbody tr.better-option td {
+  color: #1A1510;
+}
+
+[data-theme="light"] .comparison-status-badge.best {
+  background: #0c153b;
+  color: #ffffff;
+}
+
+[data-theme="light"] .theme-card-option#themeOptDark {
+  background: #0c153b !important;
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight {
+  background: #AE9882 !important;
+  border-color: #5c4527 !important;
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight h4 {
+  color: #1A1510 !important;
+}
+
+/* Foil Color Buttons */
+.foil-color-btn-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.foil-color-btn {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius-sm);
+  padding: 10px 14px;
+  font-family: 'Tajawal', var(--font-family);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-main);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: var(--transition-smooth);
+}
+
+.foil-color-btn:hover {
+  background: rgba(212, 175, 55, 0.1);
+  border-color: var(--primary-gold);
+}
+
+.foil-color-btn[data-color="gold"].active {
+  background: linear-gradient(135deg, #d4af37 0%, #f59e0b 100%) !important;
+  color: #000000 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.4) !important;
+}
+
+.foil-color-btn[data-color="rainbow"].active {
+  background: linear-gradient(135deg, #ef4444 0%, #f59e0b 20%, #10b981 40%, #06b6d4 60%, #8b5cf6 80%, #ec4899 100%) !important;
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+[data-theme="light"] .theme-card-option#themeOptLight p {
+  color: #4A3E31 !important;
+}
+
+/* ==========================================================================
+   BAG INNER BOARD (250 GSM) SECTION STYLES
+   ========================================================================== */
+#bagInnerBoardCard {
+  border-left: 4px solid var(--primary-gold);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.04) 0%, rgba(15, 23, 42, 0.6) 100%);
+  transition: all 0.25s ease;
+}
+
+.inner-board-toggle-label {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.inner-board-toggle-label:hover {
+  background: rgba(212, 175, 55, 0.22) !important;
+  border-color: var(--primary-gold) !important;
+}
+
+#bagInnerBoardResultBox {
+  transition: all 0.25s ease;
+}
+
+#bagInnerBoardSvgContainer svg {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] #bagInnerBoardCard {
+  background: #AE9882 !important;
+  border-left-color: #5c4527 !important;
+}
+
+[data-theme="light"] #bagInnerBoardResultBox {
+  background: rgba(0, 0, 0, 0.08) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] #bagInnerBoardSvgContainer {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border-color: rgba(26, 21, 16, 0.2) !important;
+}
+
+[data-theme="light"] #bagInnerBoardSvgContainer svg {
+  background: #e2d8cb !important;
+  border-color: #5c4527 !important;
+}
+
+[data-theme="light"] .inner-board-toggle-label {
+  background: rgba(26, 21, 16, 0.12) !important;
+  border-color: rgba(26, 21, 16, 0.3) !important;
+  color: #1A1510 !important;
+}
+
+/* ABSOLUTE MASTER OVERRIDE FOR DEFAULT A4 PRINTING & CLEAN WHITE PDF */
+@media print {
+  @page {
+    size: A4 portrait !important;
+    margin: 10mm 12mm !important;
+  }
+
+  html,
+  body,
+  body[data-theme="light"],
+  [data-theme="light"] body,
+  .app-container,
+  [data-theme="light"] .app-container,
+  .app-body,
+  [data-theme="light"] .app-body,
+  .results-pane,
+  [data-theme="light"] .results-pane,
+  .invoice-card,
+  [data-theme="light"] .invoice-card,
+  .invoice-card *,
+  div, section, main {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+
+
+
+
+
+
+</style>
+
+  <style>
+    .hardcover-nav-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(35, 60, 103, 0.4) 100%);
+      border: 1px solid var(--primary-gold);
+      border-radius: var(--border-radius-md);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hardcover-nav-banner .banner-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #f59e0b;
+    }
+    .hardcover-nav-banner .btn-switch-page {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: var(--border-radius-sm);
+      background: #06b6d4;
+      color: #010101;
+      font-weight: 700;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+    }
+    .hardcover-nav-banner .btn-switch-page:hover {
+      background: #22d3ee;
+      transform: translateY(-1px);
+    }
+    .making-method-toggle-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .making-method-btn {
+      flex: 1;
+      padding: 12px 14px;
+      border: 2px solid var(--border-light);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      border-radius: var(--border-radius-sm);
+      cursor: pointer;
+      font-weight: 700;
+      font-family: inherit;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-smooth);
+    }
+    .making-method-btn:hover {
+      border-color: var(--primary-gold);
+      background: rgba(212, 175, 55, 0.08);
+    }
+    .making-method-btn.active {
+      border-color: #f59e0b;
+      background: rgba(212, 175, 55, 0.18);
+      color: #f59e0b;
+    }
+    .gsm-btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .rigid-gsm-btn {
+      padding: 10px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: var(--transition-smooth);
+    }
+    .rigid-gsm-btn:hover {
+      border-color: var(--primary-gold);
+    }
+    .rigid-gsm-btn.active {
+      border-color: #f59e0b;
+      background: rgba(212, 175, 55, 0.15);
+      color: #f59e0b;
+      font-weight: 700;
+    }
+    .preview-tab-group {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .preview-tab-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--border-radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition-smooth);
+    }
+    .preview-tab-btn.active {
+      background: var(--primary-gold);
+      color: #010101;
+      border-color: var(--primary-gold);
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- App Container -->
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="app-header">
+      <div class="header-main">
+        <div class="logo-area">
+          <img src="data:image/png;base64,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" alt="Logo" class="company-logo" id="companyLogo">
+          <div class="company-titles">
+            <div class="dept-badge-group">
+              <span class="dept-badge-ar">ديجيتال | أوفست | علب كرتون مقوى فاخرة (هارد بوكس)</span>
+              <span class="dept-badge-en">DIGITAL | OFFSET | HARDCOVER LUXURY BOXES</span>
+            </div>
+          </div>
+        </div>
+        <div class="header-info">
+          <p class="info-item address-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+            <span>Al Baladiya District, Othman Ibn Afwan Street, Hafar Al Batin 39921, KSA</span>
+          </p>
+          <p class="info-item phone-item">
+            <svg class="icon" viewBox="0 0 24 24"><path fill="currentColor" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            <span>+966 53 763 4784 / 055 744 4588</span>
+          </p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Switch back to Paper & Sticker Estimator -->
+        <a href="index.html" class="settings-toggle-btn" style="background: rgba(6, 182, 212, 0.15); border-color: #06b6d4; color: #06b6d4; text-decoration: none; font-weight: 700;" title="Digital & Offset Printing Estimator">
+          <span style="font-size: 1.1rem;">📄</span>
+          <span>Paper & Sticker Estimator</span>
+        </a>
+
+        <button class="theme-toggle-btn" id="themeToggleBtn" title="Toggle Light / Dark Theme">
+          <svg class="icon sun-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41s-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/></svg>
+          <span id="themeToggleText">Light Theme</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Banner -->
+    <div class="hardcover-nav-banner">
+      <div class="banner-title">
+        <span>📦</span>
+        <span>HARDCOVER LUXURY BOXES ESTIMATOR / حاسبة علب الكرتون المقوى الفاخرة</span>
+      </div>
+      <a href="index.html" class="btn-switch-page">
+        <span>⬅ Return to Paper & Sticker Page / العودة لحاسبة الأوراق والاستيكر</span>
+      </a>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="app-body">
+      
+      <!-- LEFT COLUMN: INPUTS -->
+      <section class="config-pane">
+        
+        <!-- Section 1: Box Job & Quantity Info -->
+        <div class="card config-card">
+          <div class="card-header">
+            <h3>1. Box Quantity & Job Setup / الكمية ومعلومات العلبة</h3>
+            <span class="badge" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b;">Step 1</span>
+          </div>
+          <div class="form-row flex-wrap" style="gap: 14px;">
+            <div class="form-group min-w-150" style="flex: 1.5;">
+              <label for="boxQty">Total Box Quantity / كمية العلب المطلوبة (قطعة)</label>
+              <input type="number" id="boxQty" value="500" min="1" step="10" class="form-input" style="font-weight: 700; font-size: 1.05rem;">
+            </div>
+            <div class="form-group min-w-150" style="flex: 1;">
+              <label for="profitMarginInput">Profit Margin / هامش الربح (%)</label>
+              <div class="input-with-unit">
+                <input type="number" id="profitMarginInput" value="30" min="0" step="1" class="form-input">
+                <span class="unit">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Rigid Board Configuration -->
+        <div class="card config-card" style="border-left: 4px solid #f59e0b;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h3>2. Rigid Board (Greyboard) / الكرتون المقوى</h3>
+            <span class="badge" style="background: rgba(212, 175, 55, 0.15); color: #f59e0b;">100×70 cm Sheet Base</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+            Choose board thickness (GSM). Sheet prices are based on default 100x70 cm full sheet:
+          </p>
+
+          <!-- GSM Selection Buttons -->
+          <div class="gsm-btn-grid">
+            <button type="button" class="rigid-gsm-btn" data-gsm="800">
+              <span style="font-size: 1rem; font-weight: 700;">800 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">3.50 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn" data-gsm="1000">
+              <span style="font-size: 1rem; font-weight: 700;">1000 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">4.50 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn active" data-gsm="1200">
+              <span style="font-size: 1rem; font-weight: 700;">1200 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">5.00 SR / sheet</span>
+            </button>
+            <button type="button" class="rigid-gsm-btn" data-gsm="2000">
+              <span style="font-size: 1rem; font-weight: 700;">2000 GSM</span>
+              <span style="font-size: 0.78rem; opacity: 0.85;">6.00 SR / sheet</span>
+            </button>
+          </div>
+
+          <!-- Rigid Board Dimensions & Rate -->
+          <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 12px;">
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardLength">Flat Length (L) / الطول (سم)</label>
+              <input type="number" id="boardLength" value="35" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardHeight">Flat Height (H) / الارتفاع (سم)</label>
+              <input type="number" id="boardHeight" value="25" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="boardPcsPerBox">Pcs / Box (قطع بالعلبة)</label>
+              <input type="number" id="boardPcsPerBox" value="1" min="1" step="1" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1.1;">
+              <label for="rigidBoardRateInput">Sheet Rate (SR / 100x70)</label>
+              <input type="number" id="rigidBoardRateInput" value="5.00" min="0.1" step="0.25" class="form-input">
+            </div>
+          </div>
+
+          <!-- Dynamic Rigid Board Output Badges -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px;">
+            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">UPS on 100x70 Sheet</span>
+              <span id="boardUpsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Sheets Needed</span>
+              <span id="boardSheetsBadge" style="font-weight: 700; color: #f59e0b; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Rigid Board Total Cost</span>
+              <span id="boardCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 3: Wrapping Paper & Printing -->
+        <div class="card config-card" style="border-left: 4px solid #06b6d4;">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+            <h3>3. Wrapping 150 GSM Paper / ورق التغليف الخارجي</h3>
+            <span class="badge" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">100x70 = 0.75 SR</span>
+          </div>
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+            Input wrapping paper flat size (including flaps for wrapping over rigid board edges):
+          </p>
+
+          <!-- Wrapping Paper Dimensions & Rate -->
+          <div class="form-row flex-wrap" style="gap: 12px; margin-bottom: 12px;">
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapLength">Wrap Length (L) / الطول (سم)</label>
+              <input type="number" id="wrapLength" value="40" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapHeight">Wrap Height (H) / الارتفاع (سم)</label>
+              <input type="number" id="wrapHeight" value="30" min="1" step="0.5" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1;">
+              <label for="wrapPcsPerBox">Pcs / Box (قطع بالعلبة)</label>
+              <input type="number" id="wrapPcsPerBox" value="1" min="1" step="1" class="form-input">
+            </div>
+            <div class="form-group min-w-120" style="flex: 1.1;">
+              <label for="wrapPaperRateInput">Sheet Rate (SR / 100x70)</label>
+              <input type="number" id="wrapPaperRateInput" value="0.75" min="0.1" step="0.05" class="form-input">
+            </div>
+          </div>
+
+          <!-- Dynamic Wrapping Output Badges -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 14px;">
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping UPS on 100x70</span>
+              <span id="wrapUpsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrapping Sheets Needed</span>
+              <span id="wrapSheetsBadge" style="font-weight: 700; color: #06b6d4; font-size: 0.95rem;">-</span>
+            </div>
+            <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); padding: 8px 10px; border-radius: 6px;">
+              <span style="font-size: 0.72rem; color: var(--text-muted); display: block;">Wrap Material Cost</span>
+              <span id="wrapPaperCostBadge" style="font-weight: 700; color: var(--accent-emerald); font-size: 0.95rem;">-</span>
+            </div>
+          </div>
+
+          <!-- Wrapping Paper Offset Printing Section -->
+          <div style="border-top: 1px dashed var(--border-light); padding-top: 10px;">
+            <label class="extra-checkbox-label" for="enableWrapPrint" style="cursor: pointer; display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <input type="checkbox" id="enableWrapPrint" checked>
+              <div class="extra-info">
+                <span class="extra-title" style="color: #06b6d4; font-weight: 700;">🖨️ Offset Printing on Wrapping Paper / طباعة ورق التغليف</span>
+              </div>
+            </label>
+
+            <div id="wrapPrintDetailsRow" style="padding-left: 26px;">
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 6px;">Select Printing Sheet Size:</div>
+              <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <button type="button" class="print-size-btn active" data-size="100x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
+                  <div style="font-weight: 700; color: #06b6d4;">100×70 cm Paper</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 250 SR + 200 SR / 1k sh</div>
+                </button>
+                <button type="button" class="print-size-btn" data-size="50x70" style="flex: 1; padding: 8px 10px; border: 1px solid var(--border-light); border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-main); cursor: pointer; text-align: left;">
+                  <div style="font-weight: 700; color: #06b6d4;">50×70 cm Paper</div>
+                  <div style="font-size: 0.75rem; color: var(--text-muted);">Setup 150 SR + 100 SR / 1k sh</div>
+                </button>
+              </div>
+
+              <div id="wrapPrintTotalBadge" style="background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.4); padding: 8px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 700; color: #06b6d4;">
+                -
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 4: Box Making Method (Manual vs Machine) -->
+        <div class="card config-card" style="border-left: 4px solid var(--accent-emerald);">
+          <div class="card-header">
+            <h3>4. Box Making Cost (Labor + Glue) / طريقة التصنيع والتجميع</h3>
+            <span class="badge" style="background: rgba(16, 185, 129, 0.2); color: var(--accent-emerald);">Assembly</span>
+          </div>
+
+          <!-- Method Selector Buttons -->
+          <div class="making-method-toggle-group">
+            <button type="button" class="making-method-btn active" data-method="manual">
+              <span style="font-size: 1.2rem;">🛠️</span>
+              <span>Manual Making / تصنيع يدوي</span>
+              <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.85;">15.00 SR / Hour (Labor + Glue)</span>
+            </button>
+            <button type="button" class="making-method-btn" data-method="machine">
+              <span style="font-size: 1.2rem;">⚙️</span>
+              <span>Machine Making / تصنيع آلي</span>
+              <span style="font-size: 0.75rem; font-weight: 500; opacity: 0.85;">Setup 250 SR + 100.00 SR / Hour</span>
+            </button>
+          </div>
+
+          <!-- Manual Making Details Card -->
+          <div id="manualMakingCardDetails" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #f59e0b; margin-bottom: 8px; font-size: 0.9rem;">
+              🛠️ Manual Box Making Parameters / إعدادات التصنيع اليدوي
+            </div>
+            <div class="form-row flex-wrap" style="gap: 12px;">
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="manualLaborHourlyInput">Hourly Rate (SR/hr)</label>
+                <input type="number" id="manualLaborHourlyInput" value="15.00" min="1" step="1" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="manualSpeedInput">Speed (Boxes/hr/worker)</label>
+                <input type="number" id="manualSpeedInput" value="20" min="1" step="5" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1.2;">
+                <label for="manualHoursOverrideInput">Manual Hours (Optional Override)</label>
+                <input type="number" id="manualHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
+              </div>
+            </div>
+            <div id="manualTotalBadge" style="margin-top: 8px; font-weight: 700; color: #f59e0b; font-size: 0.9rem;">
+              -
+            </div>
+          </div>
+
+          <!-- Machine Making Details Card (Hidden by default) -->
+          <div id="machineMakingCardDetails" class="hidden" style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-light); padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+            <div style="font-weight: 700; color: #06b6d4; margin-bottom: 8px; font-size: 0.9rem;">
+              ⚙️ Machine Box Making Parameters / إعدادات التصنيع الآلي بالماكينة
+            </div>
+            <div class="form-row flex-wrap" style="gap: 12px;">
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineSetupInput">Machine Setup (SR)</label>
+                <input type="number" id="machineSetupInput" value="250.00" min="0" step="25" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineHourlyInput">Hourly Rate (SR/hr)</label>
+                <input type="number" id="machineHourlyInput" value="100.00" min="10" step="10" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1;">
+                <label for="machineSpeedInput">Speed (Boxes/hr)</label>
+                <input type="number" id="machineSpeedInput" value="300" min="10" step="50" class="form-input">
+              </div>
+              <div class="form-group min-w-120" style="flex: 1.2;">
+                <label for="machineHoursOverrideInput">Machine Hours (Override)</label>
+                <input type="number" id="machineHoursOverrideInput" placeholder="Auto" min="0.1" step="0.5" class="form-input">
+              </div>
+            </div>
+            <div id="machineTotalBadge" style="margin-top: 8px; font-weight: 700; color: #06b6d4; font-size: 0.9rem;">
+              -
+            </div>
+          </div>
+
+          <!-- Side-by-side comparison indicator -->
+          <div id="makingComparisonNotice" style="background: rgba(16, 185, 129, 0.08); border: 1px dashed var(--accent-emerald); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; line-height: 1.5;">
+            <!-- Dynamic comparison details -->
+          </div>
+        </div>
+
+        <!-- Section 5: Optional Luxury Embellishments -->
+        <div class="card config-card">
+          <div class="card-header">
+            <h3>5. Luxury Finishes & Extras / لمسات فاخرة اختيارية</h3>
+            <span class="badge" style="background: rgba(245, 158, 11, 0.2); color: #f59e0b;">Extras</span>
+          </div>
+
+          <!-- Gold Foil Stamping -->
+          <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
+            <label class="extra-checkbox-label" for="hardcoverFoil" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverFoil">
+              <span class="extra-title" style="color: #f59e0b; font-weight: 700;">★ Gold Foil Stamping / بصمة حرارية</span>
+            </label>
+            <div id="hardcoverFoilDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div class="form-row flex-wrap" style="gap: 10px;">
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcFoilL">Foil L (cm)</label>
+                  <input type="number" id="hcFoilL" value="10" min="1" step="0.5" class="form-input">
+                </div>
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcFoilH">Foil H (cm)</label>
+                  <input type="number" id="hcFoilH" value="10" min="1" step="0.5" class="form-input">
+                </div>
+              </div>
+              <div id="hcFoilSummary" style="font-size: 0.85rem; color: #f59e0b; font-weight: 700; margin-top: 4px;">-</div>
+            </div>
+          </div>
+
+          <!-- Spot UV -->
+          <div style="border-bottom: 1px dashed var(--border-light); padding-bottom: 10px; margin-bottom: 10px;">
+            <label class="extra-checkbox-label" for="hardcoverUv" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverUv">
+              <span class="extra-title" style="color: #06b6d4; font-weight: 700;">✨ Spot UV Varnish / ورنيش يو في موضعي</span>
+            </label>
+            <div id="hardcoverUvDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div class="form-row flex-wrap" style="gap: 10px;">
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcUvL">UV L (cm)</label>
+                  <input type="number" id="hcUvL" value="40" min="1" step="1" class="form-input">
+                </div>
+                <div class="form-group min-w-100" style="flex: 1;">
+                  <label for="hcUvH">UV H (cm)</label>
+                  <input type="number" id="hcUvH" value="25" min="1" step="1" class="form-input">
+                </div>
+              </div>
+              <div id="hcUvSummary" style="font-size: 0.85rem; color: #06b6d4; font-weight: 700; margin-top: 4px;">-</div>
+            </div>
+          </div>
+
+          <!-- Die Cutting Board -->
+          <div>
+            <label class="extra-checkbox-label" for="hardcoverDieBoard" style="cursor: pointer; display: flex; align-items: center; gap: 8px;">
+              <input type="checkbox" id="hardcoverDieBoard">
+              <span class="extra-title" style="color: var(--accent-emerald); font-weight: 700;">✂️ Die Cutting Board & Cylinder / قالب وسلندر تكسير</span>
+            </label>
+            <div id="hardcoverDieDetails" class="hidden" style="margin-top: 8px; padding-left: 26px;">
+              <div id="hcDieSummary" style="font-size: 0.85rem; color: var(--accent-emerald); font-weight: 700;">-</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: RESULTS & PREVIEWS -->
+      <section class="results-pane">
+        
+        <!-- Interactive Visual Layout Preview Card -->
+        <div class="results-card">
+          <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <h3>Visual Sheet Layout / التخطيط البصري على الفرخ</h3>
+          </div>
+
+          <!-- Preview Tabs: Rigid Board vs Wrapping Paper -->
+          <div class="preview-tab-group">
+            <button type="button" class="preview-tab-btn active" data-target="board">
+              Rigid Board (الكرتون المقوى)
+            </button>
+            <button type="button" class="preview-tab-btn" data-target="wrapping">
+              Wrapping Paper (ورق التغليف 150g)
+            </button>
+          </div>
+
+          <div id="hardcoverLayoutContainer" style="margin-top: 10px;">
+            <!-- Dynamic SVG Sheet Layout populated by JS -->
+          </div>
+        </div>
+
+        <!-- Cost Estimation Summary Card -->
+        <div class="results-card" style="border: 1px solid var(--primary-gold);">
+          <div class="card-header" style="border-bottom: 1px solid rgba(212, 175, 55, 0.3); padding-bottom: 10px;">
+            <h3>Hardcover Luxury Box Cost / ملخص تسعير علب الهارد بوكس</h3>
+            <span class="badge" id="summaryBoxQty" style="background: rgba(212, 175, 55, 0.2); color: #f59e0b; font-weight: 700;">500 Boxes</span>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 14px 0; border-bottom: 1px dashed var(--border-light);">
+            <div>
+              <div style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase;">Total Selling Price / الإجمالي النهائي:</div>
+              <div id="summaryTotalCost" style="font-size: 2.2rem; font-weight: 800; color: #f59e0b; line-height: 1.1;">0.00 SR</div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Unit Price / سعر الحبة:</div>
+              <div id="summaryUnitCost" style="font-size: 1.4rem; font-weight: 700; color: var(--accent-emerald);">0.00 SR / box</div>
+            </div>
+          </div>
+
+          <!-- Itemized Breakdown -->
+          <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 8px; font-size: 0.9rem;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">1. Rigid Board (Greyboard):</span>
+              <strong id="sumBoardCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">2. Wrapping Paper (150 GSM):</span>
+              <strong id="sumWrapPaperCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">3. Wrapping Offset Print:</span>
+              <strong id="sumWrapPrintCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">4. Box Making & Assembly:</span>
+              <strong id="sumMakingCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">5. Additional Finishes:</span>
+              <strong id="sumFinishesCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <hr style="border: none; border-top: 1px dashed var(--border-light); margin: 4px 0;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Production Base Cost:</span>
+              <strong id="sumBaseCost" style="color: var(--text-main);">-</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--accent-emerald);">
+              <span>Added Profit Margin:</span>
+              <strong id="sumProfitAmount">-</strong>
+            </div>
+          </div>
+
+          <!-- Quotation & Actions Row -->
+          <div style="display: flex; gap: 10px; margin-top: 18px;">
+            <button type="button" id="copyQuoteBtn" class="btn-primary" style="flex: 1; padding: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 8px;">
+              <span>📋</span>
+              <span>Copy Quote / نسخ العرض</span>
+            </button>
+            <button type="button" id="printQuoteBtn" class="btn-secondary" style="padding: 12px 18px; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+              <span>🖨️</span>
+              <span>Print / طباعة</span>
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script>
+/**
+ * Digital Printing Press Cost Estimator - Right Printers
+ * Hardcover Luxury Boxes Estimator Logic (src/js/hardcover.js)
+ */
+
+const DEFAULT_HARDCOVER_PRICING = {
+  rigidBoardRates: {
+    '800': 3.50,   // 800 GSM = 3.50 SR / sheet (100x70)
+    '1000': 4.50,  // 1000 GSM = 4.50 SR / sheet (100x70)
+    '1200': 5.00,  // 1200 GSM = 5.00 SR / sheet (100x70)
+    '2000': 6.00   // 2000 GSM = 6.00 SR / sheet (100x70)
+  },
+  wrappingPaper150: 0.75, // per 100x70 cm sheet
+  wrappingPrint: {
+    '100x70': { setup: 250.00, run1000: 200.00 },
+    '50x70':  { setup: 150.00, run1000: 100.00 }
+  },
+  manualLabor: {
+    hourlyRate: 15.00, // SR per hour (labor + glue)
+    defaultSpeed: 20   // boxes per hour per worker
+  },
+  machineLabor: {
+    setupCost: 250.00, // SR setup
+    hourlyRate: 100.00,// SR per hour (machine + operator + glue)
+    defaultSpeed: 300  // boxes per hour
+  },
+  profitMargin: 30 // default 30% profit margin
+};
+
+let hardcoverPricing = JSON.parse(JSON.stringify(DEFAULT_HARDCOVER_PRICING));
+let selectedRigidGsm = '1200';
+let selectedBoxMakingMethod = 'manual'; // 'manual' or 'machine'
+let selectedWrappingPrintSize = '100x70'; // '100x70' or '50x70'
+let activePreviewTab = 'board'; // 'board' or 'wrapping'
+
+// Load stored pricing from localStorage
+function loadHardcoverPricing() {
+  const stored = localStorage.getItem('right_printers_hardcover_pricing_v1');
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      hardcoverPricing = Object.assign({}, DEFAULT_HARDCOVER_PRICING, parsed);
+    } catch (e) {
+      console.error("Error reading stored hardcover pricing:", e);
+      hardcoverPricing = JSON.parse(JSON.stringify(DEFAULT_HARDCOVER_PRICING));
+    }
+  }
+}
+
+function saveHardcoverPricing() {
+  localStorage.setItem('right_printers_hardcover_pricing_v1', JSON.stringify(hardcoverPricing));
+}
+
+// Calculate Best Fit UPS on 100x70 cm sheet
+function calculateSheetUps(sheetW, sheetH, itemW, itemH) {
+  if (itemW <= 0 || itemH <= 0 || sheetW <= 0 || sheetH <= 0) {
+    return { ups: 0, orientation: 'horizontal', cols: 0, rows: 0, wastePercent: 100 };
+  }
+
+  // Option 1: Horizontal (no rotation)
+  const cols_H = Math.floor(sheetW / itemW);
+  const rows_H = Math.floor(sheetH / itemH);
+  const ups_H = Math.max(0, cols_H * rows_H);
+
+  // Option 2: Vertical (rotated 90 deg)
+  const cols_V = Math.floor(sheetW / itemH);
+  const rows_V = Math.floor(sheetH / itemW);
+  const ups_V = Math.max(0, cols_V * rows_V);
+
+  const totalSheetArea = sheetW * sheetH;
+
+  if (ups_V > ups_H) {
+    const usedArea = ups_V * itemW * itemH;
+    const wastePercent = ((totalSheetArea - usedArea) / totalSheetArea) * 100;
+    return {
+      ups: ups_V,
+      orientation: 'vertical',
+      cols: cols_V,
+      rows: rows_V,
+      fitW: itemH,
+      fitH: itemW,
+      wastePercent: Math.max(0, wastePercent)
+    };
+  } else {
+    const usedArea = ups_H * itemW * itemH;
+    const wastePercent = ((totalSheetArea - usedArea) / totalSheetArea) * 100;
+    return {
+      ups: ups_H,
+      orientation: 'horizontal',
+      cols: cols_H,
+      rows: rows_H,
+      fitW: itemW,
+      fitH: itemH,
+      wastePercent: Math.max(0, wastePercent)
+    };
+  }
+}
+
+// Main Calculation Function
+function calculateHardcover() {
+  const boxQty = Math.max(1, parseInt(document.getElementById('boxQty')?.value) || 1);
+  const profitMarginPercent = parseFloat(document.getElementById('profitMarginInput')?.value) || 0;
+
+  // 1. RIGID BOARD CALCULATION
+  const boardL = parseFloat(document.getElementById('boardLength')?.value) || 1;
+  const boardH = parseFloat(document.getElementById('boardHeight')?.value) || 1;
+  const boardPcsPerBox = parseInt(document.getElementById('boardPcsPerBox')?.value) || 1;
+  const totalBoardPieces = boxQty * boardPcsPerBox;
+
+  // Standard sheet is 100x70 cm
+  const boardLayout = calculateSheetUps(100, 70, boardL, boardH);
+  const boardUps = Math.max(1, boardLayout.ups);
+  const boardSheetsNeeded = Math.ceil(totalBoardPieces / boardUps);
+
+  // Sheet rate from input or pricing
+  const customBoardRate = parseFloat(document.getElementById('rigidBoardRateInput')?.value);
+  const boardSheetRate = (!isNaN(customBoardRate) && customBoardRate > 0)
+    ? customBoardRate
+    : (hardcoverPricing.rigidBoardRates[selectedRigidGsm] || 5.00);
+
+  const totalBoardCost = boardSheetsNeeded * boardSheetRate;
+  const unitBoardCost = totalBoardCost / boxQty;
+
+  // Update Rigid Board UI badges
+  const boardUpsBadge = document.getElementById('boardUpsBadge');
+  if (boardUpsBadge) {
+    boardUpsBadge.innerText = `${boardUps} UPS (${boardLayout.cols}×${boardLayout.rows} ${boardLayout.orientation})`;
+  }
+  const boardSheetsBadge = document.getElementById('boardSheetsBadge');
+  if (boardSheetsBadge) {
+    boardSheetsBadge.innerText = `${boardSheetsNeeded} sheets (${boardSheetRate.toFixed(2)} SR/sh)`;
+  }
+  const boardCostBadge = document.getElementById('boardCostBadge');
+  if (boardCostBadge) {
+    boardCostBadge.innerText = `${totalBoardCost.toFixed(2)} SR (${unitBoardCost.toFixed(2)} SR/box)`;
+  }
+
+  // 2. WRAPPING 150 GSM PAPER CALCULATION
+  const wrapL = parseFloat(document.getElementById('wrapLength')?.value) || 1;
+  const wrapH = parseFloat(document.getElementById('wrapHeight')?.value) || 1;
+  const wrapPcsPerBox = parseInt(document.getElementById('wrapPcsPerBox')?.value) || 1;
+  const totalWrapPieces = boxQty * wrapPcsPerBox;
+
+  const wrapLayout = calculateSheetUps(100, 70, wrapL, wrapH);
+  const wrapUps = Math.max(1, wrapLayout.ups);
+  const wrapSheetsNeeded = Math.ceil(totalWrapPieces / wrapUps);
+
+  const customWrapPaperRate = parseFloat(document.getElementById('wrapPaperRateInput')?.value);
+  const wrapSheetRate = (!isNaN(customWrapPaperRate) && customWrapPaperRate > 0)
+    ? customWrapPaperRate
+    : (hardcoverPricing.wrappingPaper150 || 0.75);
+
+  const totalWrapPaperCost = wrapSheetsNeeded * wrapSheetRate;
+  const unitWrapPaperCost = totalWrapPaperCost / boxQty;
+
+  // Update Wrapping Paper UI badges
+  const wrapUpsBadge = document.getElementById('wrapUpsBadge');
+  if (wrapUpsBadge) {
+    wrapUpsBadge.innerText = `${wrapUps} UPS (${wrapLayout.cols}×${wrapLayout.rows} ${wrapLayout.orientation})`;
+  }
+  const wrapSheetsBadge = document.getElementById('wrapSheetsBadge');
+  if (wrapSheetsBadge) {
+    wrapSheetsBadge.innerText = `${wrapSheetsNeeded} sheets (${wrapSheetRate.toFixed(2)} SR/sh)`;
+  }
+  const wrapPaperCostBadge = document.getElementById('wrapPaperCostBadge');
+  if (wrapPaperCostBadge) {
+    wrapPaperCostBadge.innerText = `${totalWrapPaperCost.toFixed(2)} SR (${unitWrapPaperCost.toFixed(2)} SR/box)`;
+  }
+
+  // Wrapping Paper Printing Calculation
+  const isWrapPrinted = document.getElementById('enableWrapPrint')?.checked;
+  const wrapPrintDetailsEl = document.getElementById('wrapPrintDetailsRow');
+  if (wrapPrintDetailsEl) {
+    if (isWrapPrinted) wrapPrintDetailsEl.classList.remove('hidden');
+    else wrapPrintDetailsEl.classList.add('hidden');
+  }
+
+  let wrapPrintSetupCost = 0;
+  let wrapPrintRunCost = 0;
+  let wrapPrintTotalCost = 0;
+  let printSheets = wrapSheetsNeeded;
+
+  if (isWrapPrinted) {
+    if (selectedWrappingPrintSize === '50x70') {
+      // 1 sheet of 100x70 yields 2 sheets of 50x70
+      printSheets = wrapSheetsNeeded * 2;
+      wrapPrintSetupCost = 150.00;
+      const thousandUnits = Math.max(1, Math.ceil(printSheets / 1000));
+      wrapPrintRunCost = thousandUnits * 100.00;
+    } else {
+      // 100x70 cm Paper
+      printSheets = wrapSheetsNeeded;
+      wrapPrintSetupCost = 250.00;
+      const thousandUnits = Math.max(1, Math.ceil(printSheets / 1000));
+      wrapPrintRunCost = thousandUnits * 200.00;
+    }
+    wrapPrintTotalCost = wrapPrintSetupCost + wrapPrintRunCost;
+  }
+
+  const wrapPrintTotalBadge = document.getElementById('wrapPrintTotalBadge');
+  if (wrapPrintTotalBadge) {
+    wrapPrintTotalBadge.innerText = isWrapPrinted
+      ? `${wrapPrintTotalCost.toFixed(2)} SR (Setup: ${wrapPrintSetupCost.toFixed(2)} SR + Run: ${wrapPrintRunCost.toFixed(2)} SR [${printSheets} sh])`
+      : '0.00 SR (Plain / No Print)';
+  }
+
+  const totalWrappingCost = totalWrapPaperCost + wrapPrintTotalCost;
+
+  // 3. BOX MAKING METHOD (MANUAL VS MACHINE)
+  // Calculate Manual
+  const manualHourlyRate = parseFloat(document.getElementById('manualLaborHourlyInput')?.value) || hardcoverPricing.manualLabor.hourlyRate;
+  const manualSpeed = parseFloat(document.getElementById('manualSpeedInput')?.value) || hardcoverPricing.manualLabor.defaultSpeed;
+  const manualOverrideHours = parseFloat(document.getElementById('manualHoursOverrideInput')?.value);
+  const manualHours = (!isNaN(manualOverrideHours) && manualOverrideHours > 0)
+    ? manualOverrideHours
+    : (boxQty / Math.max(1, manualSpeed));
+  const totalManualMakingCost = manualHours * manualHourlyRate;
+
+  // Calculate Machine
+  const machineSetup = parseFloat(document.getElementById('machineSetupInput')?.value) || hardcoverPricing.machineLabor.setupCost;
+  const machineHourlyRate = parseFloat(document.getElementById('machineHourlyInput')?.value) || hardcoverPricing.machineLabor.hourlyRate;
+  const machineSpeed = parseFloat(document.getElementById('machineSpeedInput')?.value) || hardcoverPricing.machineLabor.defaultSpeed;
+  const machineOverrideHours = parseFloat(document.getElementById('machineHoursOverrideInput')?.value);
+  const machineHours = (!isNaN(machineOverrideHours) && machineOverrideHours > 0)
+    ? machineOverrideHours
+    : (boxQty / Math.max(1, machineSpeed));
+  const totalMachineMakingCost = machineSetup + (machineHours * machineHourlyRate);
+
+  // Update Manual & Machine Badges
+  const manualTotalBadge = document.getElementById('manualTotalBadge');
+  if (manualTotalBadge) {
+    manualTotalBadge.innerText = `${totalManualMakingCost.toFixed(2)} SR (${manualHours.toFixed(1)} hrs @ ${manualHourlyRate.toFixed(2)} SR/hr)`;
+  }
+  const machineTotalBadge = document.getElementById('machineTotalBadge');
+  if (machineTotalBadge) {
+    machineTotalBadge.innerText = `${totalMachineMakingCost.toFixed(2)} SR (Setup: ${machineSetup.toFixed(2)} SR + ${machineHours.toFixed(1)} hrs @ ${machineHourlyRate.toFixed(2)} SR/hr)`;
+  }
+
+  // Active Making Cost based on toggle
+  const activeMakingCost = selectedBoxMakingMethod === 'manual' ? totalManualMakingCost : totalMachineMakingCost;
+  const unitMakingCost = activeMakingCost / boxQty;
+
+  // Method Comparison Badge
+  const makingComparisonNotice = document.getElementById('makingComparisonNotice');
+  if (makingComparisonNotice) {
+    const diff = Math.abs(totalManualMakingCost - totalMachineMakingCost);
+    const cheaper = totalManualMakingCost < totalMachineMakingCost ? 'Manual' : 'Machine';
+    makingComparisonNotice.innerHTML = `
+      <strong>💡 Method Cost Comparison / مقارنة التكاليف:</strong> 
+      Manual: <strong>${totalManualMakingCost.toFixed(2)} SR</strong> (${(totalManualMakingCost / boxQty).toFixed(2)} SR/box) | 
+      Machine: <strong>${totalMachineMakingCost.toFixed(2)} SR</strong> (${(totalMachineMakingCost / boxQty).toFixed(2)} SR/box)<br>
+      <span style="color: var(--accent-emerald); font-weight: 700;">
+        ✓ ${cheaper} Making is more cost-effective by ${diff.toFixed(2)} SR (${(diff / boxQty).toFixed(2)} SR/box) for ${boxQty} boxes.
+      </span>
+    `;
+  }
+
+  // 4. OPTIONAL LUXURY FINISHES (GOLD FOIL, SPOT UV, DIE CUTTING)
+  // Gold Foil
+  const optFoil = document.getElementById('hardcoverFoil')?.checked;
+  const foilDetails = document.getElementById('hardcoverFoilDetails');
+  if (foilDetails) {
+    if (optFoil) foilDetails.classList.remove('hidden');
+    else foilDetails.classList.add('hidden');
+  }
+  let foilCost = 0;
+  if (optFoil) {
+    const foilL = parseFloat(document.getElementById('hcFoilL')?.value) || 10;
+    const foilH = parseFloat(document.getElementById('hcFoilH')?.value) || 10;
+    const foilArea = foilL * foilH;
+    const clecheCost = foilArea * 0.81;
+    const foilMatCost = boxQty * (foilArea * 0.0015);
+    const impressionCost = wrapSheetsNeeded * 0.25;
+    foilCost = clecheCost + foilMatCost + impressionCost;
+    const hcFoilSummary = document.getElementById('hcFoilSummary');
+    if (hcFoilSummary) {
+      hcFoilSummary.innerText = `${foilCost.toFixed(2)} SR (Cleche: ${clecheCost.toFixed(2)} SR + Film: ${foilMatCost.toFixed(2)} SR + Stamp: ${impressionCost.toFixed(2)} SR)`;
+    }
+  }
+
+  // Spot UV
+  const optUv = document.getElementById('hardcoverUv')?.checked;
+  const uvDetails = document.getElementById('hardcoverUvDetails');
+  if (uvDetails) {
+    if (optUv) uvDetails.classList.remove('hidden');
+    else uvDetails.classList.add('hidden');
+  }
+  let uvCost = 0;
+  if (optUv) {
+    const uvL = parseFloat(document.getElementById('hcUvL')?.value) || 40;
+    const uvH = parseFloat(document.getElementById('hcUvH')?.value) || 25;
+    const uvArea = uvL * uvH;
+    const areaRatio = Math.min(1, uvArea / 7000);
+    const ratePer1000 = 500.00 * areaRatio;
+    const processCost = 100 + 200 + 50; // 350.00 SR
+    const effSheets = Math.max(1000, wrapSheetsNeeded);
+    const runCost = (effSheets / 1000) * ratePer1000;
+    uvCost = processCost + runCost;
+    const hcUvSummary = document.getElementById('hcUvSummary');
+    if (hcUvSummary) {
+      hcUvSummary.innerText = `${uvCost.toFixed(2)} SR (Area: ${uvArea.toFixed(0)} cm² - Process: 350.00 SR + Run: ${runCost.toFixed(2)} SR)`;
+    }
+  }
+
+  // Die Cutting Board
+  const optDie = document.getElementById('hardcoverDieBoard')?.checked;
+  const dieDetails = document.getElementById('hardcoverDieDetails');
+  if (dieDetails) {
+    if (optDie) dieDetails.classList.remove('hidden');
+    else dieDetails.classList.add('hidden');
+  }
+  let dieCost = 0;
+  if (optDie) {
+    const dieBoardFee = 150.00;
+    const dieCutRun = wrapSheetsNeeded * 0.35;
+    dieCost = dieBoardFee + dieCutRun;
+    const hcDieSummary = document.getElementById('hcDieSummary');
+    if (hcDieSummary) {
+      hcDieSummary.innerText = `${dieCost.toFixed(2)} SR (Die Board: ${dieBoardFee.toFixed(2)} SR + Cylinder Cut: ${dieCutRun.toFixed(2)} SR)`;
+    }
+  }
+
+  const totalFinishesCost = foilCost + uvCost + dieCost;
+
+  // 5. TOTALS & PROFIT MARGIN
+  const rawBaseProductionCost = totalBoardCost + totalWrappingCost + activeMakingCost + totalFinishesCost;
+  const profitMarginAmount = (rawBaseProductionCost * (profitMarginPercent / 100));
+  const grandTotalCost = rawBaseProductionCost + profitMarginAmount;
+  const grandUnitCost = grandTotalCost / boxQty;
+
+  // Update Right Pane Summary Cards
+  document.getElementById('summaryTotalCost').innerText = `${grandTotalCost.toFixed(2)} SR`;
+  document.getElementById('summaryUnitCost').innerText = `${grandUnitCost.toFixed(2)} SR / box`;
+  document.getElementById('summaryBoxQty').innerText = `${boxQty} Boxes`;
+
+  // Itemized breakdown in summary card
+  document.getElementById('sumBoardCost').innerText = `${totalBoardCost.toFixed(2)} SR (${selectedRigidGsm} GSM, ${boardSheetsNeeded} sh)`;
+  document.getElementById('sumWrapPaperCost').innerText = `${totalWrapPaperCost.toFixed(2)} SR (${wrapSheetsNeeded} sh 150 GSM)`;
+  document.getElementById('sumWrapPrintCost').innerText = isWrapPrinted ? `${wrapPrintTotalCost.toFixed(2)} SR (${selectedWrappingPrintSize})` : '0.00 SR (Plain)';
+  document.getElementById('sumMakingCost').innerText = `${activeMakingCost.toFixed(2)} SR (${selectedBoxMakingMethod.toUpperCase()})`;
+  document.getElementById('sumFinishesCost').innerText = `${totalFinishesCost.toFixed(2)} SR`;
+  document.getElementById('sumBaseCost').innerText = `${rawBaseProductionCost.toFixed(2)} SR`;
+  document.getElementById('sumProfitAmount').innerText = `+${profitMarginAmount.toFixed(2)} SR (${profitMarginPercent}%)`;
+
+  // Update Visual Sheet Layout Preview
+  renderVisualSheetPreview(
+    activePreviewTab === 'board' ? boardLayout : wrapLayout,
+    activePreviewTab === 'board' ? boardL : wrapL,
+    activePreviewTab === 'board' ? boardH : wrapH,
+    activePreviewTab === 'board' ? 'Rigid Board (100x70 cm)' : 'Wrapping 150 GSM (100x70 cm)'
+  );
+}
+
+// Render Interactive Visual Sheet Preview SVG
+function renderVisualSheetPreview(layout, itemW, itemH, title) {
+  const container = document.getElementById('hardcoverLayoutContainer');
+  if (!container) return;
+
+  const sheetW = 100;
+  const sheetH = 70;
+  const svgW = 460;
+  const svgH = 322; // maintains 100:70 aspect ratio
+
+  const scale = svgW / sheetW;
+
+  const cols = layout.cols;
+  const rows = layout.rows;
+  const fitW = layout.fitW;
+  const fitH = layout.fitH;
+  const ups = layout.ups;
+
+  let rectsSvg = '';
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const x = c * fitW * scale;
+      const y = r * fitH * scale;
+      const w = fitW * scale;
+      const h = fitH * scale;
+      rectsSvg += `
+        <rect x="${x + 1}" y="${y + 1}" width="${w - 2}" height="${h - 2}" rx="3" 
+              fill="rgba(212, 175, 55, 0.22)" stroke="#d4af37" stroke-width="1.2" />
+        <text x="${x + w / 2}" y="${y + h / 2 + 4}" font-size="10" font-weight="700" fill="#f59e0b" text-anchor="middle">
+          ${itemW}×${itemH}
+        </text>
+      `;
+    }
+  }
+
+  container.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+      <span style="font-weight: 700; color: var(--primary-gold); font-size: 0.9rem;">${title}</span>
+      <span style="font-size: 0.8rem; color: var(--text-muted);">${ups} UPS • Wastage: ${layout.wastePercent.toFixed(1)}%</span>
+    </div>
+    <div style="border: 2px dashed rgba(212, 175, 55, 0.4); border-radius: 8px; padding: 6px; background: rgba(0,0,0,0.2); display: flex; justify-content: center;">
+      <svg width="${svgW}" height="${svgH}" viewBox="0 0 ${svgW} ${svgH}" style="max-width: 100%; height: auto;">
+        <!-- Sheet outline -->
+        <rect x="0" y="0" width="${svgW}" height="${svgH}" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.2)" stroke-width="2" rx="4"/>
+        ${rectsSvg}
+      </svg>
+    </div>
+  `;
+}
+
+// Initialize UI & Event Listeners
+function initHardcoverUI() {
+  loadHardcoverPricing();
+
+  // GSM button group
+  const gsmBtns = document.querySelectorAll('.rigid-gsm-btn');
+  gsmBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      gsmBtns.forEach(b => b.classList.remove('active'));
+      const target = e.currentTarget;
+      target.classList.add('active');
+      selectedRigidGsm = target.getAttribute('data-gsm');
+      
+      const rateInput = document.getElementById('rigidBoardRateInput');
+      if (rateInput && hardcoverPricing.rigidBoardRates[selectedRigidGsm]) {
+        rateInput.value = hardcoverPricing.rigidBoardRates[selectedRigidGsm].toFixed(2);
+      }
+      calculateHardcover();
+    });
+  });
+
+  // Box Making Method Toggle
+  const methodBtns = document.querySelectorAll('.making-method-btn');
+  methodBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      methodBtns.forEach(b => b.classList.remove('active'));
+      const target = e.currentTarget;
+      target.classList.add('active');
+      selectedBoxMakingMethod = target.getAttribute('data-method');
+
+      const manualCard = document.getElementById('manualMakingCardDetails');
+      const machineCard = document.getElementById('machineMakingCardDetails');
+      if (selectedBoxMakingMethod === 'manual') {
+        if (manualCard) manualCard.classList.remove('hidden');
+        if (machineCard) machineCard.classList.add('hidden');
+      } else {
+        if (manualCard) manualCard.classList.add('hidden');
+        if (machineCard) machineCard.classList.remove('hidden');
+      }
+      calculateHardcover();
+    });
+  });
+
+  // Wrapping Print Size Toggle
+  const printSizeBtns = document.querySelectorAll('.print-size-btn');
+  printSizeBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      printSizeBtns.forEach(b => b.classList.remove('active'));
+      const target = e.currentTarget;
+      target.classList.add('active');
+      selectedWrappingPrintSize = target.getAttribute('data-size');
+      calculateHardcover();
+    });
+  });
+
+  // Layout Preview Tab Switcher
+  const previewTabBtns = document.querySelectorAll('.preview-tab-btn');
+  previewTabBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      previewTabBtns.forEach(b => b.classList.remove('active'));
+      const target = e.currentTarget;
+      target.classList.add('active');
+      activePreviewTab = target.getAttribute('data-target');
+      calculateHardcover();
+    });
+  });
+
+  // Inputs Auto-calculate
+  const inputIds = [
+    'boxQty', 'profitMarginInput',
+    'boardLength', 'boardHeight', 'boardPcsPerBox', 'rigidBoardRateInput',
+    'wrapLength', 'wrapHeight', 'wrapPcsPerBox', 'wrapPaperRateInput',
+    'enableWrapPrint',
+    'manualLaborHourlyInput', 'manualSpeedInput', 'manualHoursOverrideInput',
+    'machineSetupInput', 'machineHourlyInput', 'machineSpeedInput', 'machineHoursOverrideInput',
+    'hardcoverFoil', 'hcFoilL', 'hcFoilH',
+    'hardcoverUv', 'hcUvL', 'hcUvH',
+    'hardcoverDieBoard'
+  ];
+
+  inputIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', () => calculateHardcover());
+      el.addEventListener('change', () => calculateHardcover());
+    }
+  });
+
+  // WhatsApp Quote Copy
+  const copyBtn = document.getElementById('copyQuoteBtn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const qty = document.getElementById('boxQty')?.value || 500;
+      const total = document.getElementById('summaryTotalCost')?.innerText || '0.00 SR';
+      const unit = document.getElementById('summaryUnitCost')?.innerText || '0.00 SR';
+      const gsm = selectedRigidGsm;
+      const text = `*Right Printers - Hardcover Luxury Box Quotation*
+📦 Quantity: ${qty} Boxes
+🔹 Rigid Board: ${gsm} GSM (100x70)
+🔹 Box Making: ${selectedBoxMakingMethod.toUpperCase()}
+💰 Unit Price: ${unit}
+💵 Total Price: ${total}
+
+Valid for 7 days.`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Quotation copied to clipboard!");
+      });
+    });
+  }
+
+  // Print Button
+  const printBtn = document.getElementById('printQuoteBtn');
+  if (printBtn) {
+    printBtn.addEventListener('click', () => window.print());
+  }
+
+  // Theme Toggle
+  const themeBtn = document.getElementById('themeToggleBtn');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const cur = document.body.getAttribute('data-theme');
+      const next = cur === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    });
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+  }
+
+  // Initial Calculation
+  calculateHardcover();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  initHardcoverUI();
+});
+
+</script>
+</body>
+</html>
