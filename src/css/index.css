@@ -292,12 +292,77 @@ body {
 /* Tab Switcher */
 .job-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
   background: rgba(0, 0, 0, 0.3);
   padding: 6px;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--border-light);
+}
+
+@media (max-width: 900px) {
+  .job-tabs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .job-tabs {
+    grid-template-columns: 1fr;
+  }
+}
+
+.tab-btn-hardcover {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-family);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: var(--border-radius-sm);
+  padding: 12px;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(217, 119, 6, 0.35) 100%);
+  border: 1.5px solid #f59e0b !important;
+  color: #fbbf24 !important;
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
+  transition: var(--transition-smooth);
+}
+
+.tab-btn-hardcover:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #111827 !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.45);
+  transform: translateY(-1px);
+}
+
+.tab-btn-hardcover.active {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+  color: #111827 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.45) !important;
+}
+
+.hardcover-header-btn {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.18) 0%, rgba(217, 119, 6, 0.25) 100%);
+  border: 1.5px solid #f59e0b !important;
+  color: #fbbf24 !important;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.hardcover-header-btn:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #111827 !important;
+}
+
+.paper-header-btn {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1.5px solid #06b6d4 !important;
+  color: #06b6d4 !important;
+  text-decoration: none;
+  font-weight: 700;
 }
 
 .tab-btn {
@@ -2478,6 +2543,79 @@ body[data-theme="light"],
   background: #5c4527 !important;
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+/* Hardcover Tab & Header High Visibility in Light Theme */
+[data-theme="light"] .tab-btn-hardcover {
+  background: #78350f !important;
+  border: 1px solid #451a03 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  box-shadow: 0 3px 10px rgba(120, 53, 15, 0.35) !important;
+}
+
+[data-theme="light"] .tab-btn-hardcover:hover {
+  background: #92400e !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(120, 53, 15, 0.5) !important;
+  transform: translateY(-1px);
+}
+
+[data-theme="light"] .tab-btn-hardcover.active {
+  background: #5c4527 !important;
+  border: 1px solid #3d2d18 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(92, 69, 39, 0.45) !important;
+}
+
+[data-theme="light"] .hardcover-header-btn {
+  background: #78350f !important;
+  border: 1px solid #451a03 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .hardcover-header-btn:hover {
+  background: #92400e !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .paper-header-btn {
+  background: #0e7490 !important;
+  border: 1px solid #155e75 !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+
+[data-theme="light"] .paper-header-btn:hover {
+  background: #0891b2 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .rigid-gsm-btn.active,
+[data-theme="light"] .making-method-btn.active,
+[data-theme="light"] .preview-tab-btn.active {
+  background: #5c4527 !important;
+  border-color: #3d2d18 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(92, 69, 39, 0.35) !important;
+}
+
+[data-theme="light"] .making-method-btn.active div,
+[data-theme="light"] .rigid-gsm-btn.active div,
+[data-theme="light"] .rigid-gsm-btn.active span {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] #summaryTotalCost {
+  color: #78350f !important;
+}
+
+[data-theme="light"] #boardUpsBadge,
+[data-theme="light"] #boardSheetsBadge,
+[data-theme="light"] #manualTotalBadge,
+[data-theme="light"] #hcFoilSummary {
+  color: #78350f !important;
 }
 
 /* Input elements in Light Theme */
