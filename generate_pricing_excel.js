@@ -94,7 +94,7 @@ const fixedRates = [
   { service: 'Bag Handle Rope',                rate: 0.12,    unit: 'SR / bag' },
   { service: 'Bag Ribbons Only',               rate: 1.00,    unit: 'SR / bag' },
   { service: 'Bag Ribbons with Print',         rate: 2.00,    unit: 'SR / bag (min 10 bags)' },
-  { service: 'Packing',                        rate: 1.00,    unit: 'SR / 100 pcs packet' },
+  { service: 'Packing',                        rate: 1.50,    unit: 'SR / 100 pcs packet' },
   { service: 'Business Card Print',            rate: 0.012,   unit: 'SR / piece' },
   { service: 'Business Card A3 Sheet (300G)',  rate: 0.75,    unit: 'SR / sheet' },
   { service: 'Business Card Polar Cut',        rate: 8.50,    unit: 'SR / 100 pcs pack' },

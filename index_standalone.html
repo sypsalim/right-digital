@@ -4146,11 +4146,11 @@ body[data-theme="light"],
                 <input type="checkbox" id="extraPacking" checked>
                 <div class="extra-info">
                   <span class="extra-title">Packing / تغليف مغلفات</span>
-                  <span class="extra-desc" id="packingPriceText">1.00 SR / 100 pcs pack</span>
+                  <span class="extra-desc" id="packingPriceText">1.50 SR / 100 pcs pack</span>
                 </div>
               </label>
               <div class="extra-rate-input-wrapper">
-                <input type="number" id="packingRateInput" min="0" step="0.25" class="form-input rate-adj-input" value="1.00" placeholder="1.00">
+                <input type="number" id="packingRateInput" min="0" step="0.25" class="form-input rate-adj-input" value="1.50" placeholder="1.50">
                 <span class="rate-unit">SR</span>
               </div>
             </div>
@@ -4879,51 +4879,51 @@ body[data-theme="light"],
             <div class="form-row flex-wrap">
               <div class="form-group min-w-150">
                 <label for="rateFolding">Folding (per item)</label>
-                <input type="number" id="rateFolding" step="0.01" class="form-input">
+                <input type="number" id="rateFolding" step="0.01" class="form-input" placeholder="0.25" value="0.25">
               </div>
               <div class="form-group min-w-150">
                 <label for="ratePasting">Pasting (per item)</label>
-                <input type="number" id="ratePasting" step="0.01" class="form-input">
+                <input type="number" id="ratePasting" step="0.01" class="form-input" placeholder="0.20" value="0.20">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateRope">Bag Handle Rope (per item)</label>
-                <input type="number" id="rateRope" step="0.01" class="form-input">
+                <input type="number" id="rateRope" step="0.01" class="form-input" placeholder="0.12" value="0.12">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBagRibbonOnly">Bag Ribbons Only (per bag)</label>
-                <input type="number" id="rateBagRibbonOnly" step="0.10" class="form-input">
+                <input type="number" id="rateBagRibbonOnly" step="0.10" class="form-input" placeholder="1.00" value="1.00">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBagRibbonPrint">Bag Ribbons with Print (per bag)</label>
-                <input type="number" id="rateBagRibbonPrint" step="0.10" class="form-input">
+                <input type="number" id="rateBagRibbonPrint" step="0.10" class="form-input" placeholder="2.00" value="2.00">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBagInnerBoardSheet">Bag Inner Board Sheet (100x70 250 Gsm)</label>
-                <input type="number" id="rateBagInnerBoardSheet" step="0.05" class="form-input" placeholder="1.00">
+                <input type="number" id="rateBagInnerBoardSheet" step="0.05" class="form-input" placeholder="1.00" value="1.00">
               </div>
               <div class="form-group min-w-150">
                 <label for="ratePacking">Packing (per 100 pcs pack)</label>
-                <input type="number" id="ratePacking" step="0.1" class="form-input">
+                <input type="number" id="ratePacking" step="0.1" class="form-input" placeholder="1.50" value="1.50">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBcPrint">Business Card Print (per card)</label>
-                <input type="number" id="rateBcPrint" step="0.001" class="form-input">
+                <input type="number" id="rateBcPrint" step="0.001" class="form-input" placeholder="0.012" value="0.012">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBcA3Sheet">BC A3 Sheet Price (300 GSM)</label>
-                <input type="number" id="rateBcA3Sheet" step="0.01" class="form-input">
+                <input type="number" id="rateBcA3Sheet" step="0.01" class="form-input" placeholder="0.75" value="0.75">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateBcPolarCut">BC Polar Cut (per sheet)</label>
-                <input type="number" id="rateBcPolarCut" step="0.01" class="form-input">
+                <input type="number" id="rateBcPolarCut" step="0.01" class="form-input" placeholder="0.50" value="0.50">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateDieCylinder">Cylinder Die Cut (per sheet)</label>
-                <input type="number" id="rateDieCylinder" step="0.01" class="form-input">
+                <input type="number" id="rateDieCylinder" step="0.01" class="form-input" placeholder="0.25" value="0.25">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateDieManual">Manual Die Cut (per sheet)</label>
-                <input type="number" id="rateDieManual" step="0.01" class="form-input">
+                <input type="number" id="rateDieManual" step="0.01" class="form-input" placeholder="0.30" value="0.30">
               </div>
               <div class="form-group min-w-150">
                 <label for="rateCleche">Cleche Rate (per SQCM)</label>
@@ -5421,7 +5421,7 @@ const DEFAULT_PRICING = {
     bagRibbonOnly: 1.00,  // per bag
     bagRibbonPrint: 2.00, // per bag (min 10 bags)
     bagInnerBoardSheet: 1.00, // per 100x70 sheet (250 GSM)
-    packing: 1.00,   // per 100 pieces packet
+    packing: 1.50,   // per 100 pieces packet
     businessCardPrint: 0.012, // per piece
     businessCardA3SheetPrice: 0.75, // A3 sheet price specifically for business card jobs
     businessCardPolarCutPrice: 8.50, // Polar Cutting cost per 100 pcs pack
@@ -6269,22 +6269,22 @@ function loadPricingFromStorage() {
         if (currentPricing.fixedRates.businessCardPolarCutPrice === undefined || currentPricing.fixedRates.businessCardPolarCutPrice === 0.75) {
           currentPricing.fixedRates.businessCardPolarCutPrice = 0.50;
         }
-        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing <= 0 || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
-          currentPricing.fixedRates.packing = 1.00;
+        if (currentPricing.fixedRates.packing === undefined || currentPricing.fixedRates.packing <= 0 || currentPricing.fixedRates.packing === 1.00 || currentPricing.fixedRates.packing === 5.00 || currentPricing.fixedRates.packing === 0.50) {
+          currentPricing.fixedRates.packing = 1.50;
         }
-        if (currentPricing.fixedRates.folding === undefined || currentPricing.fixedRates.folding === 0.30) {
+        if (currentPricing.fixedRates.folding === undefined || !currentPricing.fixedRates.folding || currentPricing.fixedRates.folding === 0 || currentPricing.fixedRates.folding === 0.30) {
           currentPricing.fixedRates.folding = 0.25;
         }
-        if (currentPricing.fixedRates.pasting === undefined || currentPricing.fixedRates.pasting === 0.25) {
+        if (currentPricing.fixedRates.pasting === undefined || !currentPricing.fixedRates.pasting || currentPricing.fixedRates.pasting === 0 || currentPricing.fixedRates.pasting === 0.25) {
           currentPricing.fixedRates.pasting = 0.20;
         }
-        if (currentPricing.fixedRates.rope === undefined) {
+        if (currentPricing.fixedRates.rope === undefined || !currentPricing.fixedRates.rope || currentPricing.fixedRates.rope === 0) {
           currentPricing.fixedRates.rope = 0.12;
         }
-        if (currentPricing.fixedRates.dieCylinder === undefined || currentPricing.fixedRates.dieCylinder === 0.35 || currentPricing.fixedRates.dieCylinder === 0.30) {
+        if (currentPricing.fixedRates.dieCylinder === undefined || !currentPricing.fixedRates.dieCylinder || currentPricing.fixedRates.dieCylinder === 0 || currentPricing.fixedRates.dieCylinder === 0.35 || currentPricing.fixedRates.dieCylinder === 0.30) {
           currentPricing.fixedRates.dieCylinder = 0.25;
         }
-        if (currentPricing.fixedRates.dieManual === undefined || currentPricing.fixedRates.dieManual === 0.15 || currentPricing.fixedRates.dieManual === 0.35 || currentPricing.fixedRates.dieManual === 0.40) {
+        if (currentPricing.fixedRates.dieManual === undefined || !currentPricing.fixedRates.dieManual || currentPricing.fixedRates.dieManual === 0 || currentPricing.fixedRates.dieManual === 0.15 || currentPricing.fixedRates.dieManual === 0.35 || currentPricing.fixedRates.dieManual === 0.40) {
           currentPricing.fixedRates.dieManual = 0.30;
         }
         if (currentPricing.fixedRates.bagRibbonOnly === undefined) {
@@ -7710,16 +7710,19 @@ function populateSettingsDrawer() {
 
 
   // 6. Fixed Services rates
-  document.getElementById('rateFolding').value = currentPricing.fixedRates.folding.toFixed(2);
-  document.getElementById('ratePasting').value = currentPricing.fixedRates.pasting.toFixed(2);
-  document.getElementById('rateRope').value = currentPricing.fixedRates.rope.toFixed(2);
+  const foldingVal = (currentPricing.fixedRates && currentPricing.fixedRates.folding > 0) ? currentPricing.fixedRates.folding : 0.25;
+  document.getElementById('rateFolding').value = foldingVal.toFixed(2);
+  const pastingVal = (currentPricing.fixedRates && currentPricing.fixedRates.pasting > 0) ? currentPricing.fixedRates.pasting : 0.20;
+  document.getElementById('ratePasting').value = pastingVal.toFixed(2);
+  const ropeVal = (currentPricing.fixedRates && currentPricing.fixedRates.rope > 0) ? currentPricing.fixedRates.rope : 0.12;
+  document.getElementById('rateRope').value = ropeVal.toFixed(2);
   const ribbonOnlyVal = currentPricing.fixedRates.bagRibbonOnly !== undefined ? currentPricing.fixedRates.bagRibbonOnly : 1.00;
   if (document.getElementById('rateBagRibbonOnly')) document.getElementById('rateBagRibbonOnly').value = ribbonOnlyVal.toFixed(2);
   const ribbonPrintVal = currentPricing.fixedRates.bagRibbonPrint !== undefined ? currentPricing.fixedRates.bagRibbonPrint : 2.00;
   if (document.getElementById('rateBagRibbonPrint')) document.getElementById('rateBagRibbonPrint').value = ribbonPrintVal.toFixed(2);
   const innerBoardSheetVal = currentPricing.fixedRates.bagInnerBoardSheet !== undefined ? currentPricing.fixedRates.bagInnerBoardSheet : 1.00;
   if (document.getElementById('rateBagInnerBoardSheet')) document.getElementById('rateBagInnerBoardSheet').value = innerBoardSheetVal.toFixed(2);
-  const packingVal = (currentPricing.fixedRates && currentPricing.fixedRates.packing > 0) ? currentPricing.fixedRates.packing : 1.00;
+  const packingVal = (currentPricing.fixedRates && currentPricing.fixedRates.packing > 0 && currentPricing.fixedRates.packing !== 1.00) ? currentPricing.fixedRates.packing : 1.50;
   document.getElementById('ratePacking').value = packingVal.toFixed(2);
   const bcRateVal = currentPricing.fixedRates.businessCardPrint !== undefined ? currentPricing.fixedRates.businessCardPrint : 0.012;
   document.getElementById('rateBcPrint').value = bcRateVal.toFixed(3);
@@ -7727,9 +7730,9 @@ function populateSettingsDrawer() {
   document.getElementById('rateBcA3Sheet').value = bcSheetRateVal.toFixed(2);
   const bcPolarRateVal = currentPricing.fixedRates.businessCardPolarCutPrice !== undefined ? currentPricing.fixedRates.businessCardPolarCutPrice : 0.50;
   document.getElementById('rateBcPolarCut').value = bcPolarRateVal.toFixed(2);
-  const dieCylinderRateVal = currentPricing.fixedRates.dieCylinder !== undefined ? currentPricing.fixedRates.dieCylinder : 0.25;
+  const dieCylinderRateVal = (currentPricing.fixedRates && currentPricing.fixedRates.dieCylinder > 0) ? currentPricing.fixedRates.dieCylinder : 0.25;
   document.getElementById('rateDieCylinder').value = dieCylinderRateVal.toFixed(2);
-  const dieManualRateVal = currentPricing.fixedRates.dieManual !== undefined ? currentPricing.fixedRates.dieManual : 0.30;
+  const dieManualRateVal = (currentPricing.fixedRates && currentPricing.fixedRates.dieManual > 0) ? currentPricing.fixedRates.dieManual : 0.30;
   document.getElementById('rateDieManual').value = dieManualRateVal.toFixed(2);
 
   const clecheRateVal = currentPricing.fixedRates.clecheRatePerSqcm !== undefined ? currentPricing.fixedRates.clecheRatePerSqcm : 0.81;
@@ -7932,21 +7935,25 @@ function saveSettingsFromDrawer() {
   }
 
   // 6. Fixed Services rates
-  currentPricing.fixedRates.folding = parseFloat(document.getElementById('rateFolding').value) || 0;
-  currentPricing.fixedRates.pasting = parseFloat(document.getElementById('ratePasting').value) || 0;
-  currentPricing.fixedRates.rope = parseFloat(document.getElementById('rateRope').value) || 0;
+  currentPricing.fixedRates.folding = parseFloat(document.getElementById('rateFolding').value) || 0.25;
+  currentPricing.fixedRates.pasting = parseFloat(document.getElementById('ratePasting').value) || 0.20;
+  currentPricing.fixedRates.rope = parseFloat(document.getElementById('rateRope').value) || 0.12;
   if (document.getElementById('rateBagRibbonOnly')) currentPricing.fixedRates.bagRibbonOnly = parseFloat(document.getElementById('rateBagRibbonOnly').value) || 1.00;
   if (document.getElementById('rateBagRibbonPrint')) currentPricing.fixedRates.bagRibbonPrint = parseFloat(document.getElementById('rateBagRibbonPrint').value) || 2.00;
   if (document.getElementById('rateBagInnerBoardSheet')) currentPricing.fixedRates.bagInnerBoardSheet = parseFloat(document.getElementById('rateBagInnerBoardSheet').value) || 1.00;
-  currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 1.00;
+  currentPricing.fixedRates.packing = parseFloat(document.getElementById('ratePacking').value) || 1.50;
   if (document.getElementById('packingRateInput')) {
     document.getElementById('packingRateInput').value = currentPricing.fixedRates.packing.toFixed(2);
   }
-  currentPricing.fixedRates.businessCardPrint = parseFloat(document.getElementById('rateBcPrint').value) || 0;
-  currentPricing.fixedRates.businessCardA3SheetPrice = parseFloat(document.getElementById('rateBcA3Sheet').value) || 0;
-  currentPricing.fixedRates.businessCardPolarCutPrice = parseFloat(document.getElementById('rateBcPolarCut').value) || 0;
-  currentPricing.fixedRates.dieCylinder = parseFloat(document.getElementById('rateDieCylinder').value) || 0;
-  currentPricing.fixedRates.dieManual = parseFloat(document.getElementById('rateDieManual').value) || 0;
+  const pText = document.getElementById('packingPriceText');
+  if (pText) {
+    pText.innerText = `${currentPricing.fixedRates.packing.toFixed(2)} SR / 100 pcs pack`;
+  }
+  currentPricing.fixedRates.businessCardPrint = parseFloat(document.getElementById('rateBcPrint').value) || 0.012;
+  currentPricing.fixedRates.businessCardA3SheetPrice = parseFloat(document.getElementById('rateBcA3Sheet').value) || 0.75;
+  currentPricing.fixedRates.businessCardPolarCutPrice = parseFloat(document.getElementById('rateBcPolarCut').value) || 0.50;
+  currentPricing.fixedRates.dieCylinder = parseFloat(document.getElementById('rateDieCylinder').value) || 0.25;
+  currentPricing.fixedRates.dieManual = parseFloat(document.getElementById('rateDieManual').value) || 0.30;
   if (document.getElementById('rateCleche')) currentPricing.fixedRates.clecheRatePerSqcm = parseFloat(document.getElementById('rateCleche').value) || 0.81;
   if (document.getElementById('rateFoilGold')) currentPricing.fixedRates.goldFoilColorRate = parseFloat(document.getElementById('rateFoilGold').value) || 0.0015;
   if (document.getElementById('rateFoilRainbow')) currentPricing.fixedRates.rainbowFoilColorRate = parseFloat(document.getElementById('rateFoilRainbow').value) || 0.0038;
@@ -8065,6 +8072,15 @@ function syncMainScreenRateInputs() {
   const pastingRateInput = document.getElementById('pastingRateInput');
   if (pastingRateInput && currentPricing.fixedRates) {
     pastingRateInput.value = (currentPricing.fixedRates.pasting !== undefined ? currentPricing.fixedRates.pasting : 0.20).toFixed(2);
+  }
+  const packingRateInput = document.getElementById('packingRateInput');
+  if (packingRateInput && currentPricing.fixedRates) {
+    const pVal = (currentPricing.fixedRates.packing !== undefined && currentPricing.fixedRates.packing > 0 && currentPricing.fixedRates.packing !== 1.00) ? currentPricing.fixedRates.packing : 1.50;
+    packingRateInput.value = pVal.toFixed(2);
+    const packingPriceText = document.getElementById('packingPriceText');
+    if (packingPriceText) {
+      packingPriceText.innerText = `${pVal.toFixed(2)} SR / 100 pcs pack`;
+    }
   }
   const dieBoardRateInput = document.getElementById('dieBoardRateInput');
   if (dieBoardRateInput && currentPricing.fixedRates) {
@@ -8685,7 +8701,7 @@ function calculateAndUpdate() {
   // Packing cost: 1.00 SR per 100 pieces (or packet)
   const packets = Math.ceil(qty / 100);
   const packingRateInput = document.getElementById('packingRateInput');
-  const defaultPackingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.packing > 0) ? currentPricing.fixedRates.packing : 1.00;
+  const defaultPackingRate = (currentPricing && currentPricing.fixedRates && currentPricing.fixedRates.packing > 0 && currentPricing.fixedRates.packing !== 1.00) ? currentPricing.fixedRates.packing : 1.50;
   const packingRate = (packingRateInput && parseFloat(packingRateInput.value) >= 0 && packingRateInput.value !== '') ? parseFloat(packingRateInput.value) : defaultPackingRate;
   const packingCost = optPacking ? packets * packingRate : 0;
 
