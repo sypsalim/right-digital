@@ -53,7 +53,8 @@ body {
 }
 
 .app-container {
-  max-width: 1400px;
+  max-width: 1560px;
+  min-width: 1180px;
   margin: 0 auto;
   padding: 24px;
   display: flex;
@@ -74,32 +75,25 @@ body {
   background: #0c153b !important;
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--border-radius-lg);
-  padding: 16px 24px;
+  padding: 18px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   color: #ffffff;
 }
 
-.header-main {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  flex: 1;
-  min-width: 0;
-}
-
 .logo-area {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
   flex-shrink: 0;
 }
 
 .company-logo {
-  height: 100px;
+  height: 125px;
   width: auto;
   max-width: 100%;
   object-fit: contain;
@@ -115,6 +109,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  width: 100%;
 }
 
 .dept-badge-group {
@@ -122,15 +117,15 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 3px;
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(212, 175, 55, 0.5);
-  padding: 6px 14px;
+  padding: 6px 16px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-align: center;
-  flex-shrink: 0;
-  width: max-content;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .dept-badge-ar {
@@ -173,25 +168,38 @@ body {
   margin-top: 3px;
 }
 
+.header-right-pane {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
 .header-info {
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: 6px;
-  font-size: 0.82rem;
-  border-left: 1px solid var(--border-light);
-  padding-left: 20px;
-  flex-shrink: 1;
+  font-size: 0.85rem;
+  border-left: none;
+  padding-left: 0;
+  text-align: right;
 }
 
 .info-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: flex-end;
+  gap: 8px;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .info-item span {
-  max-width: 420px;
+  max-width: none;
+  white-space: nowrap;
 }
 
 .info-item svg {
@@ -209,33 +217,13 @@ body {
 
 @media (max-width: 1280px) {
   .company-logo {
-    height: 85px;
-  }
-  .header-main {
-    gap: 16px;
-  }
-  .header-info {
-    padding-left: 16px;
-    font-size: 0.78rem;
+    height: 115px;
   }
 }
 
 @media (max-width: 1024px) {
   .app-body {
     grid-template-columns: 1fr;
-  }
-  .app-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .header-info {
-    border-left: none;
-    padding-left: 0;
-    border-top: 1px solid var(--border-light);
-    padding-top: 15px;
-  }
-  .settings-toggle-btn {
-    align-self: flex-start;
   }
 }
 
@@ -897,11 +885,10 @@ input:checked + .slider:before {
   background: linear-gradient(135deg, #0c153b 0%, #172554 100%) !important;
   border: 1px solid rgba(212, 175, 55, 0.45) !important;
   border-radius: var(--border-radius-sm);
-  padding: 12px 16px;
+  padding: 14px 18px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  flex-direction: column;
+  gap: 12px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: var(--transition-smooth);
 }
@@ -911,14 +898,21 @@ input:checked + .slider:before {
   box-shadow: 0 6px 18px rgba(212, 175, 55, 0.22);
 }
 
+.total-pieces-main-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+}
+
 .total-pieces-icon {
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   background: rgba(212, 175, 55, 0.15);
   border: 1px solid rgba(212, 175, 55, 0.35);
   border-radius: 8px;
@@ -928,40 +922,42 @@ input:checked + .slider:before {
 .total-pieces-content {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   flex: 1;
+  min-width: 0;
 }
 
 .total-pieces-label {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: #cbd5e1 !important;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  line-height: 1.35;
 }
 
 .total-pieces-val {
-  font-size: 1.45rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #ffffff !important;
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 8px;
   letter-spacing: -0.3px;
   flex-wrap: wrap;
 }
 
 .total-pieces-val .unit {
-  font-size: 0.85rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: #fbbf24 !important;
   text-transform: uppercase;
 }
 
 .total-pieces-val .badge-extra {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  padding: 2px 8px;
+  padding: 3px 10px;
   border-radius: 12px;
   background: rgba(16, 185, 129, 0.2);
   color: #34d399 !important;
@@ -969,18 +965,21 @@ input:checked + .slider:before {
 }
 
 .total-pieces-formula {
-  font-size: 0.82rem;
+  font-size: 0.84rem;
   font-weight: 600;
   color: #fbbf24 !important;
-  background: rgba(0, 0, 0, 0.45);
-  padding: 8px 14px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 14px;
   border-radius: 6px;
-  border: 1px solid rgba(251, 191, 36, 0.3);
-  white-space: nowrap;
-  text-align: right;
-  flex-shrink: 0;
-}
-
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  line-height: 1.45;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 /* Bag Top Free Space Banner at bottom of layout preview */
@@ -1129,6 +1128,21 @@ input:checked + .slider:before {
 [data-theme="light"] .qty-toggle-btn.active {
   background: linear-gradient(135deg, #d4af37, #b89324);
   color: #000000 !important;
+}
+
+/* Wall Toggle Pill */
+.wall-toggle-pill {
+  display: flex;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 3px;
+  border-radius: 6px;
+  border: 1px solid var(--border-light);
+}
+
+[data-theme="light"] .wall-toggle-pill {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.18);
 }
 
 /* Comparison Table */
@@ -3162,6 +3176,181 @@ body[data-theme="light"],
   background: #ffffff !important;
   border: 2px solid #5c4527 !important;
 }
+
+/* ==========================================================================
+   Section 3: Wrapping Paper Visual Sheet Layout Panel
+   ========================================================================== */
+.wrap-sheet-layout-card {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  background: linear-gradient(145deg, rgba(6, 182, 212, 0.05) 0%, rgba(15, 23, 42, 0.4) 100%);
+  border: 1.5px solid rgba(6, 182, 212, 0.35);
+  border-radius: var(--border-radius-md, 10px);
+  padding: 16px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.22);
+  transition: all var(--transition-normal, 0.25s ease);
+}
+
+.wrap-sheet-layout-card:hover {
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 6px 24px rgba(6, 182, 212, 0.15);
+}
+
+.wrap-layout-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.wrap-layout-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  color: #06b6d4;
+  font-size: 0.95rem;
+  letter-spacing: -0.01em;
+}
+
+.wrap-layout-icon {
+  font-size: 1.2rem;
+  filter: drop-shadow(0 2px 4px rgba(6, 182, 212, 0.4));
+}
+
+.wrap-layout-badge {
+  font-size: 0.8rem;
+  font-weight: 800;
+  background: rgba(6, 182, 212, 0.18);
+  border: 1px solid #06b6d4;
+  color: #22d3ee;
+  padding: 4px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.18);
+}
+
+.wrap-layout-svg-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(10, 15, 24, 0.7);
+  border: 1.5px dashed rgba(6, 182, 212, 0.45);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.wrap-layout-svg-wrapper svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wrap-layout-metrics {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px;
+  text-align: center;
+}
+
+.wrap-metric-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.wrap-metric-item .metric-lbl {
+  font-size: 0.72rem;
+  color: var(--text-muted, #94a3b8);
+  display: block;
+  margin-bottom: 3px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.wrap-metric-item .metric-val {
+  font-size: 0.95rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+/* Value Color Modifiers */
+.text-cyan {
+  color: #22d3ee !important;
+}
+.text-amber {
+  color: #f59e0b !important;
+}
+.text-emerald {
+  color: #10b981 !important;
+}
+.text-rose {
+  color: #f43f5e !important;
+}
+.text-main {
+  color: var(--text-main, #e2e8f0) !important;
+}
+
+/* Light Theme Overrides for Wrapping Visual Sheet Layout Panel */
+[data-theme="light"] .wrap-sheet-layout-card {
+  background: #f0fdfa !important;
+  border: 1.5px solid #0891b2 !important;
+  box-shadow: 0 4px 16px rgba(8, 145, 178, 0.12) !important;
+}
+
+[data-theme="light"] .wrap-layout-title {
+  color: #0e7490 !important;
+}
+
+[data-theme="light"] .wrap-layout-badge {
+  background: #cffafe !important;
+  border: 1px solid #0891b2 !important;
+  color: #0e7490 !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .wrap-layout-svg-wrapper {
+  background: #ffffff !important;
+  border: 1.5px dashed #0891b2 !important;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .wrap-layout-metrics {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .wrap-metric-item .metric-lbl {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .text-cyan {
+  color: #0891b2 !important;
+}
+[data-theme="light"] .text-amber {
+  color: #b45309 !important;
+}
+[data-theme="light"] .text-emerald {
+  color: #047857 !important;
+}
+[data-theme="light"] .text-rose {
+  color: #be123c !important;
+}
+[data-theme="light"] .text-main {
+  color: #1e293b !important;
+}
+
 
 /* ABSOLUTE MASTER OVERRIDE FOR DEFAULT A4 PRINTING & CLEAN WHITE PDF */
 @media print {

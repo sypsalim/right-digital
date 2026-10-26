@@ -10,7 +10,7 @@ const path = require('path');
 const paperGsmRates = {
   '350': { '100x70': 1.44, '90x64': 1.40, '50x70': 1.00, '70x33': 1.50, '50x33': 1.40, 'A3': 4.50, 'A4': 2.50, 'Back Side': 2.50 },
   '300': { '100x70': 1.25, '90x64': 1.35, '50x70': 0.90, '70x33': 1.40, '50x33': 1.30, 'A3': 4.00, 'A4': 2.00, 'Back Side': 2.00 },
-  '250': { '100x70': 1.00, '90x64': 1.00, '50x70': 0.55, '70x33': 1.20, '50x33': 1.00, 'A3': 3.50, 'A4': 2.50, 'Back Side': 2.00 },
+  '250': { '100x70': 1.00, '90x64': 0.94, '50x70': 0.55, '70x33': 1.20, '50x33': 1.00, 'A3': 3.50, 'A4': 2.50, 'Back Side': 2.00 },
   '150': { '100x70': 0.80, '90x64': 0.75, '50x70': 0.55, '70x33': 1.00, '50x33': 0.90, 'A3': 3.00, 'A4': 2.00, 'Back Side': 1.50 },
   '100': { '100x70': 0.70, '90x64': 0.65, '50x70': 0.45, '70x33': 0.95, '50x33': 0.80, 'A3': 2.50, 'A4': 2.00, 'Back Side': 1.50 }
 };
@@ -34,7 +34,7 @@ const stickerRates = {
 };
 
 const laminationRates = {
-  '100x70': 0.55, '90x64': 0.50, '50x70': 0.45,
+  '100x70': 0.50, '90x64': 0.50, '50x70': 0.45,
   '50x35':  0.55, '70x33': 0.35, '50x33': 0.50,
   'A3':     0.40, 'A4':    0.30
 };
@@ -57,12 +57,13 @@ const uvRates = {
 };
 
 const profitTiers = [
-  { range: '1 – 99 pcs',        margin: 40 },
-  { range: '100 – 324 pcs',     margin: 38 },
-  { range: '325 – 449 pcs',     margin: 36 },
-  { range: '450 – 1000 pcs',    margin: 30 },
-  { range: '1250 – 3000 pcs',   margin: 27 },
-  { range: '3500+ pcs',         margin: 25 }
+  { range: '1 – 25 Sheets',     margin: 40 },
+  { range: '50 – 300 Sheets',   margin: 38 },
+  { range: '350 – 500 Sheets',  margin: 36 },
+  { range: '550 – 1000 Sheets', margin: 27 },
+  { range: '1250 – 3000 Sheets',margin: 26 },
+  { range: '3250 – 5000 Sheets',margin: 24 },
+  { range: '5500 – 10000+ Sheets', margin: 20 }
 ];
 
 const discountTiers = [
@@ -88,8 +89,8 @@ const quantityTiers = [
 
 const fixedRates = [
   { service: 'Design Charge',                  rate: 50.00,   unit: 'SR (per job)' },
-  { service: 'Folding',                        rate: 0.30,    unit: 'SR / piece' },
-  { service: 'Pasting',                        rate: 0.25,    unit: 'SR / piece' },
+  { service: 'Folding',                        rate: 0.25,    unit: 'SR / piece' },
+  { service: 'Pasting',                        rate: 0.20,    unit: 'SR / piece' },
   { service: 'Bag Handle Rope',                rate: 0.12,    unit: 'SR / bag' },
   { service: 'Bag Ribbons Only',               rate: 1.00,    unit: 'SR / bag' },
   { service: 'Bag Ribbons with Print',         rate: 2.00,    unit: 'SR / bag (min 10 bags)' },
@@ -97,8 +98,8 @@ const fixedRates = [
   { service: 'Business Card Print',            rate: 0.012,   unit: 'SR / piece' },
   { service: 'Business Card A3 Sheet (300G)',  rate: 0.75,    unit: 'SR / sheet' },
   { service: 'Business Card Polar Cut',        rate: 8.50,    unit: 'SR / 100 pcs pack' },
-  { service: 'Cylinder Die Cutting',           rate: 0.35,    unit: 'SR / sheet' },
-  { service: 'Manual Die Cutting',             rate: 0.40,    unit: 'SR / sheet' },
+  { service: 'Cylinder Die Cutting',           rate: 0.25,    unit: 'SR / sheet' },
+  { service: 'Manual Die Cutting',             rate: 0.30,    unit: 'SR / sheet' },
   { service: 'Die Board',                      rate: 150.00,  unit: 'SR / part' },
   { service: 'Offset Setup',                   rate: 250.00,  unit: 'SR (default)' },
   { service: 'Hot Foil Cleche',                rate: 0.81,    unit: 'SR / SQCM' },
